@@ -19,20 +19,20 @@ import {
 import { pager } from './pager'
 
 export const EXCHANGE = {
-  [ChainId.ETHEREUM]: 'sushiswap/exchange',
-  [ChainId.XDAI]: 'sushiswap/xdai-exchange',
-  [ChainId.MATIC]: 'sushiswap/matic-exchange',
-  [ChainId.FANTOM]: 'sushiswap/fantom-exchange',
-  [ChainId.BSC]: 'sushiswap/bsc-exchange',
-  [ChainId.HARMONY]: 'sushiswap/harmony-exchange',
-  [ChainId.AVALANCHE]: 'sushiswap/avalanche-exchange',
-  [ChainId.CELO]: 'jiro-ono/sushitestsubgraph',
-  [ChainId.ARBITRUM]: 'sushiswap/arbitrum-exchange',
-  [ChainId.MOONRIVER]: 'sushiswap/moonriver-exchange',
+  [ChainId.ETHEREUM]: 'centfinance/exchange',
+  [ChainId.XDAI]: 'centfinance/xdai-exchange',
+  [ChainId.MATIC]: 'centfinance/matic-exchange',
+  [ChainId.FANTOM]: 'centfinance/fantom-exchange',
+  [ChainId.BSC]: 'centfinance/bsc-exchange',
+  [ChainId.HARMONY]: 'centfinance/harmony-exchange',
+  [ChainId.AVALANCHE]: 'centfinance/avalanche-exchange',
+  [ChainId.CELO]: 'centfinance/symmetricv1celo',
+  [ChainId.ARBITRUM]: 'centfinance/arbitrum-exchange',
+  [ChainId.MOONRIVER]: 'centfinance/moonriver-exchange',
   [ChainId.OKEX]: 'okex-exchange/oec',
   [ChainId.HECO]: 'heco-exchange/heco',
-  [ChainId.FUSE]: 'sushiswap/fuse-exchange',
-  [ChainId.MOONBEAM]: 'sushiswap/moonbeam-exchange',
+  [ChainId.FUSE]: 'centfinance/fuse-exchange',
+  [ChainId.MOONBEAM]: 'centfinance/moonbeam-exchange',
 }
 
 // @ts-ignore TYPE NEEDS FIXING

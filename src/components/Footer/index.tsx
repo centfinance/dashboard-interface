@@ -1,6 +1,6 @@
 import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
-import { DiscordIcon, InstagramIcon, MediumIcon, TwitterIcon } from 'app/components/Icon'
+import { DiscordIcon, MediumIcon, TwitterIcon } from 'app/components/Icon'
 import LanguageSwitch from 'app/components/LanguageSwitch'
 import Typography from 'app/components/Typography'
 import { Feature } from 'app/enums'
@@ -23,27 +23,29 @@ const Footer = () => {
           <div className="flex flex-col gap-3">
             <div className="flex items-center justify-start gap-2">
               <div className="">
-                <Image src="https://app.sushi.com/images/logo.svg" alt="Sushi logo" width="28px" height="28px" />
+                <Image
+                  src="https://celo-pools.symmetric.exchange/img/symmetricIcon.ad634ddf.svg"
+                  alt="Sushi logo"
+                  width="58px"
+                  height="58px"
+                />
               </div>
-              <Typography variant="h2" weight={700} className="tracking-[0.02em] scale-y-90 hover:text-high-emphesis">
-                Sushi
-              </Typography>
+              {/* <Typography variant="h2" weight={700} className="tracking-[0.02em] scale-y-90 hover:text-high-emphesis">
+                SYMMETRIC
+              </Typography> */}
             </div>
             <Typography variant="xs" className="text-low-emphesis">
               {i18n._(t`Our community is building a comprehensive decentralized trading platform for the future of finance. Join
               us!`)}
             </Typography>
             <div className="flex items-center gap-4">
-              <a href="https://twitter.com/sushiswap" target="_blank" rel="noreferrer">
+              <a href="https://twitter.com/0xSymmetric" target="_blank" rel="noreferrer">
                 <TwitterIcon width={16} className="text-low-emphesis" />
               </a>
-              <a href="https://instagram.com/instasushiswap" target="_blank" rel="noreferrer">
-                <InstagramIcon width={16} className="text-low-emphesis" />
-              </a>
-              <a href="https://medium.com/sushiswap-org" target="_blank" rel="noreferrer">
+              <a href="https://medium.com/@Symmetric.Finance" target="_blank" rel="noreferrer">
                 <MediumIcon width={16} className="text-low-emphesis" />
               </a>
-              <a href="https://discord.gg/NVPXN4e" target="_blank" rel="noreferrer">
+              <a href="https://discord.gg/rJd7azWx4V" target="_blank" rel="noreferrer">
                 <DiscordIcon width={16} className="text-low-emphesis" />
               </a>
             </div>

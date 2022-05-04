@@ -1,32 +1,19 @@
-import { getAddress } from '@ethersproject/address'
-import { ChainId, Currency, NATIVE, SUSHI, Token } from '@sushiswap/core-sdk'
+import { ChainId, ChainTokenMap, Currency, NATIVE, Token } from '@sushiswap/core-sdk'
 import { XDAI_TOKENS } from 'app/config/tokens'
 import { Feature } from 'app/enums'
 import { Chef, PairType } from 'app/features/onsen/enum'
 import { usePositions } from 'app/features/onsen/hooks'
 import { featureEnabled } from 'app/functions'
-import { aprToApy } from 'app/functions/convert'
 import {
   useAverageBlockTime,
   useCeloPrice,
   useEthPrice,
-  useFantomPrice,
   useFarms,
-  useFusePrice,
-  useGlimmerPrice,
   useGnoPrice,
   useKashiPairs,
-  useMagicPrice,
-  useMasterChefV1SushiPerBlock,
-  useMasterChefV1TotalAllocPoint,
-  useMaticPrice,
-  useMovrPrice,
-  useOhmPrice,
   useOneDayBlock,
-  useOnePrice,
-  useSpellPrice,
-  useSushiPairs,
-  useSushiPrice,
+  useSymmPairs,
+  useSymmPriceCelo,
 } from 'app/services/graph'
 import toLower from 'lodash/toLower'
 import { useMemo } from 'react'
@@ -39,29 +26,18 @@ export default function useFarmRewards({ chainId = ChainId.ETHEREUM }) {
 
   // @ts-ignore TYPE NEEDS FIXING
   const farms = useFarms({ chainId })
-
   const farmAddresses = useMemo(() => farms.map((farm) => farm.pair), [farms])
-
-  const swapPairs = useSushiPairs({
+  const symmPairs = useSymmPairs({
     chainId,
-    variables: {
-      where: {
-        id_in: farmAddresses.map(toLower),
-      },
-    },
-    shouldFetch: !!farmAddresses,
+    // variables: {
+    //   where: {
+    //     id_in: farmAddresses.map(toLower),
+    //   },
+    // },
+    shouldFetch: true,
   })
-
-  const swapPairs1d = useSushiPairs({
-    chainId,
-    variables: {
-      block: block1d,
-      where: {
-        id_in: farmAddresses.map(toLower),
-      },
-    },
-    shouldFetch: !!block1d && !!farmAddresses,
-  })
+  console.log('SYMM PAIRS:')
+  console.log(symmPairs)
 
   const kashiPairs = useKashiPairs({
     chainId,
@@ -70,76 +46,50 @@ export default function useFarmRewards({ chainId = ChainId.ETHEREUM }) {
   })
 
   const averageBlockTime = useAverageBlockTime({ chainId })
+  const symmAddressCELO = '0x8427bD503dd3169cCC9aFF7326c15258Bc305478'
 
-  const masterChefV1TotalAllocPoint = useMasterChefV1TotalAllocPoint()
-  const masterChefV1SushiPerBlock = useMasterChefV1SushiPerBlock()
+  const SYMM: ChainTokenMap = {
+    // [ChainId.XDAI]: new Token(ChainId.XDAI, SUSHI_ADDRESS[ChainId.XDAI], 18, 'SUSHI', 'SushiToken'),
+    [ChainId.CELO]: new Token(ChainId.CELO, symmAddressCELO, 18, 'SYMM', 'SymmToken'),
+  }
 
-  const [
-    sushiPrice,
-    ethPrice,
-    maticPrice,
-    gnoPrice,
-    onePrice,
-    spellPrice,
-    celoPrice,
-    fantomPrice,
-    movrPrice,
-    ohmPrice,
-    fusePrice,
-    magicPrice,
-    glimmerPrice,
-  ] = [
-    useSushiPrice(),
+  const [ethPrice, gnoPrice, celoPrice, symmPriceCelo] = [
     useEthPrice(),
-    useMaticPrice(),
     useGnoPrice(),
-    useOnePrice(),
-    useSpellPrice(),
     useCeloPrice(),
-    useFantomPrice(),
-    useMovrPrice(),
-    useOhmPrice(),
-    useFusePrice(),
-    useMagicPrice(),
-    useGlimmerPrice(),
+    useSymmPriceCelo(),
   ]
 
   const blocksPerDay = 86400 / Number(averageBlockTime)
 
   // @ts-ignore TYPE NEEDS FIXING
   const map = (pool) => {
+    console.log('MAPPING POOLS HERE')
+
     // TODO: Deal with inconsistencies between properties on subgraph
-    pool.owner = pool?.owner || pool?.masterChef || pool?.miniChef
+    pool.owner = pool?.symmChef || pool?.owner || pool?.masterChef || pool?.miniChef
     pool.balance = pool?.balance || pool?.slpBalance
-
     // @ts-ignore TYPE NEEDS FIXING
-    const swapPair = swapPairs?.find((pair) => pair.id === pool.pair)
-    // @ts-ignore TYPE NEEDS FIXING
-    const swapPair1d = swapPairs1d?.find((pair) => pair.id === pool.pair)
-    // @ts-ignore TYPE NEEDS FIXING
-    const kashiPair = kashiPairs?.find((pair) => pair.id === pool.pair)
+    const swapSymmPair = symmPairs?.find((pair) => pair.id === pool.pair)
 
-    const pair = swapPair || kashiPair
+    const pair = swapSymmPair
 
-    const type = swapPair ? PairType.SWAP : PairType.KASHI
+    const type = swapSymmPair ? PairType.SWAP : PairType.KASHI
 
     const blocksPerHour = 3600 / averageBlockTime
 
     function getRewards() {
-      // TODO: Some subgraphs give sushiPerBlock & sushiPerSecond, and mcv2 gives nothing
-      const sushiPerBlock =
-        pool?.owner?.sushiPerBlock / 1e18 ||
-        (pool?.owner?.sushiPerSecond / 1e18) * averageBlockTime ||
-        masterChefV1SushiPerBlock
+      const symmPerBlock = (pool?.owner?.symmPerSecond / 1e18) * averageBlockTime
 
       // @ts-ignore TYPE NEEDS FIXING
-      const rewardPerBlock = (pool.allocPoint / pool.owner.totalAllocPoint) * sushiPerBlock
+      const rewardPerBlock = (pool.allocPoint / pool.owner.totalAllocPoint) * symmPerBlock
 
+      // This is the SYMM reward from symmCHEF if any
       const defaultReward = {
-        currency: SUSHI[ChainId.ETHEREUM],
+        currency: SYMM[ChainId.CELO],
         rewardPerBlock,
         rewardPerDay: rewardPerBlock * blocksPerDay,
-        rewardPrice: sushiPrice,
+        rewardPrice: symmPriceCelo,
       }
 
       let rewards: { currency: Currency; rewardPerBlock: number; rewardPerDay: number; rewardPrice: number }[] = [
@@ -147,172 +97,26 @@ export default function useFarmRewards({ chainId = ChainId.ETHEREUM }) {
         defaultReward,
       ]
 
-      if (pool.chef === Chef.MASTERCHEF_V2) {
-        // override for mcv2...
-        pool.owner.totalAllocPoint = masterChefV1TotalAllocPoint
-
-        // CVX-WETH hardcode 0 rewards since ended, can remove after swapping out rewarder
-        if (pool.id === '1') {
-          pool.rewarder.rewardPerSecond = 0
-        }
-
-        // vestedQUARTZ to QUARTZ adjustments
-        if (pool.rewarder.rewardToken === '0x5dd8905aec612529361a35372efd5b127bb182b3') {
-          pool.rewarder.rewardToken = '0xba8a621b4a54e61c442f5ec623687e2a942225ef'
-          pool.rewardToken.id = '0xba8a621b4a54e61c442f5ec623687e2a942225ef'
-          pool.rewardToken.symbol = 'vestedQUARTZ'
-          pool.rewardToken.derivedETH = pair.token1.derivedETH
-          pool.rewardToken.decimals = 18
-        }
-
-        const decimals = 10 ** pool.rewardToken.decimals
-
-        if (pool.rewarder.rewardToken !== '0x0000000000000000000000000000000000000000') {
-          const rewardPerBlock =
-            pool.rewardToken.symbol === 'ALCX'
-              ? pool.rewarder.rewardPerSecond / decimals
-              : pool.rewardToken.symbol === 'LDO'
-              ? (19290123456790123 / decimals) * averageBlockTime
-              : (pool.rewarder.rewardPerSecond / decimals) * averageBlockTime
-
-          const rewardPerDay =
-            pool.rewardToken.symbol === 'ALCX'
-              ? (pool.rewarder.rewardPerSecond / decimals) * blocksPerDay
-              : pool.rewardToken.symbol === 'LDO'
-              ? (19290123456790123 / decimals) * averageBlockTime * blocksPerDay
-              : (pool.rewarder.rewardPerSecond / decimals) * averageBlockTime * blocksPerDay
-
-          const rewardPrice = pool.rewardToken.derivedETH * ethPrice
-
-          const reward = {
-            currency: new Token(
-              ChainId.ETHEREUM,
-              getAddress(pool.rewardToken.id),
-              Number(pool.rewardToken.decimals),
-              pool.rewardToken.symbol,
-              pool.rewardToken.name
-            ),
-            rewardPerBlock,
-            rewardPerDay,
-            rewardPrice,
-          }
-          rewards[1] = reward
-        }
-      } else if (pool.chef === Chef.MINICHEF && chainId !== ChainId.MATIC && chainId !== ChainId.ARBITRUM) {
-        const sushiPerSecond = ((pool.allocPoint / pool.miniChef.totalAllocPoint) * pool.miniChef.sushiPerSecond) / 1e18
-        const sushiPerBlock = sushiPerSecond * averageBlockTime
-        const sushiPerDay = sushiPerBlock * blocksPerDay
+      if (pool.chef === Chef.MINICHEF) {
+        const symmPerSecond = ((pool.allocPoint / pool.symmChef.totalAllocPoint) * pool.symmChef.symmPerSecond) / 1e18
+        const symmPerBlock = symmPerSecond * averageBlockTime
+        const symmPerDay = symmPerBlock * blocksPerDay
+        const totalAllocPointRewarder = 100 // Need to fix subgraph to fetch this from chain. This needs to be 100 anyway
 
         const rewardPerSecond =
-          ((pool.allocPoint / pool.miniChef.totalAllocPoint) * pool.rewarder.rewardPerSecond) / 1e18
+          ((pool.rewarderAllocPoint / totalAllocPointRewarder) * pool.symmChef.symmPerSecond) / 1e18 // External Rewards needs allocation properly like 80/20
 
         const rewardPerBlock = rewardPerSecond * averageBlockTime
 
         const rewardPerDay = rewardPerBlock * blocksPerDay
 
         const reward = {
-          [ChainId.MATIC]: {
-            currency: NATIVE[ChainId.MATIC],
-            rewardPerBlock,
-            rewardPerDay: rewardPerSecond * 86400,
-            rewardPrice: maticPrice,
-          },
           [ChainId.XDAI]: {
             currency: XDAI_TOKENS.GNO,
             rewardPerBlock,
             rewardPerDay: rewardPerSecond * 86400,
             rewardPrice: gnoPrice,
           },
-          [ChainId.HARMONY]: {
-            currency: NATIVE[ChainId.HARMONY],
-            rewardPerBlock,
-            rewardPerDay: rewardPerSecond * 86400,
-            rewardPrice: onePrice,
-          },
-          [ChainId.CELO]: {
-            currency: NATIVE[ChainId.CELO],
-            rewardPerBlock,
-            rewardPerDay: rewardPerSecond * 86400,
-            rewardPrice: celoPrice,
-          },
-          [ChainId.MOONRIVER]: {
-            currency: NATIVE[ChainId.MOONRIVER],
-            rewardPerBlock,
-            rewardPerDay: rewardPerSecond * 86400,
-            rewardPrice: movrPrice,
-          },
-          [ChainId.FUSE]: {
-            currency: NATIVE[ChainId.FUSE],
-            rewardPerBlock,
-            rewardPerDay: rewardPerSecond * 86400,
-            rewardPrice: fusePrice,
-          },
-          [ChainId.FANTOM]: {
-            currency: NATIVE[ChainId.FANTOM],
-            rewardPerBlock,
-            rewardPerDay: rewardPerSecond * 86400,
-            rewardPrice: fantomPrice,
-          },
-          [ChainId.MOONBEAM]: {
-            currency: NATIVE[ChainId.MOONBEAM],
-            rewardPerBlock,
-            rewardPerDay: rewardPerSecond * 86400,
-            rewardPrice: glimmerPrice,
-          },
-        }
-
-        if (chainId === ChainId.FUSE) {
-          // Secondary reward only
-          rewards[0] = reward[ChainId.FUSE]
-        } else {
-          // @ts-ignore TYPE NEEDS FIXING
-          rewards[0] = {
-            ...defaultReward,
-            rewardPerBlock: sushiPerBlock,
-            rewardPerDay: sushiPerDay,
-          }
-          // @ts-ignore TYPE NEEDS FIXING
-          if (chainId in reward) {
-            // @ts-ignore TYPE NEEDS FIXING
-            rewards[1] = reward[chainId]
-          }
-        }
-      } else if (chainId === ChainId.MATIC || chainId === ChainId.ARBITRUM) {
-        if (pool.rewarder.rewardPerSecond !== '0') {
-          const rewardPerSecond =
-            pool.rewarder.totalAllocPoint === '0'
-              ? pool.rewarder.rewardPerSecond / 10 ** pool.rewardToken.decimals
-              : ((pool.allocPoint / pool.rewarder.totalAllocPoint) * pool.rewarder.rewardPerSecond) / 1e18
-          const rewardPerBlock = rewardPerSecond * averageBlockTime
-          const rewardPerDay = rewardPerBlock * blocksPerDay
-          const rewardPrice = pool.rewardToken.derivedETH * ethPrice
-
-          rewards[1] = {
-            currency: new Token(
-              chainId,
-              getAddress(pool.rewardToken.id),
-              Number(pool.rewardToken.decimals),
-              pool.rewardToken.symbol,
-              pool.rewardToken.name
-            ),
-            rewardPerBlock,
-            rewardPerDay,
-            rewardPrice,
-          }
-        }
-      } else if (pool.chef === Chef.OLD_FARMS) {
-        const sushiPerSecond = ((pool.allocPoint / pool.miniChef.totalAllocPoint) * pool.miniChef.sushiPerSecond) / 1e18
-        const sushiPerBlock = sushiPerSecond * averageBlockTime
-        const sushiPerDay = sushiPerBlock * blocksPerDay
-
-        const rewardPerSecond =
-          ((pool.allocPoint / pool.miniChef.totalAllocPoint) * pool.rewarder.rewardPerSecond) / 1e18
-
-        const rewardPerBlock = rewardPerSecond * averageBlockTime
-
-        const rewardPerDay = rewardPerBlock * blocksPerDay
-
-        const reward = {
           [ChainId.CELO]: {
             currency: NATIVE[ChainId.CELO],
             rewardPerBlock,
@@ -320,36 +124,36 @@ export default function useFarmRewards({ chainId = ChainId.ETHEREUM }) {
             rewardPrice: celoPrice,
           },
         }
-
+        // SYMM REWARDS
         // @ts-ignore TYPE NEEDS FIXING
         rewards[0] = {
           ...defaultReward,
-          rewardPerBlock: sushiPerBlock,
-          rewardPerDay: sushiPerDay,
+          rewardPerBlock: symmPerBlock,
+          rewardPerDay: symmPerDay,
         }
 
+        // Rewards from
         // @ts-ignore TYPE NEEDS FIXING
         if (chainId in reward) {
           // @ts-ignore TYPE NEEDS FIXING
           rewards[1] = reward[chainId]
         }
       }
-
       return rewards
     }
 
     const rewards = getRewards()
 
-    const balance = swapPair ? Number(pool.balance / 1e18) : pool.balance / 10 ** kashiPair.token0.decimals
+    // const balance = swapPair ? Number(pool.balance / 1e18) : pool.balance / 10 ** kashiPair.token0.decimals
+    const balance = swapSymmPair ? Number(pool.balance / 1e18) : pool.balance / 10
 
-    const tvl = swapPair
-      ? (balance / Number(swapPair.totalSupply)) * Number(swapPair.reserveUSD)
-      : balance * kashiPair.token0.derivedETH * ethPrice
+    const tvl = swapSymmPair.liquidity
 
-    const feeApyPerYear =
-      swapPair && swapPair1d
-        ? aprToApy((((pair?.volumeUSD - swapPair1d?.volumeUSD) * 0.0025 * 365) / pair?.reserveUSD) * 100, 3650) / 100
-        : 0
+    // const feeApyPerYear =
+    //   swapPair && swapPair1d
+    //     ? aprToApy((((pair?.volumeUSD - swapPair1d?.volumeUSD) * 0.0025 * 365) / pair?.reserveUSD) * 100, 3650) / 100
+    //     : 0
+    const feeApyPerYear = swapSymmPair.totalSwapVolume
 
     const feeApyPerMonth = feeApyPerYear / 12
     const feeApyPerDay = feeApyPerMonth / 30
@@ -403,9 +207,7 @@ export default function useFarmRewards({ chainId = ChainId.ETHEREUM }) {
     .filter((farm) => {
       return (
         // @ts-ignore TYPE NEEDS FIXING
-        (swapPairs && swapPairs.find((pair) => pair.id === farm.pair)) ||
-        // @ts-ignore TYPE NEEDS FIXING
-        (kashiPairs && kashiPairs.find((pair) => pair.id === farm.pair))
+        symmPairs && symmPairs.find((pair) => pair.id === farm.pair)
       )
     })
     .map(map)

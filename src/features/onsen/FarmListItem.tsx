@@ -18,8 +18,8 @@ interface FarmListItem {
 // @ts-ignore TYPE NEEDS FIXING
 const FarmListItem: FC<FarmListItem> = ({ farm, onClick }) => {
   const { i18n } = useLingui()
-  const token0 = useCurrency(farm.pair.token0.id) ?? undefined
-  const token1 = useCurrency(farm.pair.token1.id) ?? undefined
+  const token0 = useCurrency(farm.pair.tokens[0].id) ?? undefined
+  const token1 = useCurrency(farm.pair.tokens[1].id) ?? undefined
 
   return (
     <div className={classNames(TABLE_TBODY_TR_CLASSNAME, 'grid grid-cols-4')} onClick={onClick}>
@@ -27,13 +27,13 @@ const FarmListItem: FC<FarmListItem> = ({ farm, onClick }) => {
         {token0 && token1 && <CurrencyLogoArray currencies={[token0, token1]} dense size={32} />}
         <div className="flex flex-col items-start">
           <Typography weight={700} className="flex gap-1 text-high-emphesis">
-            {farm?.pair?.token0?.symbol}
+            {farm?.pair?.tokens[0]?.symbol}
             <span className="text-low-emphesis">/</span>
-            {farm?.pair?.token1?.symbol}
+            {farm?.pair?.tokens[1]?.symbol}
           </Typography>
           {farm?.pair?.type === PairType.SWAP && (
             <Typography variant="xs" className="text-low-emphesis">
-              {i18n._(t`SushiSwap Farm`)}
+              {i18n._(t`Symmetric Farm`)}
             </Typography>
           )}
           {farm?.pair?.type === PairType.KASHI && (

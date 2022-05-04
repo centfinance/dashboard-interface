@@ -16,7 +16,7 @@ import { TridentTransactionRawData, tridentTransactionsRawDataFormatter } from '
 import { pager } from './pager'
 
 // @ts-ignore TYPE NEEDS FIXING
-export const fetcher = async <T>(chainId = ChainId.ETHEREUM, query, variables: {} = undefined): Promise<T> => {
+export const fetcher = async <T>(chainId = ChainId.CELO, query, variables: {} = undefined): Promise<T> => {
   if (chainId === ChainId.KOVAN) {
     return pager(
       `https://api.thegraph.com/subgraphs/id/QmPoTrAgjC8f7kq5AU1cyknGvqZUQVjubdnH3idYP6EaP8`,

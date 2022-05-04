@@ -1,8 +1,8 @@
-import { BeakerIcon, GlobeIcon, SwitchVerticalIcon, TrendingUpIcon } from '@heroicons/react/outline'
+import { BeakerIcon, GlobeIcon, SwitchVerticalIcon } from '@heroicons/react/outline'
 import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
-import { ChainId, SUSHI_ADDRESS } from '@sushiswap/core-sdk'
-import { RocketIcon, WalletIcon } from 'app/components/Icon'
+import { SUSHI_ADDRESS } from '@sushiswap/core-sdk'
+import { WalletIcon } from 'app/components/Icon'
 import { Feature } from 'app/enums'
 import { featureEnabled } from 'app/functions'
 import { useActiveWeb3React } from 'app/services/web3'
@@ -121,25 +121,25 @@ const useMenu: UseMenu = () => {
           },
         ],
       })
-      menu.push({
-        key: 'Legacy',
-        title: i18n._(t`Legacy`),
-        icon: <SwitchVerticalIcon width={20} />,
-        items: liquidity.filter((item) => !item?.disabled),
-      })
-    } else {
-      menu.push({
-        key: 'trade',
-        title: i18n._(t`Trade`),
-        icon: <SwitchVerticalIcon width={20} />,
-        items: trade.filter((item) => !item?.disabled),
-      })
-      menu.push({
-        key: 'liquidity',
-        title: i18n._(t`Liquidity`),
-        icon: <BeakerIcon width={20} />,
-        items: liquidity.filter((item) => !item?.disabled),
-      })
+      //   menu.push({
+      //     key: 'Legacy',
+      //     title: i18n._(t`Legacy`),
+      //     icon: <SwitchVerticalIcon width={20} />,
+      //     items: liquidity.filter((item) => !item?.disabled),
+      //   })
+      // } else {
+      //   menu.push({
+      //     key: 'trade',
+      //     title: i18n._(t`Trade`),
+      //     icon: <SwitchVerticalIcon width={20} />,
+      //     items: trade.filter((item) => !item?.disabled),
+      //   })
+      //   menu.push({
+      //     key: 'liquidity',
+      //     title: i18n._(t`Liquidity`),
+      //     icon: <BeakerIcon width={20} />,
+      //     items: liquidity.filter((item) => !item?.disabled),
+      //   })
     }
 
     if (featureEnabled(Feature.LIQUIDITY_MINING, chainId)) {
@@ -163,50 +163,50 @@ const useMenu: UseMenu = () => {
       menu.push(farmItems)
     }
 
-    if (featureEnabled(Feature.KASHI, chainId)) {
-      menu.push({
-        key: 'kashi',
-        title: i18n._(t`Kashi`),
-        icon: <SwitchVerticalIcon width={20} className="rotate-90 filter" />,
-        items: [
-          {
-            key: 'lend',
-            title: i18n._(t`Lend`),
-            link: '/kashi?view=lend',
-          },
-          {
-            key: 'borrow',
-            title: i18n._(t`Borrow`),
-            link: '/kashi?view=borrow',
-          },
-        ],
-      })
-    }
+    // if (featureEnabled(Feature.KASHI, chainId)) {
+    //   menu.push({
+    //     key: 'kashi',
+    //     title: i18n._(t`Kashi`),
+    //     icon: <SwitchVerticalIcon width={20} className="rotate-90 filter" />,
+    //     items: [
+    //       {
+    //         key: 'lend',
+    //         title: i18n._(t`Lend`),
+    //         link: '/kashi?view=lend',
+    //       },
+    //       {
+    //         key: 'borrow',
+    //         title: i18n._(t`Borrow`),
+    //         link: '/kashi?view=borrow',
+    //       },
+    //     ],
+    //   })
+    // }
 
-    if (featureEnabled(Feature.MISO, chainId)) {
-      const misoMenu = {
-        key: 'miso',
-        title: i18n._(t`MISO`),
-        icon: <RocketIcon width={20} />,
-        items: [
-          {
-            key: 'marketplace',
-            title: i18n._(t`Marketplace`),
-            link: '/miso',
-          },
-        ],
-      }
+    // if (featureEnabled(Feature.MISO, chainId)) {
+    //   const misoMenu = {
+    //     key: 'miso',
+    //     title: i18n._(t`MISO`),
+    //     icon: <RocketIcon width={20} />,
+    //     items: [
+    //       {
+    //         key: 'marketplace',
+    //         title: i18n._(t`Marketplace`),
+    //         link: '/miso',
+    //       },
+    //     ],
+    //   }
 
-      if (chainId !== ChainId.ETHEREUM) {
-        misoMenu.items.push({
-          key: 'launchpad',
-          title: i18n._(t`Launchpad`),
-          link: '/miso/auction',
-        })
-      }
+    //   if (chainId !== ChainId.ETHEREUM) {
+    //     misoMenu.items.push({
+    //       key: 'launchpad',
+    //       title: i18n._(t`Launchpad`),
+    //       link: '/miso/auction',
+    //     })
+    //   }
 
-      menu.push(misoMenu)
-    }
+    //   menu.push(misoMenu)
+    // }
 
     const exploreMenu: MenuItemLeaf[] = []
 
@@ -243,53 +243,53 @@ const useMenu: UseMenu = () => {
       })
     }
 
-    let analyticsMenu: MenuItem = {
-      key: 'analytics',
-      title: i18n._(t`Analytics`),
-      icon: <TrendingUpIcon width={20} />,
-      items: [
-        {
-          key: 'dashboard',
-          title: 'Dashboard',
-          link: `/analytics/${chainId}/dashboard`,
-        },
-        {
-          key: 'xsushi',
-          title: 'xSUSHI',
-          link: '/analytics/xsushi',
-        },
-        {
-          key: 'tokens',
-          title: 'Tokens',
-          link: `/analytics/${chainId}/tokens`,
-        },
-        {
-          key: 'pairs',
-          title: 'Pairs',
-          link: `/analytics/${chainId}/pairs`,
-        },
-      ],
-    }
+    // let analyticsMenu: MenuItem = {
+    //   key: 'analytics',
+    //   title: i18n._(t`Analytics`),
+    //   icon: <TrendingUpIcon width={20} />,
+    //   items: [
+    //     {
+    //       key: 'dashboard',
+    //       title: 'Dashboard',
+    //       link: `/analytics/${chainId}/dashboard`,
+    //     },
+    //     {
+    //       key: 'xsushi',
+    //       title: 'xSUSHI',
+    //       link: '/analytics/xsushi',
+    //     },
+    //     {
+    //       key: 'tokens',
+    //       title: 'Tokens',
+    //       link: `/analytics/${chainId}/tokens`,
+    //     },
+    //     {
+    //       key: 'pairs',
+    //       title: 'Pairs',
+    //       link: `/analytics/${chainId}/pairs`,
+    //     },
+    //   ],
+    // }
 
-    if (featureEnabled(Feature.BENTOBOX, chainId)) {
-      analyticsMenu.items.push({
-        key: 'farms',
-        title: 'Farms',
-        link: `/analytics/${chainId}/farms`,
-      })
-    }
+    // if (featureEnabled(Feature.BENTOBOX, chainId)) {
+    //   analyticsMenu.items.push({
+    //     key: 'farms',
+    //     title: 'Farms',
+    //     link: `/analytics/${chainId}/farms`,
+    //   })
+    // }
 
-    if (featureEnabled(Feature.BENTOBOX, chainId)) {
-      analyticsMenu.items.push({
-        key: 'bentobox',
-        title: 'Bentobox',
-        link: `/analytics/${chainId}/bentobox`,
-      })
-    }
+    // if (featureEnabled(Feature.BENTOBOX, chainId)) {
+    //   analyticsMenu.items.push({
+    //     key: 'bentobox',
+    //     title: 'Bentobox',
+    //     link: `/analytics/${chainId}/bentobox`,
+    //   })
+    // }
 
-    if (featureEnabled(Feature.ANALYTICS, chainId)) {
-      menu.push(analyticsMenu)
-    }
+    // if (featureEnabled(Feature.ANALYTICS, chainId)) {
+    //   menu.push(analyticsMenu)
+    // }
 
     if (account) {
       menu.push({

@@ -19,7 +19,7 @@ export const MINICHEF = {
   [ChainId.XDAI]: 'sushiswap/xdai-minichef',
   [ChainId.HARMONY]: 'sushiswap/harmony-minichef',
   [ChainId.ARBITRUM]: 'jiro-ono/arbitrum-minichef-staging',
-  [ChainId.CELO]: 'sushiswap/celo-minichef-v2',
+  [ChainId.CELO]: 'centfinance/celo-minichef',
   [ChainId.MOONRIVER]: 'sushiswap/moonriver-minichef',
   [ChainId.FUSE]: 'sushiswap/fuse-minichef',
   [ChainId.FANTOM]: 'sushiswap/fantom-minichef',
@@ -27,7 +27,7 @@ export const MINICHEF = {
 }
 
 export const OLD_MINICHEF = {
-  [ChainId.CELO]: 'sushiswap/celo-minichef',
+  [ChainId.CELO]: 'centfinance/celo-minichef',
 }
 
 // @ts-ignore TYPE NEEDS FIXING

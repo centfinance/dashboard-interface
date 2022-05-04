@@ -7,6 +7,7 @@ import {
   liquidityPositionsQuery,
   pairDayDatasQuery,
   pairsQuery,
+  pairsSymmQuery,
   tokenDayDatasQuery,
   tokenPairsQuery,
   tokenPriceQuery,
@@ -27,6 +28,7 @@ export const EXCHANGE = {
   [ChainId.HARMONY]: 'sushiswap/harmony-exchange',
   [ChainId.AVALANCHE]: 'sushiswap/avalanche-exchange',
   [ChainId.CELO]: 'jiro-ono/sushitestsubgraph',
+  // [ChainId.CELO]: 'centfinance/symmetricv1celo',
   [ChainId.ARBITRUM]: 'sushiswap/arbitrum-exchange',
   [ChainId.MOONRIVER]: 'sushiswap/moonriver-exchange',
   [ChainId.OKEX]: 'okex-exchange/oec',
@@ -40,14 +42,25 @@ export const exchange = async (chainId = ChainId.ETHEREUM, query, variables = {}
   // @ts-ignore TYPE NEEDS FIXING
   pager(`${GRAPH_HOST[chainId]}/subgraphs/name/${EXCHANGE[chainId]}`, query, variables)
 
+// @ts-ignore TYPE NEEDS FIXING
+export const exchangeSymm = async (chainId = ChainId.ETHEREUM, query) =>
+  // @ts-ignore TYPE NEEDS FIXING
+  pager(`${GRAPH_HOST[chainId]}/subgraphs/name/centfinance/symmetricv1celo`, query)
+
 export const getPairs = async (chainId = ChainId.ETHEREUM, variables = undefined, query = pairsQuery) => {
   const { pairs } = await exchange(chainId, query, variables)
   return pairs
 }
+export const getSymmPairs = async (chainId = ChainId.ETHEREUM, variables = undefined, query = pairsSymmQuery) => {
+  const { pools } = await exchangeSymm(chainId, pairsSymmQuery)
+  console.log('GOT getSymmPairs PAIRS')
+  console.log(pools)
+  return pools
+}
 
 // @ts-ignore TYPE NEEDS FIXING
 export const getPairDayData = async (chainId = ChainId.ETHEREUM, variables) => {
-  // console.log('getTokens')
+  console.log('getTokens')
   const { pairDayDatas } = await exchange(chainId, pairDayDatasQuery, variables)
   return pairDayDatas
 }
@@ -61,7 +74,7 @@ export const getTokenSubset = async (chainId = ChainId.ETHEREUM, variables) => {
 
 // @ts-ignore TYPE NEEDS FIXING
 export const getTokens = async (chainId = ChainId.ETHEREUM, variables) => {
-  // console.log('getTokens')
+  console.log('getTokens')
   const { tokens } = await exchange(chainId, tokensQuery, variables)
   return tokens
 }
@@ -183,6 +196,18 @@ export const getSushiPrice = async (variables = {}) => {
 export const getGnoPrice = async () => {
   return getTokenPrice(ChainId.XDAI, tokenPriceQuery, {
     id: '0x9c58bacc331c9aa871afd802db6379a98e80cedb',
+  })
+}
+
+export const getSymmPriceXdai = async () => {
+  return getTokenPrice(ChainId.XDAI, tokenPriceQuery, {
+    id: '0xC45b3C1c24d5F54E7a2cF288ac668c74Dd507a84',
+  })
+}
+
+export const getSymmPriceCelo = async () => {
+  return getTokenPrice(ChainId.XDAI, tokenPriceQuery, {
+    id: '0x8427bD503dd3169cCC9aFF7326c15258Bc305478',
   })
 }
 

@@ -29,6 +29,8 @@ import {
   getRulerPrice,
   getSpellPrice,
   getSushiPrice,
+  getSymmPairs,
+  getSymmPriceCelo,
   getTokenDayData,
   getTokenPairs,
   getTokens,
@@ -80,6 +82,14 @@ export function useGnoPrice(swrConfig: SWRConfiguration = undefined) {
   const { chainId } = useActiveWeb3React()
   const shouldFetch = chainId && chainId === ChainId.XDAI
   const { data } = useSWR(shouldFetch ? 'gnoPrice' : null, () => getGnoPrice(), swrConfig)
+  return data
+}
+
+// @ts-ignore TYPE NEEDS FIXING
+export function useSymmPriceCelo(swrConfig: SWRConfiguration = undefined) {
+  const { chainId } = useActiveWeb3React()
+  const shouldFetch = chainId && chainId === ChainId.XDAI
+  const { data } = useSWR(shouldFetch ? 'symmPriceCelo' : null, () => getSymmPriceCelo(), swrConfig)
   return data
 }
 
@@ -242,7 +252,7 @@ export function useLiquidityPositions({
   )
   return data
 }
-
+// TODO: Need to tweak here for fetching pairs
 export function useSushiPairs({
   chainId = ChainId.ETHEREUM,
   variables,
@@ -255,6 +265,25 @@ export function useSushiPairs({
     (_, chainId) => getPairs(chainId, variables),
     swrConfig
   )
+  console.log('useSushiPairs - exchange')
+  console.log(data)
+  return data
+}
+
+export function useSymmPairs({
+  chainId = ChainId.ETHEREUM,
+  variables,
+  shouldFetch = true,
+  swrConfig = undefined,
+}: GraphProps) {
+  const { data } = useSWR(
+    shouldFetch ? ['symmPairs', chainId, stringify(variables)] : null,
+    // @ts-ignore TYPE NEEDS FIXING
+    (_, chainId) => getSymmPairs(chainId),
+    swrConfig
+  )
+  console.log('useSymmPairs - exchange')
+  console.log(data)
   return data
 }
 

@@ -126,7 +126,7 @@ const OpenOrders: FC = () => {
                   Funds will be received in your{' '}
                   <Link href={`/account/${account}`} passHref={true}>
                     <Typography variant="xs" className="text-blue" component="span">
-                      BentoBox
+                      Balance
                     </Typography>
                   </Link>{' '}
                   after order execution

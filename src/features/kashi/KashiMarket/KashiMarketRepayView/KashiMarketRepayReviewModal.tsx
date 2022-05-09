@@ -88,7 +88,7 @@ export const KashiMarketRepayReviewModal: FC<KashiMarketRepayReviewModal> = ({
               <Typography variant="sm">
                 {i18n._(
                   t`You will be closing this position by swapping your collateral for your borrowed debt. Any collateral remainder will be sent to your ${
-                    removeToWallet ? 'wallet' : 'BentoBox'
+                    removeToWallet ? 'wallet' : 'Balance'
                   }`
                 )}
               </Typography>

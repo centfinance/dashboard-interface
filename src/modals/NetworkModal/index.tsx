@@ -222,24 +222,7 @@ const NetworkModal: FC = () => {
       <div className="flex flex-col gap-4">
         <HeadlessUiModal.Header header={i18n._(t`Select a network`)} onClose={toggleNetworkModal} />
         <div className="grid grid-flow-row-dense grid-cols-1 gap-4 overflow-y-auto md:grid-cols-2">
-          {[
-            ChainId.ETHEREUM,
-            ChainId.MATIC,
-            ChainId.ARBITRUM,
-            ChainId.AVALANCHE,
-            ChainId.MOONBEAM,
-            ChainId.MOONRIVER,
-            ChainId.FANTOM,
-            ChainId.BSC,
-            ChainId.XDAI,
-            ChainId.HARMONY,
-            ChainId.TELOS,
-            ChainId.CELO,
-            ChainId.FUSE,
-            ChainId.OKEX,
-            ChainId.HECO,
-            ChainId.PALM,
-          ]
+          {[ChainId.XDAI, ChainId.CELO]
             .sort((key) => (chainId === key ? -1 : 0))
             .map((key: number, i: number) => {
               if (chainId === key) {

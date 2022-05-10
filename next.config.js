@@ -36,9 +36,6 @@ const nextConfig = {
 
     return config
   },
-  experimental: {
-    nextScriptWorkers: true,
-  },
   poweredByHeader: false,
   productionBrowserSourceMaps: false,
   swcMinify: false,

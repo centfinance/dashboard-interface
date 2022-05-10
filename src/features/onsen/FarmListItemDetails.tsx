@@ -8,12 +8,10 @@ import { classNames } from 'app/functions'
 import { useAppDispatch, useAppSelector } from 'app/state/hooks'
 import React, { createContext, ReactNode, useContext, useMemo, useState } from 'react'
 
-import { OnsenModalView, PairType } from './enum'
+import { OnsenModalView } from './enum'
 import InformationDisclosure from './InformationDisclosure'
 import InvestmentDetails from './InvestmentDetails'
 import ManageBar from './ManageBar'
-import ManageKashiPair from './ManageKashiPair'
-import ManageSwapPair from './ManageSwapPair'
 
 const COLUMN_CONTAINER = 'flex flex-col flex-grow gap-4'
 
@@ -55,9 +53,9 @@ const FarmListItemDetails = ({ farm, onDismiss }) => {
             onChange={(view: OnsenModalView) => dispatch(setOnsenModalView(view))}
             variant="filled"
           >
-            <ToggleButtonGroup.Button value={OnsenModalView.Liquidity}>
+            {/* <ToggleButtonGroup.Button value={OnsenModalView.Liquidity}>
               {farm.pair.type === PairType.KASHI ? i18n._(t`Lending`) : i18n._(t`Liquidity`)}
-            </ToggleButtonGroup.Button>
+            </ToggleButtonGroup.Button> */}
             <ToggleButtonGroup.Button value={OnsenModalView.Staking}>{i18n._(t`Staking`)}</ToggleButtonGroup.Button>
             <ToggleButtonGroup.Button value={OnsenModalView.Position}>{i18n._(t`Rewards`)}</ToggleButtonGroup.Button>
           </ToggleButtonGroup>
@@ -66,9 +64,9 @@ const FarmListItemDetails = ({ farm, onDismiss }) => {
           <div className={classNames(COLUMN_CONTAINER, view === OnsenModalView.Position ? 'block' : 'hidden')}>
             <InvestmentDetails farm={farm} />
           </div>
-          <div className={classNames(COLUMN_CONTAINER, view === OnsenModalView.Liquidity ? 'block' : 'hidden')}>
+          {/* <div className={classNames(COLUMN_CONTAINER, view === OnsenModalView.Liquidity ? 'block' : 'hidden')}>
             {farm.pair.type === PairType.KASHI ? <ManageKashiPair farm={farm} /> : <ManageSwapPair farm={farm} />}
-          </div>
+          </div> */}
           <div className={classNames(COLUMN_CONTAINER, view === OnsenModalView.Staking ? 'block' : 'hidden')}>
             <ManageBar farm={farm} />
           </div>

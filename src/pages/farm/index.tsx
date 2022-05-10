@@ -60,7 +60,7 @@ export default function Farm(): JSX.Element {
 
   return (
     <>
-      <NextSeo title="Farm" description="Farm SUSHI" />
+      <NextSeo title="Farm" description="Farm SYMMETRIC" />
       <TridentBody>
         <div className="flex flex-col w-full gap-6">
           <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">

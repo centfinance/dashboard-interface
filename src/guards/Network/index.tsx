@@ -24,7 +24,7 @@ const Component: FC<NetworkGuardProps> = ({ children, feature, asModal = true })
   const { chainId, library, account } = useActiveWeb3React()
 
   const link = (
-    <NavLink href="/swap">
+    <NavLink href="/farm">
       <a className="text-blue focus:outline-none">{i18n._(t`home page`)}</a>
     </NavLink>
   )
@@ -39,8 +39,8 @@ const Component: FC<NetworkGuardProps> = ({ children, feature, asModal = true })
 
   const content = (
     <div className="flex justify-center lg:mt-[200px]">
-      <div className="flex flex-col gap-5 justify-center p-4 mt-10 lg:mt-0">
-        <Typography variant="h1" className="max-w-2xl text-white text-center" weight={700}>
+      <div className="flex flex-col justify-center gap-5 p-4 mt-10 lg:mt-0">
+        <Typography variant="h1" className="max-w-2xl text-center text-white" weight={700}>
           {/*@ts-ignore TYPE NEEDS FIXING*/}
           {i18n._(t`This feature is not yet supported on the ${NETWORK_LABEL[chainId]} network`)}
         </Typography>
@@ -54,7 +54,7 @@ const Component: FC<NetworkGuardProps> = ({ children, feature, asModal = true })
         <div className="grid grid-cols-[repeat(2,_100px)] md:grid-cols-[repeat(4,_100px)] gap-y-10 justify-center">
           {supportedNetworks.map((key: string, idx: number) => (
             <button
-              className="text-primary hover:text-white flex items-center flex-col gap-2 justify-center"
+              className="flex flex-col items-center justify-center gap-2 text-primary hover:text-white"
               key={idx}
               onClick={() => {
                 // @ts-ignore TYPE NEEDS FIXING

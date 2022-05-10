@@ -4,7 +4,6 @@ import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
 import { ChainId, CurrencyAmount, JSBI, Token, USD, ZERO } from '@sushiswap/core-sdk'
 import Button from 'app/components/Button'
-import { CurrencyLogo } from 'app/components/CurrencyLogo'
 import { HeadlessUiModal } from 'app/components/Modal'
 import Typography from 'app/components/Typography'
 import { useKashiPair } from 'app/features/kashi/hooks'
@@ -16,7 +15,7 @@ import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 
 import { PairType } from './enum'
-import { usePendingSushi, useUserInfo } from './hooks'
+import { usePendingSymm, useUserInfo } from './hooks'
 import useMasterChef from './useMasterChef'
 import usePendingReward from './usePendingReward'
 
@@ -34,25 +33,34 @@ const RewardRow = ({ value, symbol }) => {
 
 // @ts-ignore TYPE NEEDS FIXING
 const InvestmentDetails = ({ farm }) => {
+  console.log('Investment Details')
+  console.log(farm)
   const { i18n } = useLingui()
   const { chainId } = useActiveWeb3React()
+  console.log(chainId)
   const { harvest } = useMasterChef(farm.chef)
+  console.log(harvest)
   const router = useRouter()
   const addTransaction = useTransactionAdder()
+
   const kashiPair = useKashiPair(farm.pair.id)
   const [pendingTx, setPendingTx] = useState(false)
-  const token0 = useCurrency(farm.pair.token0.id)
-  const token1 = useCurrency(farm.pair.token1.id)
 
+  const token0 = farm.pair.tokens[0]
+  useCurrency(token0.id)
+  const token1 = farm.pair.tokens[0]
+  useCurrency(token1.id)
+  console.log('GETTING LIQUIDITY TOKEN')
   const liquidityToken = new Token(
     // @ts-ignore TYPE NEEDS FIXING
     chainId,
     getAddress(farm.pair.id),
-    farm.pair.type === PairType.KASHI ? Number(farm.pair.asset.decimals) : 18,
-    farm.pair.symbol ?? farm.pair.type === PairType.KASHI ? 'KMP' : 'SLP',
-    farm.pair.name
+    18,
+    'CPT',
+    farm.pair.name // Need to build a name from token symbols
   )
-
+  console.log('LIQUIDITY TOKEN')
+  console.log(liquidityToken)
   const stakedAmount = useUserInfo(farm, liquidityToken)
 
   const kashiAssetAmount =
@@ -69,7 +77,7 @@ const InvestmentDetails = ({ farm }) => {
       kashiPair.asset
     )
 
-  const pendingSushi = usePendingSushi(farm)
+  const pendingSushi = usePendingSymm(farm)
   const pendingReward = usePendingReward(farm)
 
   const positionFiatValue = CurrencyAmount.fromRawAmount(
@@ -116,7 +124,7 @@ const InvestmentDetails = ({ farm }) => {
             {i18n._(t`Your Deposits`)}
           </Typography>
           <Typography variant="xs" className="flex gap-1 text-secondary">
-            {formatNumber(stakedAmount?.toSignificant(6) ?? 0)} {farm.pair.token0.symbol}-{farm.pair.token1.symbol}
+            {formatNumber(stakedAmount?.toSignificant(6) ?? 0)} {token0.symbol}-{token1.symbol}
             <Typography variant="xs" weight={700} className="text-high-emphesis" component="span">
               {formatNumber(positionFiatValue?.toSignificant(6) ?? 0, true)}
             </Typography>
@@ -125,7 +133,7 @@ const InvestmentDetails = ({ farm }) => {
         {[PairType.KASHI, PairType.SWAP].includes(farm.pair.type) && (
           <div className="flex items-center gap-2">
             {/*@ts-ignore TYPE NEEDS FIXING*/}
-            {token0 && <CurrencyLogo currency={token0} size={18} />}
+            {/* {token0 && <CurrencyLogo currency={token0} size={18} />} */}
             {farm.pair.type === PairType.KASHI && (
               <RewardRow
                 symbol={token0?.symbol}
@@ -145,11 +153,11 @@ const InvestmentDetails = ({ farm }) => {
         )}
         {farm.pair.type === PairType.SWAP && (
           <div className="flex items-center gap-2">
-            {token1 && <CurrencyLogo currency={token1} size={18} />}
-            <RewardRow
+            {/* {token1 && <CurrencyLogo currency={token1.id} size={18} />} */}
+            {/* <RewardRow
               value={formatNumber((farm.pair.reserve1 * Number(stakedAmount?.toExact() ?? 0)) / farm.pair.totalSupply)}
               symbol={token1?.symbol}
-            />
+            /> */}
           </div>
         )}
       </HeadlessUiModal.BorderedContent>
@@ -167,7 +175,7 @@ const InvestmentDetails = ({ farm }) => {
         {farm?.rewards?.map((reward, i) => {
           return (
             <div className="flex items-center gap-2" key={i}>
-              <CurrencyLogo currency={reward.currency} size={18} />
+              {/* <CurrencyLogo currency={reward.currency} size={18} /> */}
               {!secondaryRewardOnly ? (
                 <>
                   {i === 0 && (

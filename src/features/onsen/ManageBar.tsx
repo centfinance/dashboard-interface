@@ -58,7 +58,7 @@ const ManageBar = ({ farm }) => {
     chainId || 1,
     getAddress(farm.pair.id),
     farm.pair.type === PairType.KASHI ? Number(farm.pair.asset.decimals) : 18,
-    farm.pair.type === PairType.KASHI ? 'KMP' : 'SLP'
+    farm.pair.type === PairType.KASHI ? 'KMP' : 'CPT'
   )
   const balance = useCurrencyBalance(account ?? undefined, liquidityToken)
   const stakedAmount = useUserInfo(farm, liquidityToken)

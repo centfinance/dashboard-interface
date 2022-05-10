@@ -28,8 +28,13 @@ const Mobile: FC = () => {
             <MenuIcon width={28} className="text-white cursor-pointer hover:text-white" onClick={() => setOpen(true)} />
           </div>
           <div className="flex items-center w-6 mr-1">
-            <Link href="/swap" passHref={true}>
-              <Image src="https://app.sushi.com/images/logo.svg" alt="Sushi logo" width="24px" height="24px" />
+            <Link href="/farm" passHref={true}>
+              <Image
+                src="https://celo-pools.symmetric.exchange/img/symmetricIcon.ad634ddf.svg"
+                alt="Symmetric logo"
+                width="24px"
+                height="24px"
+              />
             </Link>
           </div>
         </div>

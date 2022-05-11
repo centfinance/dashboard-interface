@@ -39,7 +39,7 @@ const nextConfig = {
   poweredByHeader: false,
   productionBrowserSourceMaps: false,
   swcMinify: false,
-  reactStrictMode: true,
+  reactStrictMode: false,
   pwa: {
     dest: 'public',
     runtimeCaching,

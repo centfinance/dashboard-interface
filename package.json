@@ -85,6 +85,7 @@
     "@sushiswap/miso": "1.0.0-canary.45",
     "@sushiswap/miso-sdk": "1.0.0-canary.65",
     "@sushiswap/sdk": "^5.0.0-canary.109",
+    "@symmetric-v2/farming-core-sdk": "^1.0.0",
     "@sushiswap/tines": "1.0.0-canary.73",
     "@sushiswap/trident": "^1.0.0-canary.36",
     "@sushiswap/trident-sdk": "1.0.0-canary.100",
@@ -219,8 +220,5 @@
     "not ie 11",
     "not dead",
     "not op_mini all"
-  ],
-  "dependencies": {
-    "@symmetric-v2/farming-core-sdk": "^1.0.0"
-  }
+  ]
 }

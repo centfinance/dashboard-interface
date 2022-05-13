@@ -26,7 +26,7 @@ const InformationDisclosure = ({ farm }) => {
               {` `}
               <NavLink href={`/add/${token0.id}/${token1.id}`}>
                 <a className="text-sm text-blue">
-                  {token0.symbol}/{farm.pair.token1.symbol}
+                  {token0.symbol}/{token1.symbol}
                 </a>
               </NavLink>
               {` `}

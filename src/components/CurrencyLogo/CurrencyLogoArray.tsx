@@ -1,4 +1,4 @@
-import { Currency, Token } from '@sushiswap/core-sdk'
+import { Currency, Token } from '@symmetric-v2/farming-core-sdk'
 import React, { FC } from 'react'
 
 import Typography from '../Typography'

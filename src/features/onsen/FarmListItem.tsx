@@ -82,9 +82,9 @@ const FarmListItem: FC<FarmListItem> = ({ farm, onClick }) => {
                         : formatPercent(farm?.rewardAprPerYear * 100)
                       : 'Infinite'}
                   </div>
-                  <div>
+                  {/* <div>
                     Fee APR: {farm?.feeApyPerYear < 10000 ? formatPercent(farm?.feeApyPerYear * 100) : '>10,000%'}
-                  </div>
+                  </div> */}
                 </div>
               }
             />

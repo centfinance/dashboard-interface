@@ -169,12 +169,13 @@ export default function useFarmRewards({ chainId = ChainId.ETHEREUM }) {
     const rewardAprPerHour = roiPerBlock * blocksPerHour
     const rewardAprPerDay = rewardAprPerHour * 24
     const rewardAprPerMonth = rewardAprPerDay * 30
-    const rewardAprPerYear = rewardAprPerMonth * 12
+    const rewardAprPerYear = (symmPriceCelo * rewards[0].rewardPerDay * 365) / tvl
+    // console.log('rewardAprPerYear', rewardAprPerYear, symmPriceCelo, rewards, tvl)
 
     const roiPerHour = rewardAprPerHour + feeApyPerHour
     const roiPerMonth = rewardAprPerMonth + feeApyPerMonth
     const roiPerDay = rewardAprPerDay + feeApyPerDay
-    const roiPerYear = rewardAprPerYear + feeApyPerYear
+    const roiPerYear = rewardAprPerYear
 
     const position = positions.find((position) => position.id === pool.id && position.chef === pool.chef)
 

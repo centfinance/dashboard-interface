@@ -62,6 +62,8 @@ export default function useFarmRewards({ chainId = ChainId.ETHEREUM }) {
 
   const blocksPerDay = 86400 / Number(averageBlockTime)
 
+  // console.log('symm price for farm rewards', symmPriceCelo)
+
   // @ts-ignore TYPE NEEDS FIXING
   const map = (pool) => {
     console.log('MAPPING POOLS HERE')

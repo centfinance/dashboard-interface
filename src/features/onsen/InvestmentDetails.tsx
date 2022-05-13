@@ -48,7 +48,7 @@ const InvestmentDetails = ({ farm }) => {
 
   const token0 = farm.pair.tokens[0]
   useCurrency(token0.id)
-  const token1 = farm.pair.tokens[0]
+  const token1 = farm.pair.tokens[1]
   useCurrency(token1.id)
   console.log('GETTING LIQUIDITY TOKEN')
   const liquidityToken = new Token(

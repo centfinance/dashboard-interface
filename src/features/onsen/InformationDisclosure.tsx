@@ -10,7 +10,8 @@ import { PairType } from './enum'
 // @ts-ignore TYPE NEEDS FIXING
 const InformationDisclosure = ({ farm }) => {
   const { i18n } = useLingui()
-
+  const token0 = farm.pair.tokens[0]
+  const token1 = farm.pair.tokens[1]
   return (
     <div className="flex flex-col gap-6 p-2">
       <HeadlessUiModal.Header header={i18n._(t`How to participate?`)} />
@@ -23,9 +24,9 @@ const InformationDisclosure = ({ farm }) => {
             <Typography variant="xs">
               {i18n._(t`Provide liquidity to the`)}
               {` `}
-              <NavLink href={`/add/${farm.pair.token0.id}/${farm.pair.token1.id}`}>
+              <NavLink href={`/add/${token0.id}/${token1.id}`}>
                 <a className="text-sm text-blue">
-                  {farm.pair.token0.symbol}/{farm.pair.token1.symbol}
+                  {token0.symbol}/{token1.symbol}
                 </a>
               </NavLink>
               {` `}
@@ -66,7 +67,7 @@ const InformationDisclosure = ({ farm }) => {
           <Typography variant="xs">
             {i18n._(t`Harvest rewards and unstake your KMP tokens at any time. You can then withdraw your lent`)}
             {` `}
-            {farm.pair.token0.symbol}
+            {token0.symbol}
             {` `}
             {i18n._(t`into your wallet or BentoBox.`)}
           </Typography>

@@ -1,4 +1,4 @@
-import { ChainId, Currency, WNATIVE } from '@sushiswap/core-sdk'
+import { ChainId, Currency, WNATIVE } from '@symmetric-v2/farming-core-sdk'
 import useHttpLocations from 'app/hooks/useHttpLocations'
 import { WrappedTokenInfo } from 'app/state/lists/wrappedTokenInfo'
 import React, { FunctionComponent, useMemo } from 'react'
@@ -101,6 +101,7 @@ const LOGO: Record<ChainId, string> = {
   [ChainId.TELOS]: TelosLogo,
   [ChainId.HARDHAT]: EthereumLogo,
   [ChainId.MOONBEAM]: MoonbeamLogo,
+  [ChainId.OPTIMISM]: TelosLogo,
 }
 
 export interface CurrencyLogoProps {

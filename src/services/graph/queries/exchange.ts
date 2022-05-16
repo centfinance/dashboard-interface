@@ -63,6 +63,20 @@ export const tokenPriceQuery = gql`
   }
 `
 
+export const tokenSYMMPriceQuery = gql`
+  query {
+    tokenPrices(first: 1, where: { id: "0x8427bd503dd3169ccc9aff7326c15258bc305478" }) {
+      id
+      symbol
+      name
+      decimals
+      price
+      poolLiquidity
+      poolTokenId
+    }
+  }
+`
+
 export const dayDataFieldsQuery = gql`
   fragment dayDataFields on DayData {
     id

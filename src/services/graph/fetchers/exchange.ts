@@ -14,6 +14,7 @@ import {
   tokenQuery,
   tokensQuery,
   tokenSubsetQuery,
+  tokenSYMMPriceQuery,
   transactionsQuery,
 } from 'app/services/graph/queries'
 
@@ -108,6 +109,13 @@ export const getTokenPrice = async (chainId = ChainId.ETHEREUM, query, variables
 
   const { token } = await exchange(chainId, query, variables)
   return token?.derivedETH * nativePrice
+}
+
+// @ts-ignore TYPE NEEDS FIXING
+export const getSYMMPrice = async (chainId = ChainId.ETHEREUM, query) => {
+  const { tokenPrices } = await exchangeSymm(chainId, query)
+  // console.log('getSYMMPrice', tokenPrices)
+  return tokenPrices[0]?.price
 }
 
 export const getNativePrice = async (chainId = ChainId.ETHEREUM, variables = undefined) => {
@@ -206,9 +214,7 @@ export const getSymmPriceXdai = async () => {
 }
 
 export const getSymmPriceCelo = async () => {
-  return getTokenPrice(ChainId.XDAI, tokenPriceQuery, {
-    id: '0x8427bD503dd3169cCC9aFF7326c15258Bc305478',
-  })
+  return getSYMMPrice(ChainId.CELO, tokenSYMMPriceQuery)
 }
 
 export const getOnePrice = async (variables = undefined) => {

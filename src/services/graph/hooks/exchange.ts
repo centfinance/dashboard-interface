@@ -88,8 +88,9 @@ export function useGnoPrice(swrConfig: SWRConfiguration = undefined) {
 // @ts-ignore TYPE NEEDS FIXING
 export function useSymmPriceCelo(swrConfig: SWRConfiguration = undefined) {
   const { chainId } = useActiveWeb3React()
-  const shouldFetch = chainId && chainId === ChainId.XDAI
+  const shouldFetch = chainId && chainId === ChainId.CELO
   const { data } = useSWR(shouldFetch ? 'symmPriceCelo' : null, () => getSymmPriceCelo(), swrConfig)
+  // console.log('useSymmPriceCelo', data)
   return data
 }
 

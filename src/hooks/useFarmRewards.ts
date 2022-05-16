@@ -62,6 +62,8 @@ export default function useFarmRewards({ chainId = ChainId.ETHEREUM }) {
 
   const blocksPerDay = 86400 / Number(averageBlockTime)
 
+  // console.log('symm price for farm rewards', symmPriceCelo)
+
   // @ts-ignore TYPE NEEDS FIXING
   const map = (pool) => {
     console.log('MAPPING POOLS HERE')
@@ -167,12 +169,15 @@ export default function useFarmRewards({ chainId = ChainId.ETHEREUM }) {
     const rewardAprPerHour = roiPerBlock * blocksPerHour
     const rewardAprPerDay = rewardAprPerHour * 24
     const rewardAprPerMonth = rewardAprPerDay * 30
-    const rewardAprPerYear = rewardAprPerMonth * 12
+    const rewardAprPerYear = (symmPriceCelo * rewards[0].rewardPerDay * 365) / tvl
+    const tokenRewardAprPerYear = (rewards[1]?.rewardPrice * rewards[1]?.rewardPerDay * 365) / tvl
+    // console.log('rewardAprPerYear', rewardAprPerYear, symmPriceCelo, rewards, tvl)
 
     const roiPerHour = rewardAprPerHour + feeApyPerHour
     const roiPerMonth = rewardAprPerMonth + feeApyPerMonth
     const roiPerDay = rewardAprPerDay + feeApyPerDay
-    const roiPerYear = rewardAprPerYear + feeApyPerYear
+    const roiPerYear = rewardAprPerYear
+    const tokenRoiPerYear = tokenRewardAprPerYear
 
     const position = positions.find((position) => position.id === pool.id && position.chef === pool.chef)
 
@@ -193,11 +198,13 @@ export default function useFarmRewards({ chainId = ChainId.ETHEREUM }) {
       rewardAprPerDay,
       rewardAprPerMonth,
       rewardAprPerYear,
+      tokenRewardAprPerYear,
       roiPerBlock,
       roiPerHour,
       roiPerDay,
       roiPerMonth,
       roiPerYear,
+      tokenRoiPerYear,
       rewards,
       tvl,
     }

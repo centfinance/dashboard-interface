@@ -90,8 +90,9 @@ const FarmListItem: FC<FarmListItem> = ({ farm, onClick }) => {
             />
           )}
         </Typography>
-        <Typography variant="xs" className="text-low-emphesis">
-          {i18n._(t`annualized`)}
+        <Typography weight={700} className="flex gap-0.5 items-center text-high-emphesis">
+          {/* {i18n._(t`annualized`)} */}
+          {formatPercent(farm?.tokenRoiPerYear * 100)}
         </Typography>
       </div>
     </div>

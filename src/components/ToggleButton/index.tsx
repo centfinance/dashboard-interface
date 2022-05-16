@@ -70,7 +70,7 @@ ToggleButtonGroup.Button = ({ value, children, size, style, className }: ToggleB
           size={size}
           id={`radio-option-${value}`}
           variant={checked ? 'filled' : 'empty'}
-          color={checked ? 'blue' : 'gray'}
+          color={checked ? 'red' : 'gray'}
           className={className}
           type="button"
         >

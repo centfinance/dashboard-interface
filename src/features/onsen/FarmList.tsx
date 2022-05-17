@@ -100,7 +100,7 @@ const FarmList = ({ farms, term }) => {
                   setSelectedFarm(farm)
                   dispatch(
                     setOnsenModalState({
-                      view: positionIds.includes(farm.id) ? OnsenModalView.Position : OnsenModalView.Liquidity,
+                      view: positionIds.includes(farm.id) ? OnsenModalView.Staking : OnsenModalView.Staking,
                       open: true,
                     })
                   )

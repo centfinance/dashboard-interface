@@ -1,6 +1,6 @@
 const SEO = {
-  defaultTitle: 'Sushi',
-  titleTemplate: '%s | Sushi',
+  defaultTitle: 'Symmetric',
+  titleTemplate: '%s | Symmetric',
   description: 'Swap, yield, lend, borrow, leverage, limit, launch all on one community driven ecosystem',
   openGraph: {
     type: 'website',

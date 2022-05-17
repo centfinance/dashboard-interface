@@ -4,7 +4,7 @@ import React, { FC, ReactNode } from 'react'
 import Dots from '../Dots'
 import Loader from '../Loader'
 
-export type ButtonColor = 'red' | 'blue' | 'pink' | 'purple' | 'gradient' | 'gray'
+export type ButtonColor = 'red' | 'blue' | 'pink' | 'purple' | 'gradient' | 'gray' | 'symmetric'
 export type ButtonSize = 'xs' | 'sm' | 'lg' | 'default' | 'none'
 export type ButtonVariant = 'outlined' | 'filled' | 'empty'
 
@@ -32,10 +32,12 @@ const FILLED = {
   gradient:
     '!bg-gradient-to-r from-blue to-pink-600 hover:from-blue/80 hover:to-pink-600/80 focus:from-blue/80 focus:to-pink-600/80 active:from-blue/70 active:to-pink-600/70 focus:border-blue-700',
   gray: 'bg-dark-700',
+  symmetric: 'bg-orange',
 }
 
 const OUTLINED = {
   default: 'border-2 disabled:pointer-events-none disabled:opacity-40',
+  symmetric: 'border-none bg-orange/20 hover:bg-orange/40 active:bg-orange/60 text-orange focus:bg-orange/40',
   blue: 'border-none bg-blue/20 hover:bg-blue/40 active:bg-blue/60 text-blue focus:bg-blue/40',
   red: 'border-none bg-red/20 hover:bg-red/40 active:bg-red/60 text-red focus:bg-red/40',
   pink: 'border-none bg-pink/20 hover:bg-pink/40 active:bg-pink/60 text-pink focus:bg-pink/40',
@@ -81,7 +83,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     {
       children,
       className = '',
-      color = 'blue',
+      color = 'symmetric',
       size = 'md',
       variant = 'filled',
       startIcon = undefined,

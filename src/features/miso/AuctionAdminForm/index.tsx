@@ -313,7 +313,7 @@ const AuctionAdminForm: FC<AuctionAdminFormProps> = ({ auction }) => {
             </Form.Section>
             <Form.Submit>
               <div>
-                <Button color="blue" type="submit">
+                <Button color="symmetric" type="submit">
                   {i18n._(t`Save`)}
                 </Button>
               </div>

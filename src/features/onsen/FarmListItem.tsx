@@ -63,7 +63,7 @@ const FarmListItem: FC<FarmListItem> = ({ farm, onClick }) => {
           </Typography>
         ))}
       </div>
-      <div className={classNames('flex flex-col !items-end', TABLE_TBODY_TD_CLASSNAME(3, 4))}>
+      <div className={classNames('flex', TABLE_TBODY_TD_CLASSNAME(3, 4))}>
         <Typography weight={700} className="flex gap-0.5 items-center text-high-emphesis">
           {farm?.tvl !== 0
             ? farm?.roiPerYear > 10000
@@ -82,18 +82,18 @@ const FarmListItem: FC<FarmListItem> = ({ farm, onClick }) => {
                         : formatPercent(farm?.rewardAprPerYear * 100)
                       : 'Infinite'}
                   </div>
-                  {/* <div>
+                  <div>
                     Fee APR: {farm?.feeApyPerYear < 10000 ? formatPercent(farm?.feeApyPerYear * 100) : '>10,000%'}
-                  </div> */}
+                  </div>
                 </div>
               }
             />
           )}
         </Typography>
-        <Typography weight={700} className="flex gap-0.5 items-center text-high-emphesis">
-          {/* {i18n._(t`annualized`)} */}
+        {/* <Typography weight={700} className="flex gap-0.5 items-center text-high-emphesis">
+          {i18n._(t`annualized`)} 
           {formatPercent(farm?.tokenRoiPerYear * 100)}
-        </Typography>
+        </Typography>*/}
       </div>
     </div>
   )

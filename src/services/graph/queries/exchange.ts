@@ -221,7 +221,9 @@ export const pairsSymmQuery = gql`
         symbol
         denormWeight
       }
-      swaps(first: 1, orderBy: "timestamp", orderDirection: "desc") {
+      swaps(first: 1, orderBy: "timestamp", orderDirection: "desc", where: {timestamp_lt: ${
+        Math.round(new Date().getTime() / 1000) - 24 * 3600
+      }}) {
         poolTotalSwapVolume
       }
     }

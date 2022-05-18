@@ -157,7 +157,7 @@ export default function useFarmRewards({ chainId = ChainId.ETHEREUM }) {
     //     : 0
     // const feeApyPerYear = swapSymmPair.totalSwapVolume
 
-    // console.log('swapSymmPair', swapSymmPair)
+    console.log('swapSymmPair', swapSymmPair)
 
     const poolTotalSwapVolume =
       swapSymmPair.swaps && swapSymmPair.swaps[0] && swapSymmPair.swaps[0].poolTotalSwapVolume

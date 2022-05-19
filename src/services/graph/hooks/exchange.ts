@@ -90,7 +90,6 @@ export function useSymmPriceCelo(swrConfig: SWRConfiguration = undefined) {
   const { chainId } = useActiveWeb3React()
   const shouldFetch = chainId && chainId === ChainId.CELO
   const { data } = useSWR(shouldFetch ? 'symmPriceCelo' : null, () => getSymmPriceCelo(), swrConfig)
-  // console.log('useSymmPriceCelo', data)
   return data
 }
 
@@ -267,7 +266,6 @@ export function useSushiPairs({
     swrConfig
   )
   console.log('useSushiPairs - exchange')
-  console.log(data)
   return data
 }
 
@@ -284,7 +282,6 @@ export function useSymmPairs({
     swrConfig
   )
   console.log('useSymmPairs - exchange')
-  console.log(data)
   return data
 }
 

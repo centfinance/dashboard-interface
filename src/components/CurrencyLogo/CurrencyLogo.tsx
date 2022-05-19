@@ -49,7 +49,9 @@ export const getCurrencyLogoUrls = (currency: Currency): string[] => {
         currency.wrapped.address
       }/logo.png`
     )
-    urls.push('https://celo-pools.symmetric.exchange/img/symmetricIcon.ad634ddf.svg')
+    urls.push(
+      'https://raw.githubusercontent.com/centfinance/assets/master/blockchains/ethereum/assets/0x57dB3FfCa78dBbE0eFa0EC745D55f62aa0Cbd345/logo.png'
+    )
   }
   return urls
 }

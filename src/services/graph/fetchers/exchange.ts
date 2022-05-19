@@ -55,7 +55,6 @@ export const getPairs = async (chainId = ChainId.ETHEREUM, variables = undefined
 export const getSymmPairs = async (chainId = ChainId.ETHEREUM, variables = undefined, query = pairsSymmQuery) => {
   const { pools } = await exchangeSymm(chainId, pairsSymmQuery)
   console.log('GOT getSymmPairs PAIRS')
-  console.log(pools)
   return pools
 }
 

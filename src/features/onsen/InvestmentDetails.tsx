@@ -208,7 +208,7 @@ const InvestmentDetails = ({ farm }) => {
       <Button
         loading={pendingTx}
         fullWidth
-        color="blue"
+        color="symmetric"
         disabled={
           pendingTx ||
           !((pendingSushi && pendingSushi.greaterThan(ZERO)) || (pendingReward && Number(pendingReward) > 0))

@@ -56,6 +56,11 @@ const nextConfig = {
         destination: '/farm',
         permanent: true,
       },
+      {
+        source: '/(^(?!.*\baccount\b).*$)',
+        destination: '/farm',
+        permanent: true,
+      },
     ]
   },
   async rewrites() {

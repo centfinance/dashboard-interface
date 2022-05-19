@@ -7,7 +7,7 @@ import Search from 'app/components/Search'
 import Typography from 'app/components/Typography'
 import { Chef, PairType } from 'app/features/onsen/enum'
 import FarmList from 'app/features/onsen/FarmList'
-import OnsenFilter from 'app/features/onsen/FarmMenu'
+// import OnsenFilter from 'app/features/onsen/FarmMenu'
 import useFarmRewards from 'app/hooks/useFarmRewards'
 import useFuse from 'app/hooks/useFuse'
 import { TridentBody } from 'app/layouts/Trident'
@@ -65,7 +65,7 @@ export default function Farm(): JSX.Element {
         <div className="flex flex-col w-full gap-6">
           <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
             <Search search={search} term={term} />
-            <OnsenFilter />
+            {/* <OnsenFilter /> */}
           </div>
           <FarmList farms={result} term={term} />
           {chainId && chainId === ChainId.CELO && (

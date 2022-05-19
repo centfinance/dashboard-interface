@@ -155,7 +155,18 @@ export default function useFarmRewards({ chainId = ChainId.ETHEREUM }) {
     //   swapPair && swapPair1d
     //     ? aprToApy((((pair?.volumeUSD - swapPair1d?.volumeUSD) * 0.0025 * 365) / pair?.reserveUSD) * 100, 3650) / 100
     //     : 0
-    const feeApyPerYear = swapSymmPair.totalSwapVolume
+    // const feeApyPerYear = swapSymmPair.totalSwapVolume
+
+    console.log('swapSymmPair', swapSymmPair)
+
+    const poolTotalSwapVolume =
+      swapSymmPair.swaps && swapSymmPair.swaps[0] && swapSymmPair.swaps[0].poolTotalSwapVolume
+        ? parseFloat(swapSymmPair.swaps[0].poolTotalSwapVolume)
+        : 0
+    const lastSwapVolume = parseFloat(swapSymmPair.totalSwapVolume) - poolTotalSwapVolume
+    const feesCollected = lastSwapVolume * swapSymmPair.swapFee
+
+    const feeApyPerYear = (100 / swapSymmPair.liquidity) * ((feesCollected * 365) / 100)
 
     const feeApyPerMonth = feeApyPerYear / 12
     const feeApyPerDay = feeApyPerMonth / 30
@@ -176,7 +187,7 @@ export default function useFarmRewards({ chainId = ChainId.ETHEREUM }) {
     const roiPerHour = rewardAprPerHour + feeApyPerHour
     const roiPerMonth = rewardAprPerMonth + feeApyPerMonth
     const roiPerDay = rewardAprPerDay + feeApyPerDay
-    const roiPerYear = rewardAprPerYear
+    const roiPerYear = rewardAprPerYear + tokenRewardAprPerYear + feeApyPerYear
     const tokenRoiPerYear = tokenRewardAprPerYear
 
     const position = positions.find((position) => position.id === pool.id && position.chef === pool.chef)

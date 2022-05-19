@@ -147,7 +147,7 @@ const ManageBar = ({ farm }) => {
           <Button
             fullWidth
             loading={approvalState === ApprovalState.PENDING}
-            color="gradient"
+            color="symmetric"
             onClick={approve}
             disabled={approvalState !== ApprovalState.NOT_APPROVED}
           >
@@ -156,7 +156,7 @@ const ManageBar = ({ farm }) => {
         ) : (
           <Button
             fullWidth
-            color={!isDepositValid && !!parsedDepositValue ? 'red' : 'blue'}
+            color={!isDepositValid && !!parsedDepositValue ? 'red' : 'symmetric'}
             onClick={async () => {
               try {
                 // KMP decimals depend on asset, SLP is always 18
@@ -189,7 +189,7 @@ const ManageBar = ({ farm }) => {
       ) : (
         <Button
           fullWidth
-          color={!isWithdrawValid && !!parsedWithdrawValue ? 'red' : 'blue'}
+          color={!isWithdrawValid && !!parsedWithdrawValue ? 'red' : 'symmetric'}
           onClick={async () => {
             try {
               // KMP decimals depend on asset, SLP is always 18

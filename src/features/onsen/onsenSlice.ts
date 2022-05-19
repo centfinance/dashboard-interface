@@ -8,7 +8,7 @@ export interface OnsenState {
 }
 
 const initialState: OnsenState = {
-  view: undefined,
+  view: OnsenModalView.Staking,
   open: false,
 }
 

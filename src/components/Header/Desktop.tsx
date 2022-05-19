@@ -29,13 +29,20 @@ const Desktop: FC = () => {
           <Container maxWidth="full" className="mx-auto">
             <div className="flex items-center justify-between gap-4 px-6">
               <div className="flex gap-4">
-                <div className="flex items-center w-6 mr-4">
+                <div className="flex items-center mr-4">
                   <Image
                     src="https://celo-pools.symmetric.exchange/img/symmetricIcon.ad634ddf.svg"
                     alt="Symmetric logo"
                     width="54px"
                     height="54px"
                   />
+                  <Typography
+                    variant="h3"
+                    weight={500}
+                    className="tracking-[0.02em] scale-y-90 text-white hover:text-high-emphesis"
+                  >
+                    SYMMETRIC
+                  </Typography>
                 </div>
                 {menu.map((node) => {
                   return <NavigationItem node={node} key={node.key} />

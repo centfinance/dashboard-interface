@@ -9,6 +9,7 @@ import WalletModal from 'app/modals/WalletModal'
 import { useWalletModalToggle } from 'app/state/application/hooks'
 import { isTransactionRecent, useAllTransactions } from 'app/state/transactions/hooks'
 import { TransactionDetails } from 'app/state/transactions/reducer'
+import makeBlockie from 'ethereum-blockies-base64'
 import Image from 'next/image'
 import React, { useMemo } from 'react'
 
@@ -69,8 +70,8 @@ function Web3StatusInner() {
               address={account}
               defaultComponent={
                 <Image
-                  src="https://app.sushi.com/images/chef.svg"
-                  alt="Sushi Chef"
+                  src={makeBlockie(account || '')}
+                  alt="blockie"
                   width={24}
                   height={24}
                   className="rounded-full pointer-events-none"

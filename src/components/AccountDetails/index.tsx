@@ -8,6 +8,7 @@ import { shortenAddress } from 'app/functions/format'
 import { useActiveWeb3React } from 'app/services/web3'
 import { useAppDispatch } from 'app/state/hooks'
 import { clearAllTransactions } from 'app/state/transactions/actions'
+import makeBlockie from 'ethereum-blockies-base64'
 import Image from 'next/image'
 import React, { FC, useCallback, useMemo } from 'react'
 import { ExternalLink as LinkIcon } from 'react-feather'
@@ -64,19 +65,25 @@ const AccountDetails: FC<AccountDetailsProps> = ({
         <HeadlessUiModal.BorderedContent className="flex flex-col gap-3">
           <div className="flex items-center justify-between">
             {connectorName}
-            <Button variant="outlined" color="blue" size="xs" onClick={deactivate}>
+            <Button variant="outlined" color="symmetric" size="xs" onClick={deactivate}>
               {i18n._(t`Disconnect`)}
             </Button>
           </div>
           <div id="web3-account-identifier-row" className="flex flex-col justify-center gap-4">
             <div className="flex items-center gap-4">
-              <div className="overflow-hidden rounded-full">
+              <div className="overflow-hidden">
                 <Davatar
                   size={48}
                   // @ts-ignore TYPE NEEDS FIXING
                   address={account}
                   defaultComponent={
-                    <Image src="https://app.sushi.com/images/chef.svg" alt="Sushi Chef" width={48} height={48} />
+                    <Image
+                      src={makeBlockie(account || '')}
+                      alt="blockie"
+                      width={48}
+                      height={48}
+                      className="rounded-full pointer-events-none"
+                    />
                   }
                   provider={library}
                 />
@@ -88,7 +95,7 @@ const AccountDetails: FC<AccountDetailsProps> = ({
             <div className="flex items-center gap-2 space-x-3">
               {chainId && account && (
                 <ExternalLink
-                  color="blue"
+                  color="symmetric"
                   startIcon={<LinkIcon size={16} />}
                   href={getExplorerLink(chainId, ENSName || account, 'address')}
                 >
@@ -112,7 +119,7 @@ const AccountDetails: FC<AccountDetailsProps> = ({
             <Typography variant="xs" weight={700} className="text-secondary">
               {i18n._(t`Recent Transactions`)}
             </Typography>
-            <Button variant="outlined" color="blue" size="xs" onClick={clearAllTransactionsCallback}>
+            <Button variant="outlined" color="symmetric" size="xs" onClick={clearAllTransactionsCallback}>
               {i18n._(t`Clear all`)}
             </Button>
           </div>

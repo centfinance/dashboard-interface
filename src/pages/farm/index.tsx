@@ -72,7 +72,7 @@ export default function Farm(): JSX.Element {
             <Typography variant="xs" weight={700} className="italic text-center text-secondary">
               {i18n._(t`Users can now bridge back to Celo using a new version of Optics.`)}{' '}
               <ExternalLink
-                color="blue"
+                color="symmetric"
                 id={`celo-optics-info-link`}
                 href="https://medium.com/@0xJiro/celo-farms-update-migrating-to-the-optics-v2-bridge-e8075d1c9ea"
               >

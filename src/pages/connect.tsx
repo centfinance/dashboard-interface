@@ -18,7 +18,7 @@ export default function ConnectWallet() {
   const toggleNetworkModal = useNetworkModalToggle()
 
   const gotoHome = () => {
-    router.push('/en/farm')
+    router.push('/farm')
   }
 
   return (

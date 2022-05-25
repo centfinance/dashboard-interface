@@ -9,6 +9,7 @@ import useIsCoinbaseWallet from 'app/hooks/useIsCoinbaseWallet'
 import { useActiveWeb3React } from 'app/services/web3'
 import { useNativeCurrencyBalances } from 'app/state/wallet/hooks'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { FC } from 'react'
 
@@ -37,21 +38,23 @@ const Desktop: FC = () => {
           <Container maxWidth="full" className="mx-auto">
             <div className="flex items-center justify-between gap-4 px-6">
               <div className="flex gap-4">
-                <div className="flex items-center mr-4">
-                  <Image
-                    src="https://celo-pools.symmetric.exchange/img/symmetricIcon.ad634ddf.svg"
-                    alt="Symmetric logo"
-                    width="54px"
-                    height="54px"
-                  />
-                  <Typography
-                    variant="h3"
-                    weight={500}
-                    className="tracking-[0.02em] scale-y-90 text-white hover:text-high-emphesis"
-                  >
-                    SYMMETRIC
-                  </Typography>
-                </div>
+                <Link href={'/farm'}>
+                  <div className="flex items-center mr-4 cursor-pointer">
+                    <Image
+                      src="https://celo-pools.symmetric.exchange/img/symmetricIcon.ad634ddf.svg"
+                      alt="Symmetric logo"
+                      width="54px"
+                      height="54px"
+                    />
+                    <Typography
+                      variant="h3"
+                      weight={500}
+                      className="tracking-[0.02em] scale-y-90 text-white hover:text-high-emphesis"
+                    >
+                      SYMMETRIC
+                    </Typography>
+                  </div>
+                </Link>
                 {menu.map((node) => {
                   return <NavigationItem node={node} key={node.key} />
                 })}

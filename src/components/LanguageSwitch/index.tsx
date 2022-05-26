@@ -55,7 +55,7 @@ export default function LangSwitcher() {
       >
         <Menu.Items
           static
-          className="absolute max-h-[240px] overflow-auto w-full border-2 mt-2 divide-y rounded shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none border-dark-900 bg-dark-1000 divide-dark-900"
+          className="absolute max-h-[240px] overflow-auto w-full border-2 mt-2 divide-y rounded shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none border-dark-900 bg-dark-1000 divide-dark-900 -top-2 transform -translate-y-full"
         >
           {locales?.map((l, index) => {
             return (

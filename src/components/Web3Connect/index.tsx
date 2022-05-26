@@ -28,7 +28,7 @@ export default function Web3Connect({ color = 'gray', size, className = '', ...r
       onClick={toggleWalletModal}
       variant="filled"
       color="symmetric"
-      className={classNames(className, '!border-none')}
+      className={classNames('!border-none')}
       size={size}
       {...rest}
     >

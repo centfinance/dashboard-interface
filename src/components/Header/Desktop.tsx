@@ -27,7 +27,7 @@ const Desktop: FC = () => {
   const { error } = useWeb3React()
   const router = useRouter()
 
-  if (error instanceof UnsupportedChainIdError || chainId !== ChainId.CELO) {
+  if (error instanceof UnsupportedChainIdError || (account && chainId !== ChainId.CELO)) {
     router.push('/connect')
   }
 

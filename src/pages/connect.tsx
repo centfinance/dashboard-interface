@@ -4,7 +4,7 @@ import { ChainId } from '@sushiswap/core-sdk'
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core'
 import Button from 'app/components/Button'
 import Container from 'app/components/Container'
-// import { useWalletModalToggle } from 'app/state/application/hooks'
+import { useWalletModalToggle } from 'app/state/application/hooks'
 import { useNetworkModalToggle } from 'app/state/application/hooks'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
@@ -12,9 +12,9 @@ import { Activity } from 'react-feather'
 
 export default function ConnectWallet() {
   const router = useRouter()
-  // const toggleWalletModal = useWalletModalToggle()
   const { i18n } = useLingui()
-  const { error, chainId } = useWeb3React()
+  const { error, chainId, account } = useWeb3React()
+  const toggleWalletModal = useWalletModalToggle()
   const toggleNetworkModal = useNetworkModalToggle()
 
   const gotoHome = () => {
@@ -32,13 +32,15 @@ export default function ConnectWallet() {
       {error || chainId !== ChainId.CELO ? (
         <div
           className="flex items-center justify-center px-4 py-2 font-semibold text-white border rounded bg-opacity-80 border-red bg-red hover:bg-opacity-100 cursor-pointer"
-          onClick={() => toggleNetworkModal()}
+          onClick={() => (account ? toggleNetworkModal() : toggleWalletModal())}
         >
           <div className="mr-1">
             <Activity className="w-4 h-4" />
           </div>
-          {error instanceof UnsupportedChainIdError || chainId !== ChainId.CELO
+          {error instanceof UnsupportedChainIdError || (account && chainId !== ChainId.CELO)
             ? i18n._(t`You are on the wrong network`)
+            : !account
+            ? i18n._(t`Connect to a wallet`)
             : i18n._(t`Error`)}
         </div>
       ) : (

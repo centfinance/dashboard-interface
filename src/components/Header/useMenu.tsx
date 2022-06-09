@@ -1,5 +1,5 @@
-import { SwitchVerticalIcon } from '@heroicons/react/outline'
-import { t } from '@lingui/macro'
+// import { SwitchVerticalIcon } from '@heroicons/react/outline'
+// import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
 import { Feature } from 'app/enums'
 import { featureEnabled } from 'app/functions'

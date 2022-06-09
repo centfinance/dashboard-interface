@@ -37,7 +37,6 @@ export default function useFarmRewards({ chainId = ChainId.ETHEREUM }) {
     shouldFetch: true,
   })
   console.log('SYMM PAIRS:')
-  console.log(symmPairs)
 
   const kashiPairs = useKashiPairs({
     chainId,
@@ -61,8 +60,6 @@ export default function useFarmRewards({ chainId = ChainId.ETHEREUM }) {
   ]
 
   const blocksPerDay = 86400 / Number(averageBlockTime)
-
-  // console.log('symm price for farm rewards', symmPriceCelo)
 
   // @ts-ignore TYPE NEEDS FIXING
   const map = (pool) => {
@@ -157,8 +154,6 @@ export default function useFarmRewards({ chainId = ChainId.ETHEREUM }) {
     //     : 0
     // const feeApyPerYear = swapSymmPair.totalSwapVolume
 
-    console.log('swapSymmPair', swapSymmPair)
-
     const poolTotalSwapVolume =
       swapSymmPair.swaps && swapSymmPair.swaps[0] && swapSymmPair.swaps[0].poolTotalSwapVolume
         ? parseFloat(swapSymmPair.swaps[0].poolTotalSwapVolume)
@@ -181,8 +176,7 @@ export default function useFarmRewards({ chainId = ChainId.ETHEREUM }) {
     const rewardAprPerDay = rewardAprPerHour * 24
     const rewardAprPerMonth = rewardAprPerDay * 30
     const rewardAprPerYear = (symmPriceCelo * rewards[0].rewardPerDay * 365) / tvl
-    const tokenRewardAprPerYear = (rewards[1]?.rewardPrice * rewards[1]?.rewardPerDay * 365) / tvl
-    // console.log('rewardAprPerYear', rewardAprPerYear, symmPriceCelo, rewards, tvl)
+    const tokenRewardAprPerYear = (rewards[1]?.rewardPrice * rewards[1]?.rewardPerDay * 365) / tvl || 0
 
     const roiPerHour = rewardAprPerHour + feeApyPerHour
     const roiPerMonth = rewardAprPerMonth + feeApyPerMonth

@@ -183,6 +183,7 @@ module.exports = {
         secondary: '#7F7F7F',
         'high-emphesis': '#E3E3E3',
         'higher-emphesis': '#FCFCFD',
+        'gray-850': '#162131',
       },
       lineHeight: {
         '48px': '48px',

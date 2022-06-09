@@ -41,8 +41,13 @@ const useMenu: UseMenu = () => {
         items: [
           {
             key: 'farm',
-            title: i18n._(t`Farming Pools`),
+            title: i18n._(t`V1 Farming Pools`),
             link: '/farm',
+          },
+          {
+            key: 'farm',
+            title: i18n._(t`V2 Farming Pools`),
+            link: '/farm/v2',
           },
           {
             key: 'my-farms',

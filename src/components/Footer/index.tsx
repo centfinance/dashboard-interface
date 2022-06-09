@@ -38,13 +38,13 @@ const Footer = () => {
             </Typography> */}
             <div className="flex items-center gap-4">
               <a href="https://twitter.com/0xSymmetric" target="_blank" rel="noreferrer">
-                <TwitterIcon width={16} className="text-low-emphesis" />
+                <TwitterIcon width={16} className="text-low-emphesis hover:text-orange-100" />
               </a>
               <a href="https://medium.com/@Symmetric.Finance" target="_blank" rel="noreferrer">
-                <MediumIcon width={16} className="text-low-emphesis" />
+                <MediumIcon width={16} className="text-low-emphesis hover:text-orange-100" />
               </a>
               <a href="https://discord.gg/rJd7azWx4V" target="_blank" rel="noreferrer">
-                <DiscordIcon width={16} className="text-low-emphesis" />
+                <DiscordIcon width={16} className="text-low-emphesis hover:text-orange-100" />
               </a>
             </div>
           </div>

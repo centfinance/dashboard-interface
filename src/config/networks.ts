@@ -23,7 +23,35 @@ const Fuse = 'https://raw.githubusercontent.com/sushiswap/icons/master/network/f
 const Telos = 'https://raw.githubusercontent.com/sushiswap/icons/master/network/telos.jpg'
 
 export const NETWORK_ICON: Record<number, string> = {
+  [ChainId.ETHEREUM]: Mainnet,
+  [ChainId.ROPSTEN]: Ropsten,
+  [ChainId.RINKEBY]: Rinkeby,
+  [ChainId.GÖRLI]: Goerli,
+  [ChainId.KOVAN]: Kovan,
+  [ChainId.FANTOM]: Fantom,
+  [ChainId.FANTOM_TESTNET]: Fantom,
+  [ChainId.BSC]: Bsc,
+  [ChainId.BSC_TESTNET]: Bsc,
+  [ChainId.MATIC]: Polygon,
+  [ChainId.MATIC_TESTNET]: Matic,
+  [ChainId.XDAI]: xDai,
+  [ChainId.ARBITRUM]: Arbitrum,
+  [ChainId.ARBITRUM_TESTNET]: Arbitrum,
+  [ChainId.MOONBEAM_TESTNET]: Moonbeam,
+  [ChainId.AVALANCHE]: Avalanche,
+  [ChainId.AVALANCHE_TESTNET]: Avalanche,
+  [ChainId.HECO]: Heco,
+  [ChainId.HECO_TESTNET]: Heco,
+  [ChainId.HARMONY]: Harmony,
+  [ChainId.HARMONY_TESTNET]: Harmony,
+  [ChainId.OKEX]: OKEx,
+  [ChainId.OKEX_TESTNET]: OKEx,
   [ChainId.CELO]: Celo,
+  [ChainId.PALM]: Palm,
+  [ChainId.MOONRIVER]: Moonriver,
+  [ChainId.FUSE]: Fuse,
+  [ChainId.TELOS]: Telos,
+  [ChainId.MOONBEAM]: Moonbeam,
 }
 
 export const NETWORK_LABEL: Record<number, string> = {

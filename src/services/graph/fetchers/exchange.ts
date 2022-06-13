@@ -46,7 +46,12 @@ export const exchange = async (chainId = ChainId.ETHEREUM, query, variables = {}
 // @ts-ignore TYPE NEEDS FIXING
 export const exchangeSymm = async (chainId = ChainId.ETHEREUM, query) =>
   // @ts-ignore TYPE NEEDS FIXING
-  pager(`${GRAPH_HOST[chainId]}/subgraphs/name/centfinance/symmetricv1celo`, query)
+  pager(`${GRAPH_HOST[chainId]}/subgraphs/name/centfinance/symmetric-v2-celo`, query)
+
+// @ts-ignore TYPE NEEDS FIXING
+export const exchangeSymmPrice = async (chainId = ChainId.ETHEREUM, query) =>
+  // @ts-ignore TYPE NEEDS FIXING
+  pager(`${GRAPH_HOST[chainId]}/subgraphs/name/centfinance/symmetric-celo`, query)
 
 export const getPairs = async (chainId = ChainId.ETHEREUM, variables = undefined, query = pairsQuery) => {
   const { pairs } = await exchange(chainId, query, variables)
@@ -54,7 +59,6 @@ export const getPairs = async (chainId = ChainId.ETHEREUM, variables = undefined
 }
 export const getSymmPairs = async (chainId = ChainId.ETHEREUM, variables = undefined, query = pairsSymmQuery) => {
   const { pools } = await exchangeSymm(chainId, pairsSymmQuery)
-  console.log('GOT getSymmPairs PAIRS')
   return pools
 }
 
@@ -110,9 +114,9 @@ export const getTokenPrice = async (chainId = ChainId.ETHEREUM, query, variables
   return token?.derivedETH * nativePrice
 }
 
-// @ts-ignore TYPE NEEDS FIXING
+// @ts-ignore TYPE NEEDS FIXING // fetching from V1, need to change when coingecko
 export const getSYMMPrice = async (chainId = ChainId.ETHEREUM, query) => {
-  const { tokenPrices } = await exchangeSymm(chainId, query)
+  const { tokenPrices } = await exchangeSymmPrice(chainId, query)
   // console.log('getSYMMPrice', tokenPrices)
   return tokenPrices[0]?.price
 }

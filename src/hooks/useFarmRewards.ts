@@ -36,7 +36,6 @@ export default function useFarmRewards({ chainId = ChainId.ETHEREUM }) {
     // },
     shouldFetch: true,
   })
-  console.log('SYMM PAIRS:')
 
   const kashiPairs = useKashiPairs({
     chainId,
@@ -63,13 +62,11 @@ export default function useFarmRewards({ chainId = ChainId.ETHEREUM }) {
 
   // @ts-ignore TYPE NEEDS FIXING
   const map = (pool) => {
-    console.log('MAPPING POOLS HERE')
-
     // TODO: Deal with inconsistencies between properties on subgraph
     pool.owner = pool?.symmChef || pool?.owner || pool?.masterChef || pool?.miniChef
     pool.balance = pool?.balance || pool?.slpBalance
     // @ts-ignore TYPE NEEDS FIXING
-    const swapSymmPair = symmPairs?.find((pair) => pair.id === pool.pair)
+    const swapSymmPair = symmPairs?.find((pair) => pair.address === pool.pair)
 
     const pair = swapSymmPair
 
@@ -146,7 +143,7 @@ export default function useFarmRewards({ chainId = ChainId.ETHEREUM }) {
     // const balance = swapPair ? Number(pool.balance / 1e18) : pool.balance / 10 ** kashiPair.token0.decimals
     const balance = swapSymmPair ? Number(pool.balance / 1e18) : pool.balance / 10
 
-    const tvl = swapSymmPair.liquidity
+    const tvl = swapSymmPair.totalLiquidity
 
     // const feeApyPerYear =
     //   swapPair && swapPair1d
@@ -154,14 +151,11 @@ export default function useFarmRewards({ chainId = ChainId.ETHEREUM }) {
     //     : 0
     // const feeApyPerYear = swapSymmPair.totalSwapVolume
 
-    const poolTotalSwapVolume =
-      swapSymmPair.swaps && swapSymmPair.swaps[0] && swapSymmPair.swaps[0].poolTotalSwapVolume
-        ? parseFloat(swapSymmPair.swaps[0].poolTotalSwapVolume)
-        : 0
+    const poolTotalSwapVolume = swapSymmPair.totalSwapVolume ? parseFloat(swapSymmPair.totalSwapVolume) : 0
     const lastSwapVolume = parseFloat(swapSymmPair.totalSwapVolume) - poolTotalSwapVolume
     const feesCollected = lastSwapVolume * swapSymmPair.swapFee
 
-    const feeApyPerYear = (100 / swapSymmPair.liquidity) * ((feesCollected * 365) / 100)
+    const feeApyPerYear = (100 / swapSymmPair.totalLiquidity) * ((feesCollected * 365) / 100)
 
     const feeApyPerMonth = feeApyPerYear / 12
     const feeApyPerDay = feeApyPerMonth / 30
@@ -219,7 +213,7 @@ export default function useFarmRewards({ chainId = ChainId.ETHEREUM }) {
     .filter((farm) => {
       return (
         // @ts-ignore TYPE NEEDS FIXING
-        symmPairs && symmPairs.find((pair) => pair.id === farm.pair)
+        symmPairs && symmPairs.find((pair) => pair.address === farm.pair)
       )
     })
     .map(map)

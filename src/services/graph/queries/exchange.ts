@@ -193,38 +193,30 @@ export const liquidityPositionsQuery = gql`
     }
   }
 `
-// To fetch SYMM pools
+// To fetch SYMM pools from V2
 export const pairsSymmQuery = gql`
   query {
-    pools(
-      where: { active: true, tokensCount_gt: 1, holdersCount_gt: 0, finalized: true }
-      orderBy: "liquidity"
-      orderDirection: "desc"
-    ) {
+    pools(where: { holdersCount_gt: 0 }, orderBy: "totalLiquidity", orderDirection: "desc") {
       id
-      publicSwap
-      finalized
-      crp
-      rights
       swapFee
+      address
       totalWeight
       totalShares
       totalSwapVolume
-      liquidity
+      totalLiquidity
+      totalSwapFee
+      swapEnabled
       tokensList
+      symbol
+      name
       swapsCount
-      tokens(orderBy: "denormWeight", orderDirection: "desc") {
+      tokens(orderBy: "weight", orderDirection: "desc") {
         id
         address
         balance
         decimals
         symbol
-        denormWeight
-      }
-      swaps(first: 1, orderBy: "timestamp", orderDirection: "desc", where: {timestamp_lt: ${
-        Math.round(new Date().getTime() / 1000) - 24 * 3600
-      }}) {
-        poolTotalSwapVolume
+        weight
       }
     }
   }

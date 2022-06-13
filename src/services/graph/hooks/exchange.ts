@@ -281,7 +281,7 @@ export function useSymmPairs({
     (_, chainId) => getSymmPairs(chainId),
     swrConfig
   )
-  console.log('useSymmPairs - exchange')
+
   return data
 }
 

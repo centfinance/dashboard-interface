@@ -6,7 +6,6 @@ import { ChainId, CurrencyAmount, JSBI, Token, USD, ZERO } from '@sushiswap/core
 import Button from 'app/components/Button'
 import { HeadlessUiModal } from 'app/components/Modal'
 import Typography from 'app/components/Typography'
-import { useKashiPair } from 'app/features/kashi/hooks'
 import { easyAmount, formatNumber } from 'app/functions'
 import { useCurrency } from 'app/hooks/Tokens'
 import { useActiveWeb3React } from 'app/services/web3'
@@ -43,7 +42,7 @@ const InvestmentDetails = ({ farm }) => {
   const router = useRouter()
   const addTransaction = useTransactionAdder()
 
-  const kashiPair = useKashiPair(farm.pair.id)
+  // const kashiPair = useKashiPair(farm.pair.address)
   const [pendingTx, setPendingTx] = useState(false)
 
   const token0 = farm.pair.tokens[0]
@@ -54,28 +53,27 @@ const InvestmentDetails = ({ farm }) => {
   const liquidityToken = new Token(
     // @ts-ignore TYPE NEEDS FIXING
     chainId,
-    getAddress(farm.pair.id),
+    getAddress(farm.pair.address),
     18,
-    'CPT',
+    farm.pair.symbol,
     farm.pair.name // Need to build a name from token symbols
   )
-  console.log('LIQUIDITY TOKEN')
-  console.log(liquidityToken)
+
   const stakedAmount = useUserInfo(farm, liquidityToken)
 
-  const kashiAssetAmount =
-    kashiPair &&
-    stakedAmount &&
-    easyAmount(
-      BigNumber.from(stakedAmount.quotient.toString()).mulDiv(
-        // @ts-ignore TYPE NEEDS FIXING
-        kashiPair.currentAllAssets.value,
-        // @ts-ignore TYPE NEEDS FIXING
-        kashiPair.totalAsset.base
-      ),
-      // @ts-ignore TYPE NEEDS FIXING
-      kashiPair.asset
-    )
+  // const kashiAssetAmount =
+  //   kashiPair &&
+  //   stakedAmount &&
+  //   easyAmount(
+  //     BigNumber.from(stakedAmount.quotient.toString()).mulDiv(
+  //       // @ts-ignore TYPE NEEDS FIXING
+  //       kashiPair.currentAllAssets.value,
+  //       // @ts-ignore TYPE NEEDS FIXING
+  //       kashiPair.totalAsset.base
+  //     ),
+  //     // @ts-ignore TYPE NEEDS FIXING
+  //     kashiPair.asset
+  //   )
 
   const pendingSushi = usePendingSymm(farm)
   const pendingReward = usePendingReward(farm)
@@ -130,17 +128,10 @@ const InvestmentDetails = ({ farm }) => {
             </Typography>
           </Typography>
         </div>
-        {[PairType.KASHI, PairType.SWAP].includes(farm.pair.type) && (
+        {[PairType.SWAP].includes(farm.pair.type) && (
           <div className="flex items-center gap-2">
             {/*@ts-ignore TYPE NEEDS FIXING*/}
             {/* {token0 && <CurrencyLogo currency={token0} size={18} />} */}
-            {farm.pair.type === PairType.KASHI && (
-              <RewardRow
-                symbol={token0?.symbol}
-                // @ts-ignore TYPE NEEDS FIXING
-                value={formatNumber(kashiAssetAmount?.value.toFixed(kashiPair.asset.tokenInfo.decimals) ?? 0)}
-              />
-            )}
             {farm.pair.type === PairType.SWAP && (
               <RewardRow
                 value={formatNumber(

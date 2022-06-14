@@ -33,19 +33,7 @@ export const getCurrencyLogoUrls = (currency: Currency): string[] => {
   if (currency.chainId in BLOCKCHAIN) {
     urls.push(
       // @ts-ignore TYPE NEEDS FIXING
-      `https://raw.githubusercontent.com/sushiswap/logos/main/network/${BLOCKCHAIN[currency.chainId]}/${
-        currency.wrapped.address
-      }.jpg`
-    )
-    urls.push(
-      // @ts-ignore TYPE NEEDS FIXING
-      `https://raw.githubusercontent.com/sushiswap/assets/master/blockchains/${BLOCKCHAIN[currency.chainId]}/assets/${
-        currency.wrapped.address
-      }/logo.png`
-    )
-    urls.push(
-      // @ts-ignore TYPE NEEDS FIXING
-      `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${BLOCKCHAIN[currency.chainId]}/assets/${
+      `https://raw.githubusercontent.com/centfinance/assets/master/blockchains/${BLOCKCHAIN[currency.chainId]}/assets/${
         currency.wrapped.address
       }/logo.png`
     )
@@ -135,7 +123,6 @@ const CurrencyLogo: FunctionComponent<CurrencyLogoProps> = ({ currency, size = '
 
     return [UNKNOWN_ICON]
   }, [currency, uriLocations])
-
   return <Logo srcs={srcs} width={size} height={size} alt={currency?.symbol} className={className} style={style} />
 }
 

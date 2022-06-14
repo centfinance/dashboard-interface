@@ -18,8 +18,8 @@ interface FarmListItem {
 // @ts-ignore TYPE NEEDS FIXING
 const FarmListItem: FC<FarmListItem> = ({ farm, onClick }) => {
   const { i18n } = useLingui()
-  const token0 = useCurrency(farm.pair.tokens[0].id) ?? undefined
-  const token1 = useCurrency(farm.pair.tokens[1].id) ?? undefined
+  const token0 = useCurrency(farm.pair.tokens[0].address) ?? undefined
+  const token1 = useCurrency(farm.pair.tokens[1].address) ?? undefined
 
   return (
     <div className={classNames(TABLE_TBODY_TR_CLASSNAME, 'grid grid-cols-4')} onClick={onClick}>

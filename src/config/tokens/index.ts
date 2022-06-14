@@ -1,4 +1,5 @@
 export * as ARBITRUM_TOKENS from './arbitrum'
+export * as CELO_TOKENS from './celo'
 export * from './ethereum'
 export * as MATIC_TOKENS from './matic'
 export * as MOONBEAM_TOKENS from './moonbeam'

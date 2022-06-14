@@ -1,5 +1,6 @@
+import { getAddress } from '@ethersproject/address'
 import { ChainId, ChainTokenMap, Currency, NATIVE, Token } from '@sushiswap/core-sdk'
-import { XDAI_TOKENS } from 'app/config/tokens'
+import { CELO_TOKENS, XDAI_TOKENS } from 'app/config/tokens'
 import { Feature } from 'app/enums'
 import { Chef, PairType } from 'app/features/onsen/enum'
 import { usePositions } from 'app/features/onsen/hooks'
@@ -10,7 +11,6 @@ import {
   useEthPrice,
   useFarms,
   useGnoPrice,
-  useKashiPairs,
   useOneDayBlock,
   useSymmPairs,
   useSymmPriceCelo,
@@ -18,7 +18,7 @@ import {
 import toLower from 'lodash/toLower'
 import { useMemo } from 'react'
 
-export default function useFarmRewards({ chainId = ChainId.ETHEREUM }) {
+export default function useFarmRewards({ chainId = ChainId.CELO }) {
   // @ts-ignore TYPE NEEDS FIXING
   const positions = usePositions(chainId)
 
@@ -29,18 +29,12 @@ export default function useFarmRewards({ chainId = ChainId.ETHEREUM }) {
   const farmAddresses = useMemo(() => farms.map((farm) => farm.pair), [farms])
   const symmPairs = useSymmPairs({
     chainId,
-    // variables: {
-    //   where: {
-    //     id_in: farmAddresses.map(toLower),
-    //   },
-    // },
+    variables: {
+      where: {
+        id_in: farmAddresses.map(toLower),
+      },
+    },
     shouldFetch: true,
-  })
-
-  const kashiPairs = useKashiPairs({
-    chainId,
-    variables: { where: { id_in: farmAddresses.map(toLower) } },
-    shouldFetch: !!chainId && !!farmAddresses && featureEnabled(Feature.KASHI, chainId),
   })
 
   const averageBlockTime = useAverageBlockTime({ chainId })
@@ -128,11 +122,20 @@ export default function useFarmRewards({ chainId = ChainId.ETHEREUM }) {
           rewardPerDay: symmPerDay,
         }
 
-        // Rewards from
-        // @ts-ignore TYPE NEEDS FIXING
-        if (chainId in reward) {
-          // @ts-ignore TYPE NEEDS FIXING
-          rewards[1] = reward[chainId]
+        if (pool.rewarder != null) {
+          const rPerBlock = pool.rewarder.rewardPerSecond * averageBlockTime
+          const rPerDay = (pool.rewarder.rewardPerSecond * 86400) / 1e18
+          const reward = {
+            currency:
+              pool.rewarder.rewardToken.toLocaleLowerCase() ===
+              '0x17700282592D6917F6A73D0bF8AcCf4D578c131e'.toLocaleLowerCase()
+                ? CELO_TOKENS.MOO
+                : CELO_TOKENS.ARI,
+            rewardPerBlock: rPerBlock,
+            rewardPerDay: rPerDay,
+            rewardPrice: 0.00001, // TODO: calculate reward price
+          }
+          rewards[1] = reward
         }
       }
       return rewards

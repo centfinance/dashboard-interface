@@ -16,3 +16,5 @@ export const cETH = new Token(ChainId.CELO, '0x2DEf4285787d58a2f811AF24755A81506
 export const WETH = new Token(ChainId.CELO, '0x122013fd7dF1C6F636a5bb8f03108E876548b455', 18, 'WETH', 'WETH')
 export const WBTC = new Token(ChainId.CELO, '0xBAAB46E28388d2779e6E31Fd00cF0e5Ad95E327B', 8, 'WBTC', 'WBTC')
 export const USDC = new Token(ChainId.CELO, '0xef4229c8c3250C675F21BCefa42f58EfbfF6002a', 6, 'USDC', 'USD Coin')
+export const MOO = new Token(ChainId.CELO, '0x17700282592D6917F6A73D0bF8AcCf4D578c131e', 18, 'MOO', 'Moola Token')
+export const ARI = new Token(ChainId.CELO, '0x20677d4f3d0F08e735aB512393524A3CfCEb250C', 18, 'ARI', 'ARI Token')

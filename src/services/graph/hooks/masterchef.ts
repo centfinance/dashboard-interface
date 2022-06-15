@@ -72,8 +72,8 @@ export function useOldMiniChefFarms(swrConfig: SWRConfiguration = undefined) {
     (_, chainId) => getOldMiniChefFarms(chainId),
     swrConfig
   )
-  console.log('getOldMiniChefFarmssssssss')
-  console.log(data)
+  // console.log('getOldMiniChefFarmssssssss')
+  // console.log(data)
 
   return useMemo(() => {
     if (!data) return []

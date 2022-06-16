@@ -325,6 +325,18 @@ export const getCeloPrice = async () => {
   })
 }
 
+export const getMooPrice = async () => {
+  return getTokenPriceFromSymmV1(ChainId.CELO, tokenPriceQuery2, {
+    id: '0x17700282592D6917F6A73D0bF8AcCf4D578c131e'.toLowerCase(),
+  })
+}
+
+export const getAriPrice = async () => {
+  return getTokenPriceFromSymmV1(ChainId.CELO, tokenPriceQuery2, {
+    id: '0x20677d4f3d0F08e735aB512393524A3CfCEb250C'.toLowerCase(),
+  })
+}
+
 export const getFantomPrice = async () => {
   return getTokenPrice(ChainId.FANTOM, tokenPriceQuery, {
     id: '0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83',

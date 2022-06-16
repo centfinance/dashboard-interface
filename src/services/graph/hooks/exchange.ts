@@ -5,6 +5,7 @@ import useSWR, { SWRConfiguration } from 'swr'
 
 import {
   getAlcxPrice,
+  getAriPrice,
   getAvaxPrice,
   getBundle,
   getCeloPrice,
@@ -18,6 +19,7 @@ import {
   getLiquidityPositions,
   getMagicPrice,
   getMaticPrice,
+  getMooPrice,
   getMovrPrice,
   getMphPrice,
   getNativePrice,
@@ -125,6 +127,22 @@ export function useCeloPrice(swrConfig: SWRConfiguration = undefined) {
   const { chainId } = useActiveWeb3React()
   const shouldFetch = chainId && chainId === ChainId.CELO
   const { data } = useSWR(shouldFetch ? 'celoPrice' : null, () => getCeloPrice(), swrConfig)
+  return data
+}
+
+// @ts-ignore TYPE NEEDS FIXING
+export function useMooPrice(swrConfig: SWRConfiguration = undefined) {
+  const { chainId } = useActiveWeb3React()
+  const shouldFetch = chainId && chainId === ChainId.CELO
+  const { data } = useSWR(shouldFetch ? 'mooPrice' : null, () => getMooPrice(), swrConfig)
+  return data
+}
+
+// @ts-ignore TYPE NEEDS FIXING
+export function useARIPrice(swrConfig: SWRConfiguration = undefined) {
+  const { chainId } = useActiveWeb3React()
+  const shouldFetch = chainId && chainId === ChainId.CELO
+  const { data } = useSWR(shouldFetch ? 'ariPrice' : null, () => getAriPrice(), swrConfig)
   return data
 }
 

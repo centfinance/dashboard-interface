@@ -3,11 +3,13 @@ import { CELO_TOKENS, XDAI_TOKENS } from 'app/config/tokens'
 import { Chef, PairType } from 'app/features/onsen/enum'
 import { usePositions } from 'app/features/onsen/hooks'
 import {
+  useARIPrice,
   useAverageBlockTime,
   useCeloPrice,
   useEthPrice,
   useFarms,
   useGnoPrice,
+  useMooPrice,
   useOneDayBlock,
   useSymmPairs,
   useSymmPriceCelo,
@@ -44,12 +46,14 @@ export default function useFarmRewards({ chainId = ChainId.CELO }) {
     [ChainId.CELO]: new Token(ChainId.CELO, symmAddressCELO, 18, 'SYMM', 'SymmToken'),
   }
 
-  const [ethPrice, gnoPrice, celoPrice, symmPriceCelo, symmPriceXdai] = [
+  const [ethPrice, gnoPrice, celoPrice, symmPriceCelo, symmPriceXdai, mooPrice, ariPrice] = [
     useEthPrice(),
     useGnoPrice(),
     useCeloPrice(),
     useSymmPriceCelo(),
     useSymmPriceXdai(),
+    useMooPrice(),
+    useARIPrice(),
   ]
 
   const blocksPerDay = 86400 / Number(averageBlockTime)
@@ -114,7 +118,11 @@ export default function useFarmRewards({ chainId = ChainId.CELO }) {
                   : CELO_TOKENS.ARI,
               rewardPerBlock: rPerBlock,
               rewardPerDay: rPerDay,
-              rewardPrice: 0.00001, // TODO: calculate reward price
+              rewardPrice:
+                (pool.rewarder.rewardToken.toLocaleLowerCase() ===
+                '0x17700282592D6917F6A73D0bF8AcCf4D578c131e'.toLocaleLowerCase()
+                  ? mooPrice
+                  : ariPrice) || 0.00001,
             }
             rewards[1] = reward
           } else {

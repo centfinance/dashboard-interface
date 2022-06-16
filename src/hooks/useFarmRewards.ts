@@ -126,7 +126,7 @@ export default function useFarmRewards({ chainId = ChainId.CELO }) {
                   : CELO_TOKENS.ARI,
               rewardPerBlock: rPerBlock,
               rewardPerDay: rPerDay,
-              rewardPrice: 0.00001, // TODO: calculate reward price
+              rewardPrice: gnoPrice || 0.00001,
             }
             rewards[1] = reward
           }

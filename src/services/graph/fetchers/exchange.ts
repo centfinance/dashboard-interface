@@ -296,8 +296,8 @@ export const getSushiPrice = async (variables = {}) => {
 }
 
 export const getGnoPrice = async () => {
-  return getTokenPrice(ChainId.XDAI, tokenPriceQuery, {
-    id: '0x9c58bacc331c9aa871afd802db6379a98e80cedb',
+  return await getTokenPriceFromSymmV1(ChainId.XDAI, tokenPriceQuery2, {
+    id: '0x9c58bacc331c9aa871afd802db6379a98e80cedb'.toLowerCase(),
   })
 }
 

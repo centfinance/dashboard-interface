@@ -133,7 +133,7 @@ export const getSymmPairs = async (chainId = ChainId.ETHEREUM, variables = undef
 
   // calc totalLiquidity
   const prices = await tokenPrices(chainId)
-  console.log('prices', prices)
+
   const updatedPools = pools.map((pool: any) => {
     let poolCopy = { ...pool }
 
@@ -302,8 +302,8 @@ export const getGnoPrice = async () => {
 }
 
 export const getSymmPriceXdai = async () => {
-  return getTokenPrice(ChainId.XDAI, tokenPriceQuery, {
-    id: '0xC45b3C1c24d5F54E7a2cF288ac668c74Dd507a84',
+  return await getTokenPriceFromSymmV1(ChainId.XDAI, tokenPriceQuery2, {
+    id: '0xC45b3C1c24d5F54E7a2cF288ac668c74Dd507a84'.toLowerCase(),
   })
 }
 

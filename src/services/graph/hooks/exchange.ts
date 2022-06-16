@@ -31,6 +31,7 @@ import {
   getSushiPrice,
   getSymmPairs,
   getSymmPriceCelo,
+  getSymmPriceXdai,
   getTokenDayData,
   getTokenPairs,
   getTokens,
@@ -90,6 +91,14 @@ export function useSymmPriceCelo(swrConfig: SWRConfiguration = undefined) {
   const { chainId } = useActiveWeb3React()
   const shouldFetch = chainId && chainId === ChainId.CELO
   const { data } = useSWR(shouldFetch ? 'symmPriceCelo' : null, () => getSymmPriceCelo(), swrConfig)
+  return data
+}
+
+// @ts-ignore TYPE NEEDS FIXING
+export function useSymmPriceXdai(swrConfig: SWRConfiguration = undefined) {
+  const { chainId } = useActiveWeb3React()
+  const shouldFetch = chainId && chainId === ChainId.XDAI
+  const { data } = useSWR(shouldFetch ? 'symmPriceXdai' : null, () => getSymmPriceXdai(), swrConfig)
   return data
 }
 

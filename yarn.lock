@@ -2942,10 +2942,10 @@
   "resolved" "https://registry.npmjs.org/@sushiswap/trident/-/trident-1.0.0-canary.36.tgz"
   "version" "1.0.0-canary.36"
 
-"@symmetric-v2/farming-core-sdk@^1.0.0":
-  "integrity" "sha512-R7CH+cr8ezKyVyqgWmvR9OIXLUlevmhN6c0g6lIxXuLITCkyFDUvko9qCWIgM7yKP5KTxUmBEbBRj58H/vIsOw=="
-  "resolved" "https://registry.npmjs.org/@symmetric-v2/farming-core-sdk/-/farming-core-sdk-1.0.0.tgz"
-  "version" "1.0.0"
+"@symmetric-v2/farming-core-sdk@^1.0.1":
+  "integrity" "sha512-EUnNWKWp6vG7tKbTBXXhR6/GMPUfLTA/sP3jsjRN2W8q/9Amn2A3xu3uRM6VphAJDIFVxT28DN3ZgctPtKZi5A=="
+  "resolved" "https://registry.npmjs.org/@symmetric-v2/farming-core-sdk/-/farming-core-sdk-1.0.1.tgz"
+  "version" "1.0.1"
   dependencies:
     "@ethersproject/address" "^5.4.0"
     "@ethersproject/bignumber" "^5.4.0"

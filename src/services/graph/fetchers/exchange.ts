@@ -1,4 +1,5 @@
 import { ChainId } from '@sushiswap/core-sdk'
+import { celoTokens } from 'app/config/tokens/celo'
 import { GRAPH_HOST } from 'app/services/graph/constants'
 import {
   dayDatasQuery,
@@ -11,6 +12,7 @@ import {
   tokenDayDatasQuery,
   tokenPairsQuery,
   tokenPriceQuery,
+  tokenPriceQuery2,
   tokenQuery,
   tokensQuery,
   tokenSubsetQuery,
@@ -53,13 +55,86 @@ export const exchangeSymmPrice = async (chainId = ChainId.ETHEREUM, query) =>
   // @ts-ignore TYPE NEEDS FIXING
   pager(`${GRAPH_HOST[chainId]}/subgraphs/name/centfinance/symmetric-celo`, query)
 
+// @ts-ignore TYPE NEEDS FIXING
+export const exchangeTokenPrice = async (chainId = ChainId.ETHEREUM, query, variables) =>
+  // @ts-ignore TYPE NEEDS FIXING
+  pager(`${GRAPH_HOST[chainId]}/subgraphs/name/centfinance/symmetric-celo`, query, variables)
+
 export const getPairs = async (chainId = ChainId.ETHEREUM, variables = undefined, query = pairsQuery) => {
   const { pairs } = await exchange(chainId, query, variables)
   return pairs
 }
+
+// get tokens prices listed on celo.ts
+const tokenPrices = async () => {
+  const prices = await Promise.all(
+    celoTokens.map(async (token) => {
+      let price = 0
+      try {
+        price = await getTokenPriceFromSymmV1(ChainId.CELO, tokenPriceQuery2, { id: token.toLowerCase() })
+        // price = await getTokenPrice(ChainId.CELO, tokenPriceQuery, { id: token.toLowerCase() }) // use sushi
+      } catch (e) {
+        // console.log(e)
+      }
+      return { [token.toLowerCase()]: price }
+    })
+  )
+
+  let priceObj = {}
+  prices.forEach((price) => {
+    priceObj = { ...priceObj, ...price }
+  })
+
+  return priceObj
+}
+
+// get liquidity from a pool
+const getLiquidity = (pool: any, prices: any) => {
+  const poolTokens = pool.tokens
+  const weights = poolTokens.map((token: any) => token.weight)
+  const totalWeight = weights.reduce((total: any, weight: any) => total + Number(weight), 0)
+  let sumWeight = 0
+  let sumValue = 0
+
+  for (let i = 0; i < poolTokens.length; i++) {
+    const token = poolTokens[i]
+    const address = token.address
+
+    if (!prices[address]) {
+      continue
+    }
+    const price = prices[address]
+    const balance = Number(token.balance)
+
+    const value = balance * price
+    const weight = token.weight ? token.weight : 0
+    sumValue = sumValue + Number(value)
+    sumWeight = sumWeight + Number(weight)
+  }
+
+  if (sumWeight > 0) {
+    const liquidity = (sumValue / sumWeight) * totalWeight
+    return liquidity.toString()
+  }
+
+  return '0'
+}
+
 export const getSymmPairs = async (chainId = ChainId.ETHEREUM, variables = undefined, query = pairsSymmQuery) => {
   const { pools } = await exchangeSymm(chainId, pairsSymmQuery)
-  return pools
+
+  // calc totalLiquidity
+  const prices = await tokenPrices()
+  const updatedPools = pools.map((pool: any) => {
+    let poolCopy = { ...pool }
+
+    if (poolCopy.totalLiquidity === '0') {
+      poolCopy.totalLiquidity = getLiquidity(pool, prices)
+    }
+    return poolCopy
+  })
+
+  return updatedPools
 }
 
 // @ts-ignore TYPE NEEDS FIXING
@@ -117,6 +192,13 @@ export const getTokenPrice = async (chainId = ChainId.ETHEREUM, query, variables
 // @ts-ignore TYPE NEEDS FIXING // fetching from V1, need to change when coingecko
 export const getSYMMPrice = async (chainId = ChainId.ETHEREUM, query) => {
   const { tokenPrices } = await exchangeSymmPrice(chainId, query)
+  // console.log('getSYMMPrice', tokenPrices)
+  return tokenPrices[0]?.price
+}
+
+// @ts-ignore TYPE NEEDS FIXING // fetching from V1, need to change when coingecko
+export const getTokenPriceFromSymmV1 = async (chainId = ChainId.ETHEREUM, query, variables) => {
+  const { tokenPrices } = await exchangeTokenPrice(chainId, query, variables)
   // console.log('getSYMMPrice', tokenPrices)
   return tokenPrices[0]?.price
 }

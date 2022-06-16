@@ -63,6 +63,19 @@ export const tokenPriceQuery = gql`
   }
 `
 
+// to get token price from symm v1 pools
+export const tokenPriceQuery2 = gql`
+  query tokenPriceQuery($id: String!) {
+    tokenPrices(first: 1, where: { id: $id }) {
+      id
+      symbol
+      name
+      decimals
+      price
+    }
+  }
+`
+
 export const tokenSYMMPriceQuery = gql`
   query {
     tokenPrices(first: 1, where: { id: "0x8427bd503dd3169ccc9aff7326c15258bc305478" }) {

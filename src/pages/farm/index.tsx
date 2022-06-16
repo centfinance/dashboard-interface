@@ -68,7 +68,7 @@ export default function Farm(): JSX.Element {
             {/* <OnsenFilter /> */}
           </div>
           <FarmList farms={result} term={term} />
-          {chainId && chainId === ChainId.CELO && (
+          {
             <Typography variant="xs" weight={700} className="italic text-center text-secondary">
               {i18n._(t`Users can now bridge back to Celo using a new version of Optics.`)}{' '}
               <ExternalLink
@@ -79,7 +79,7 @@ export default function Farm(): JSX.Element {
                 {i18n._(t`Click for more info on Optics V1 Migration.`)}
               </ExternalLink>
             </Typography>
-          )}
+          }
         </div>
       </TridentBody>
     </>

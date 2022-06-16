@@ -125,17 +125,31 @@ export default function useFarmRewards({ chainId = ChainId.CELO }) {
         if (pool.rewarder != null) {
           const rPerBlock = pool.rewarder.rewardPerSecond * averageBlockTime
           const rPerDay = (pool.rewarder.rewardPerSecond * 86400) / 1e18
-          const reward = {
-            currency:
-              pool.rewarder.rewardToken.toLocaleLowerCase() ===
-              '0x17700282592D6917F6A73D0bF8AcCf4D578c131e'.toLocaleLowerCase()
-                ? CELO_TOKENS.MOO
-                : CELO_TOKENS.ARI,
-            rewardPerBlock: rPerBlock,
-            rewardPerDay: rPerDay,
-            rewardPrice: 0.00001, // TODO: calculate reward price
+          if (chainId === ChainId.CELO) {
+            const reward = {
+              currency:
+                pool.rewarder.rewardToken.toLocaleLowerCase() ===
+                '0x17700282592D6917F6A73D0bF8AcCf4D578c131e'.toLocaleLowerCase()
+                  ? CELO_TOKENS.MOO
+                  : CELO_TOKENS.ARI,
+              rewardPerBlock: rPerBlock,
+              rewardPerDay: rPerDay,
+              rewardPrice: 0.00001, // TODO: calculate reward price
+            }
+            rewards[1] = reward
+          } else {
+            const reward = {
+              currency:
+                pool.rewarder.rewardToken.toLocaleLowerCase() ===
+                '0x9C58BAcC331c9aa871AFD802DB6379a98e80CEdb'.toLocaleLowerCase()
+                  ? XDAI_TOKENS.GNO
+                  : CELO_TOKENS.ARI,
+              rewardPerBlock: rPerBlock,
+              rewardPerDay: rPerDay,
+              rewardPrice: 0.00001, // TODO: calculate reward price
+            }
+            rewards[1] = reward
           }
-          rewards[1] = reward
         }
       }
       return rewards

@@ -18,6 +18,7 @@ const SUBDOMAIN_CHAIN_ID: { [subdomain: string]: string } = {
   [ChainSubdomain.HARMONY]: '1666600000',
   [ChainSubdomain.OKEX]: '66',
   [ChainSubdomain.CELO]: '42220',
+  [ChainSubdomain.GNOSIS]: '100',
   [ChainSubdomain.PALM]: '11297108109',
   [ChainSubdomain.MOONRIVER]: '1285',
   [ChainSubdomain.FUSE]: '122',

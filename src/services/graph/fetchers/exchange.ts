@@ -24,14 +24,14 @@ import { pager } from './pager'
 
 export const EXCHANGE = {
   [ChainId.ETHEREUM]: 'sushiswap/exchange',
-  [ChainId.XDAI]: 'sushiswap/xdai-exchange',
+  [ChainId.XDAI]: 'centfinance/symmetric-v2-gnosis',
   [ChainId.MATIC]: 'sushiswap/matic-exchange',
   [ChainId.FANTOM]: 'sushiswap/fantom-exchange',
   [ChainId.BSC]: 'sushiswap/bsc-exchange',
   [ChainId.HARMONY]: 'sushiswap/harmony-exchange',
   [ChainId.AVALANCHE]: 'sushiswap/avalanche-exchange',
   [ChainId.CELO]: 'jiro-ono/sushitestsubgraph',
-  // [ChainId.CELO]: 'centfinance/symmetricv1celo',
+  [ChainId.CELO]: 'centfinance/symmetric-v2-celo',
   [ChainId.ARBITRUM]: 'sushiswap/arbitrum-exchange',
   [ChainId.MOONRIVER]: 'sushiswap/moonriver-exchange',
   [ChainId.OKEX]: 'okex-exchange/oec',
@@ -121,7 +121,7 @@ const getLiquidity = (pool: any, prices: any) => {
 }
 
 export const getSymmPairs = async (chainId = ChainId.ETHEREUM, variables = undefined, query = pairsSymmQuery) => {
-  const { pools } = await exchangeSymm(chainId, pairsSymmQuery)
+  const { pools } = await exchange(chainId, pairsSymmQuery)
 
   // calc totalLiquidity
   const prices = await tokenPrices()

@@ -1,3 +1,4 @@
+import { Chain } from '@ethereumjs/common'
 import { ChainId } from '@symmetric-v2/farming-core-sdk'
 
 const Arbitrum = 'https://raw.githubusercontent.com/sushiswap/icons/master/network/arbitrum.jpg'
@@ -56,4 +57,5 @@ export const NETWORK_ICON: Record<number, string> = {
 
 export const NETWORK_LABEL: Record<number, string> = {
   [ChainId.CELO]: 'Celo',
+  [ChainId.XDAI]: 'Gnosis',
 }

@@ -1,6 +1,5 @@
 import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
-import { ChainId } from '@sushiswap/core-sdk'
 // import Button from 'app/components/Button'
 import ExternalLink from 'app/components/ExternalLink'
 import Search from 'app/components/Search'

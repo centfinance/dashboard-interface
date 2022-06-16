@@ -39,9 +39,10 @@ export default function useFarmRewards({ chainId = ChainId.CELO }) {
 
   const averageBlockTime = useAverageBlockTime({ chainId })
   const symmAddressCELO = '0x8427bD503dd3169cCC9aFF7326c15258Bc305478'
+  const symmAddressGNO = '0xC45b3C1c24d5F54E7a2cF288ac668c74Dd507a84'
 
   const SYMM: ChainTokenMap = {
-    // [ChainId.XDAI]: new Token(ChainId.XDAI, SUSHI_ADDRESS[ChainId.XDAI], 18, 'SUSHI', 'SushiToken'),
+    [ChainId.XDAI]: new Token(ChainId.XDAI, symmAddressGNO, 18, 'SYMM', 'SymmToken'),
     [ChainId.CELO]: new Token(ChainId.CELO, symmAddressCELO, 18, 'SYMM', 'SymmToken'),
   }
 
@@ -76,7 +77,7 @@ export default function useFarmRewards({ chainId = ChainId.CELO }) {
 
       // This is the SYMM reward from symmCHEF if any
       const defaultReward = {
-        currency: SYMM[ChainId.CELO],
+        currency: SYMM[chainId],
         rewardPerBlock,
         rewardPerDay: rewardPerBlock * blocksPerDay,
         rewardPrice: symmPriceCelo,
@@ -91,29 +92,7 @@ export default function useFarmRewards({ chainId = ChainId.CELO }) {
         const symmPerSecond = ((pool.allocPoint / pool.symmChef.totalAllocPoint) * pool.symmChef.symmPerSecond) / 1e18
         const symmPerBlock = symmPerSecond * averageBlockTime
         const symmPerDay = symmPerBlock * blocksPerDay
-        const totalAllocPointRewarder = 100 // Need to fix subgraph to fetch this from chain. This needs to be 100 anyway
 
-        const rewardPerSecond =
-          ((pool.rewarderAllocPoint / totalAllocPointRewarder) * pool.symmChef.symmPerSecond) / 1e18 // External Rewards needs allocation properly like 80/20
-
-        const rewardPerBlock = rewardPerSecond * averageBlockTime
-
-        const rewardPerDay = rewardPerBlock * blocksPerDay
-
-        const reward = {
-          [ChainId.XDAI]: {
-            currency: XDAI_TOKENS.GNO,
-            rewardPerBlock,
-            rewardPerDay: rewardPerSecond * 86400,
-            rewardPrice: gnoPrice,
-          },
-          [ChainId.CELO]: {
-            currency: NATIVE[ChainId.CELO],
-            rewardPerBlock,
-            rewardPerDay: rewardPerSecond * 86400,
-            rewardPrice: celoPrice,
-          },
-        }
         // SYMM REWARDS
         // @ts-ignore TYPE NEEDS FIXING
         rewards[0] = {
@@ -123,8 +102,10 @@ export default function useFarmRewards({ chainId = ChainId.CELO }) {
         }
 
         if (pool.rewarder != null) {
-          const rPerBlock = pool.rewarder.rewardPerSecond * averageBlockTime
-          const rPerDay = (pool.rewarder.rewardPerSecond * 86400) / 1e18
+          const rPerSecond =
+            ((pool.rewarderAllocPoint / pool.rewarder.totalAllocPoint) * pool.rewarder.rewardPerSecond) / 1e18
+          const rPerBlock = rPerSecond * averageBlockTime
+          const rPerDay = rPerBlock * blocksPerDay
           if (chainId === ChainId.CELO) {
             const reward = {
               currency:

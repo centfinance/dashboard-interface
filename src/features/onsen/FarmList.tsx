@@ -72,7 +72,7 @@ const FarmList = ({ farms, term }) => {
           </div>
           <div className={classNames(TABLE_TR_TH_CLASSNAME(2, 4))}>
             <Typography variant="sm" weight={700}>
-              {i18n._(t`Rewards`)}
+              {i18n._(t`Rewards (24 hours)`)}
             </Typography>
           </div>
           <div

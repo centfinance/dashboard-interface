@@ -1,4 +1,4 @@
-import { ChainId, NATIVE } from '@sushiswap/core-sdk'
+import { NATIVE } from '@sushiswap/core-sdk'
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core'
 import Container from 'app/components/Container'
 import { NAV_CLASS } from 'app/components/Header/styles'

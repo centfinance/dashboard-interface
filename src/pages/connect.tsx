@@ -1,6 +1,5 @@
 import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
-import { ChainId } from '@sushiswap/core-sdk'
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core'
 import Button from 'app/components/Button'
 import Container from 'app/components/Container'

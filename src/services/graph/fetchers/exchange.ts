@@ -1,5 +1,6 @@
 import { ChainId } from '@sushiswap/core-sdk'
 import { celoTokens } from 'app/config/tokens/celo'
+import { gnosisTokens } from 'app/config/tokens/xdai'
 import { GRAPH_HOST } from 'app/services/graph/constants'
 import {
   dayDatasQuery,
@@ -58,7 +59,13 @@ export const exchangeSymmPrice = async (chainId = ChainId.ETHEREUM, query) =>
 // @ts-ignore TYPE NEEDS FIXING
 export const exchangeTokenPrice = async (chainId = ChainId.ETHEREUM, query, variables) =>
   // @ts-ignore TYPE NEEDS FIXING
-  pager(`${GRAPH_HOST[chainId]}/subgraphs/name/centfinance/symmetric-celo`, query, variables)
+  pager(
+    `${GRAPH_HOST[chainId]}/subgraphs/name/centfinance/${
+      chainId === ChainId.CELO ? 'symmetric-celo' : 'symmetricv1gnosis'
+    }`,
+    query,
+    variables
+  )
 
 export const getPairs = async (chainId = ChainId.ETHEREUM, variables = undefined, query = pairsQuery) => {
   const { pairs } = await exchange(chainId, query, variables)
@@ -66,12 +73,13 @@ export const getPairs = async (chainId = ChainId.ETHEREUM, variables = undefined
 }
 
 // get tokens prices listed on celo.ts
-const tokenPrices = async () => {
+const tokenPrices = async (chainId = ChainId.CELO) => {
+  const tokens = chainId === ChainId.CELO ? celoTokens : gnosisTokens
   const prices = await Promise.all(
-    celoTokens.map(async (token) => {
+    tokens.map(async (token) => {
       let price = 0
       try {
-        price = await getTokenPriceFromSymmV1(ChainId.CELO, tokenPriceQuery2, { id: token.toLowerCase() })
+        price = await getTokenPriceFromSymmV1(chainId, tokenPriceQuery2, { id: token.toLowerCase() })
         // price = await getTokenPrice(ChainId.CELO, tokenPriceQuery, { id: token.toLowerCase() }) // use sushi
       } catch (e) {
         // console.log(e)
@@ -98,7 +106,7 @@ const getLiquidity = (pool: any, prices: any) => {
 
   for (let i = 0; i < poolTokens.length; i++) {
     const token = poolTokens[i]
-    const address = token.address
+    const address = token.address.toLowerCase()
 
     if (!prices[address]) {
       continue
@@ -124,7 +132,8 @@ export const getSymmPairs = async (chainId = ChainId.ETHEREUM, variables = undef
   const { pools } = await exchange(chainId, pairsSymmQuery)
 
   // calc totalLiquidity
-  const prices = await tokenPrices()
+  const prices = await tokenPrices(chainId)
+
   const updatedPools = pools.map((pool: any) => {
     let poolCopy = { ...pool }
 
@@ -287,14 +296,14 @@ export const getSushiPrice = async (variables = {}) => {
 }
 
 export const getGnoPrice = async () => {
-  return getTokenPrice(ChainId.XDAI, tokenPriceQuery, {
-    id: '0x9c58bacc331c9aa871afd802db6379a98e80cedb',
+  return await getTokenPriceFromSymmV1(ChainId.XDAI, tokenPriceQuery2, {
+    id: '0x9c58bacc331c9aa871afd802db6379a98e80cedb'.toLowerCase(),
   })
 }
 
 export const getSymmPriceXdai = async () => {
-  return getTokenPrice(ChainId.XDAI, tokenPriceQuery, {
-    id: '0xC45b3C1c24d5F54E7a2cF288ac668c74Dd507a84',
+  return await getTokenPriceFromSymmV1(ChainId.XDAI, tokenPriceQuery2, {
+    id: '0xC45b3C1c24d5F54E7a2cF288ac668c74Dd507a84'.toLowerCase(),
   })
 }
 
@@ -313,6 +322,18 @@ export const getAvaxPrice = async (variables = undefined) => {
 export const getCeloPrice = async () => {
   return getTokenPrice(ChainId.CELO, tokenPriceQuery, {
     id: '0x471ece3750da237f93b8e339c536989b8978a438',
+  })
+}
+
+export const getMooPrice = async () => {
+  return getTokenPriceFromSymmV1(ChainId.CELO, tokenPriceQuery2, {
+    id: '0x17700282592D6917F6A73D0bF8AcCf4D578c131e'.toLowerCase(),
+  })
+}
+
+export const getAriPrice = async () => {
+  return getTokenPriceFromSymmV1(ChainId.CELO, tokenPriceQuery2, {
+    id: '0x20677d4f3d0F08e735aB512393524A3CfCEb250C'.toLowerCase(),
   })
 }
 

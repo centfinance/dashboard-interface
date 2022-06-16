@@ -1,19 +1,19 @@
-import { getAddress } from '@ethersproject/address'
-import { ChainId, ChainTokenMap, Currency, NATIVE, Token } from '@sushiswap/core-sdk'
+import { ChainId, ChainTokenMap, Currency, Token } from '@sushiswap/core-sdk'
 import { CELO_TOKENS, XDAI_TOKENS } from 'app/config/tokens'
-import { Feature } from 'app/enums'
 import { Chef, PairType } from 'app/features/onsen/enum'
 import { usePositions } from 'app/features/onsen/hooks'
-import { featureEnabled } from 'app/functions'
 import {
+  useARIPrice,
   useAverageBlockTime,
   useCeloPrice,
   useEthPrice,
   useFarms,
   useGnoPrice,
+  useMooPrice,
   useOneDayBlock,
   useSymmPairs,
   useSymmPriceCelo,
+  useSymmPriceXdai,
 } from 'app/services/graph'
 import toLower from 'lodash/toLower'
 import { useMemo } from 'react'
@@ -46,11 +46,14 @@ export default function useFarmRewards({ chainId = ChainId.CELO }) {
     [ChainId.CELO]: new Token(ChainId.CELO, symmAddressCELO, 18, 'SYMM', 'SymmToken'),
   }
 
-  const [ethPrice, gnoPrice, celoPrice, symmPriceCelo] = [
+  const [ethPrice, gnoPrice, celoPrice, symmPriceCelo, symmPriceXdai, mooPrice, ariPrice] = [
     useEthPrice(),
     useGnoPrice(),
     useCeloPrice(),
     useSymmPriceCelo(),
+    useSymmPriceXdai(),
+    useMooPrice(),
+    useARIPrice(),
   ]
 
   const blocksPerDay = 86400 / Number(averageBlockTime)
@@ -80,7 +83,7 @@ export default function useFarmRewards({ chainId = ChainId.CELO }) {
         currency: SYMM[chainId],
         rewardPerBlock,
         rewardPerDay: rewardPerBlock * blocksPerDay,
-        rewardPrice: symmPriceCelo,
+        rewardPrice: chainId === ChainId.CELO ? symmPriceCelo : symmPriceXdai,
       }
 
       let rewards: { currency: Currency; rewardPerBlock: number; rewardPerDay: number; rewardPrice: number }[] = [
@@ -115,7 +118,11 @@ export default function useFarmRewards({ chainId = ChainId.CELO }) {
                   : CELO_TOKENS.ARI,
               rewardPerBlock: rPerBlock,
               rewardPerDay: rPerDay,
-              rewardPrice: 0.00001, // TODO: calculate reward price
+              rewardPrice:
+                (pool.rewarder.rewardToken.toLocaleLowerCase() ===
+                '0x17700282592D6917F6A73D0bF8AcCf4D578c131e'.toLocaleLowerCase()
+                  ? mooPrice
+                  : ariPrice) || 0.00001,
             }
             rewards[1] = reward
           } else {
@@ -127,7 +134,7 @@ export default function useFarmRewards({ chainId = ChainId.CELO }) {
                   : CELO_TOKENS.ARI,
               rewardPerBlock: rPerBlock,
               rewardPerDay: rPerDay,
-              rewardPrice: 0.00001, // TODO: calculate reward price
+              rewardPrice: gnoPrice || 0.00001,
             }
             rewards[1] = reward
           }
@@ -167,7 +174,8 @@ export default function useFarmRewards({ chainId = ChainId.CELO }) {
     const rewardAprPerHour = roiPerBlock * blocksPerHour
     const rewardAprPerDay = rewardAprPerHour * 24
     const rewardAprPerMonth = rewardAprPerDay * 30
-    const rewardAprPerYear = (symmPriceCelo * rewards[0].rewardPerDay * 365) / tvl
+    const rewardAprPerYear =
+      ((chainId === ChainId.CELO ? symmPriceCelo : symmPriceXdai) * rewards[0].rewardPerDay * 365) / tvl
     const tokenRewardAprPerYear = (rewards[1]?.rewardPrice * rewards[1]?.rewardPerDay * 365) / tvl || 0
 
     const roiPerHour = rewardAprPerHour + feeApyPerHour

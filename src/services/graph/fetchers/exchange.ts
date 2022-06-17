@@ -58,8 +58,8 @@ export const exchangeSymmPrice = async (chainId = ChainId.ETHEREUM, query) =>
 
 // @ts-ignore TYPE NEEDS FIXING
 export const exchangeTokenPrice = async (chainId = ChainId.ETHEREUM, query, variables) =>
-  // @ts-ignore TYPE NEEDS FIXING
   pager(
+    // @ts-ignore TYPE NEEDS FIXING
     `${GRAPH_HOST[chainId]}/subgraphs/name/centfinance/${
       chainId === ChainId.CELO ? 'symmetric-celo' : 'symmetricv1gnosis'
     }`,

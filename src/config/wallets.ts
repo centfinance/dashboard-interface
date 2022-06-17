@@ -50,7 +50,7 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     name: 'MetaMask',
     iconName: 'metamask.png',
     description: 'Open in MetaMask app.',
-    href: 'https://metamask.app.link/dapp/app.sushi.com',
+    href: 'https://metamask.app.link/dapp/farms.symm.fi',
     color: '#E8831D',
     mobile: true,
     mobileOnly: true,
@@ -106,10 +106,12 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
   WALLET_LINK: {
     connector: async () => {
       const WalletLinkConnector = (await import('@web3-react/walletlink-connector')).WalletLinkConnector
+      const cId = ChainId.XDAI ? ChainId.XDAI : ChainId.CELO
       return new WalletLinkConnector({
-        url: RPC[ChainId.ETHEREUM],
-        appName: 'SushiSwap',
-        appLogoUrl: 'https://raw.githubusercontent.com/sushiswap/art/master/sushi/logo-256x256.png',
+        url: RPC[cId],
+        appName: 'Symmetric',
+        appLogoUrl:
+          'https://raw.githubusercontent.com/centfinance/assets/master/blockchains/ethereum/assets/0x57dB3FfCa78dBbE0eFa0EC745D55f62aa0Cbd345/logo.png',
         darkMode: true,
       })
     },

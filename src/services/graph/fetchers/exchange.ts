@@ -57,15 +57,15 @@ export const exchangeSymmPrice = async (chainId = ChainId.ETHEREUM, query) =>
   pager(`${GRAPH_HOST[chainId]}/subgraphs/name/centfinance/symmetric-celo`, query)
 
 // @ts-ignore TYPE NEEDS FIXING
-export const exchangeTokenPrice = async (chainId = ChainId.CELO, query, variables) => {
-  // @ts-ignore TYPE NEEDS FIXING
+export const exchangeTokenPrice = async (chainId = ChainId.ETHEREUM, query, variables) =>
   pager(
     // @ts-ignore TYPE NEEDS FIXING
-    `${GRAPH_HOST[chainId]}/subgraphs/name/centfinance/${ChainId.CELO ? 'symmetric-celo' : 'symmetricv1gnosis'}`,
+    `${GRAPH_HOST[chainId]}/subgraphs/name/centfinance/${
+      chainId === ChainId.CELO ? 'symmetric-celo' : 'symmetricv1gnosis'
+    }`,
     query,
     variables
   )
-}
 
 export const getPairs = async (chainId = ChainId.ETHEREUM, variables = undefined, query = pairsQuery) => {
   const { pairs } = await exchange(chainId, query, variables)

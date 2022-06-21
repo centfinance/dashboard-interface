@@ -67,18 +67,6 @@ export default function Farm(): JSX.Element {
             {/* <OnsenFilter /> */}
           </div>
           <FarmList farms={result} term={term} />
-          {
-            <Typography variant="xs" weight={700} className="italic text-center text-secondary">
-              {i18n._(t`Users can now bridge back to Celo using a new version of Optics.`)}{' '}
-              <ExternalLink
-                color="symmetric"
-                id={`celo-optics-info-link`}
-                href="https://medium.com/@0xJiro/celo-farms-update-migrating-to-the-optics-v2-bridge-e8075d1c9ea"
-              >
-                {i18n._(t`Click for more info on Optics V1 Migration.`)}
-              </ExternalLink>
-            </Typography>
-          }
         </div>
       </TridentBody>
     </>

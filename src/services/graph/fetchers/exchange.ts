@@ -20,6 +20,7 @@ import {
   tokenSYMMPriceQuery,
   transactionsQuery,
 } from 'app/services/graph/queries'
+import BigNumber from 'bignumber.js'
 
 import { pager } from './pager'
 
@@ -84,7 +85,7 @@ const tokenPrices = async (chainId = ChainId.CELO) => {
       } catch (e) {
         // console.log(e)
       }
-      return { [token.toLowerCase()]: price }
+      return { [token.toLowerCase()]: price ? (+price).toFixed(6) : '0' }
     })
   )
 
@@ -93,7 +94,14 @@ const tokenPrices = async (chainId = ChainId.CELO) => {
     priceObj = { ...priceObj, ...price }
   })
 
+  console.log(priceObj)
+
   return priceObj
+}
+
+export function bnum(val: string | number | BigNumber): BigNumber {
+  const number = typeof val === 'string' ? val : val ? val.toString() : '0'
+  return new BigNumber(number)
 }
 
 // get liquidity from a pool
@@ -101,8 +109,8 @@ const getLiquidity = (pool: any, prices: any) => {
   const poolTokens = pool.tokens
   const weights = poolTokens.map((token: any) => token.weight)
   const totalWeight = weights.reduce((total: any, weight: any) => total + Number(weight), 0)
-  let sumWeight = 0
-  let sumValue = 0
+  let sumWeight = bnum(0)
+  let sumValue = bnum(0)
 
   for (let i = 0; i < poolTokens.length; i++) {
     const token = poolTokens[i]
@@ -114,16 +122,20 @@ const getLiquidity = (pool: any, prices: any) => {
     const price = prices[address]
     const balance = Number(token.balance)
 
-    const value = balance * price
+    const value = bnum(balance).times(price)
     const weight = token.weight ? token.weight : 0
-    sumValue = sumValue + Number(value)
-    sumWeight = sumWeight + Number(weight)
+    sumValue = sumValue.plus(value)
+    sumWeight = sumWeight.plus(weight)
   }
 
-  if (sumWeight > 0) {
-    const liquidity = (sumValue / sumWeight) * totalWeight
+  if (sumWeight.gt(0)) {
+    const liquidity = sumValue.dividedBy(sumWeight).times(totalWeight)
     return liquidity.toString()
   }
+  // if (sumWeight > 0) {
+  //   const liquidity = (sumValue / sumWeight) * totalWeight
+  //   return liquidity.toString()
+  // }
 
   return '0'
 }

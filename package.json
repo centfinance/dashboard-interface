@@ -222,6 +222,7 @@
     "not op_mini all"
   ],
   "dependencies": {
+    "bignumber.js": "^9.0.2",
     "ethereum-blockies-base64": "^1.0.2"
   }
 }

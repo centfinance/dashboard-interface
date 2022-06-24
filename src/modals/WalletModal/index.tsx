@@ -5,7 +5,7 @@ import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import AccountDetails from 'app/components/AccountDetails'
 import Button from 'app/components/Button'
-import ExternalLink from 'app/components/ExternalLink'
+// import ExternalLink from 'app/components/ExternalLink'
 import HeadlessUiModal from 'app/components/Modal/HeadlessUIModal'
 import Typography from 'app/components/Typography'
 import { injected, SUPPORTED_WALLETS } from 'app/config/wallets'
@@ -249,16 +249,6 @@ const WalletModal: FC<WalletModal> = ({ pendingTransactions, confirmedTransactio
           ) : (
             <div className="grid grid-cols-1 gap-4 overflow-y-auto md:grid-cols-2">{options}</div>
           )}
-          <div className="flex justify-center">
-            <Typography variant="xs" className="text-secondary" component="span">
-              {i18n._(t`New to Ethereum?`)}{' '}
-              <Typography variant="xs" className="text-blue" component="span">
-                <ExternalLink href="https://ethereum.org/wallets/" color="blue">
-                  {i18n._(t`Learn more about wallets`)}
-                </ExternalLink>
-              </Typography>
-            </Typography>
-          </div>
         </div>
       )}
     </HeadlessUiModal.Controlled>

@@ -8,7 +8,7 @@ interface BackgroundProps {
 }
 
 const backgrounds = {
-  dashboard: '/images/analytics/analytics-background-dashboard.jpg',
+  dashboard: 'https://symmetric.finance/wp-content/uploads/2018/10/docs-bg.png',
   bar: '/images/analytics/analytics-background-bar.jpg',
   farms: '/images/analytics/analytics-background-farms.jpg',
   pool: `/images/analytics/analytics-background-pool.svg`,

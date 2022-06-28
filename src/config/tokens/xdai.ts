@@ -5,6 +5,7 @@ export const USDT = new Token(ChainId.XDAI, '0x4ECaBa5870353805a9F068101A40E0f32
 export const WBTC = new Token(ChainId.XDAI, '0x8e5bBbb09Ed1ebdE8674Cda39A0c169401db4252', 8, 'WBTC', 'Wrapped Bitcoin')
 export const WETH = new Token(ChainId.XDAI, '0x6A023CCd1ff6F2045C3309768eAd9E68F978f6e1', 18, 'WETH', 'Wrapped Ether')
 export const GNO = new Token(ChainId.XDAI, '0x9C58BAcC331c9aa871AFD802DB6379a98e80CEdb', 18, 'GNO', 'Gnosis Token')
+export const SYMM = new Token(ChainId.CELO, '0xC45b3C1c24d5F54E7a2cF288ac668c74Dd507a84', 18, 'SYMM', 'SYMM Token')
 
 export const gnosisTokens = [
   '0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83',

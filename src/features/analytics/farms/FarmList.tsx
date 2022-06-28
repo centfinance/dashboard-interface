@@ -50,14 +50,14 @@ function FarmListName({ pair }: FarmListNameProps): JSX.Element {
   const chainId = Number(router.query.chainId)
   const token0 = new Token(
     chainId,
-    getAddress(pair?.token0?.id),
+    getAddress(pair?.token0),
     Number(pair?.token0?.decimals) || 18,
     pair?.token0?.symbol,
     pair?.token0?.name
   )
   const token1 = new Token(
     chainId,
-    getAddress(pair?.token1?.id),
+    getAddress(pair?.token1),
     Number(pair?.token1?.decimals) || 18,
     pair?.token1?.symbol,
     pair?.token1?.name

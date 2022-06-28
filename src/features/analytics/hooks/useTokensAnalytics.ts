@@ -6,13 +6,19 @@ export default function useTokensAnalytics({ chainId = ChainId.ETHEREUM }) {
   const [loadState, setLoadState] = useState<'loading' | 'initial' | 'loaded'>('loading')
 
   const block1d = useOneDayBlock({ chainId })
+  console.log('TOKENS::::')
+  console.log(block1d)
   const block1w = useOneWeekBlock({ chainId })
 
   const nativePrice = useNativePrice({ chainId })
+  console.log(nativePrice)
   const nativePrice1d = useNativePrice({ chainId, variables: { block: block1d }, shouldFetch: !!block1d })
+  console.log(nativePrice1d)
   const nativePrice1w = useNativePrice({ chainId, variables: { block: block1w }, shouldFetch: !!block1w })
+  console.log(nativePrice1w)
 
   const tokensInitial = useTokens({ chainId, variables: { first: 200 } })
+  console.log(tokensInitial)
   const tokens1dInitial = useTokens({
     chainId,
     variables: { first: 200, block: block1d },
@@ -52,21 +58,21 @@ export default function useTokensAnalytics({ chainId = ChainId.ETHEREUM }) {
 
         return {
           token: {
-            id: token.id,
+            id: token.address,
             symbol: token.symbol,
             name: token.name,
           },
-          liquidity: token.liquidity * token.derivedETH * nativePrice,
-          volume1d: token.volumeUSD - token1d.volumeUSD,
-          volume1w: token.volumeUSD - token1w.volumeUSD,
-          price: token.derivedETH * nativePrice,
-          change1d: ((token.derivedETH * nativePrice) / (token1d.derivedETH * nativePrice1d)) * 100 - 100,
-          change1w: ((token.derivedETH * nativePrice) / (token1w.derivedETH * nativePrice1w)) * 100 - 100,
-          graph: token.dayData
-            .slice(0)
-            .reverse()
-            // @ts-ignore TYPE NEEDS FIXING
-            .map((day, i) => ({ x: i, y: Number(day.priceUSD) })),
+          liquidity: token.balance * nativePrice, // USD price ??
+          // volume1d: token.volumeUSD - token1d.volumeUSD,
+          // volume1w: token.volumeUSD - token1w.volumeUSD,
+          price: token.balance * nativePrice,
+          change1d: ((token.balance * nativePrice) / (token1d.balance * nativePrice1d)) * 100 - 100,
+          change1w: ((token.balance * nativePrice) / (token1w.balance * nativePrice1w)) * 100 - 100,
+          // graph: token.dayData
+          //   .slice(0)
+          //   .reverse()
+          //   // @ts-ignore TYPE NEEDS FIXING
+          //   .map((day, i) => ({ x: i, y: Number(day.priceUSD) })),
         }
       }),
     [

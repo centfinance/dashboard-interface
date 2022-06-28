@@ -12,7 +12,7 @@ import { LegacyTransactions } from 'app/features/transactions/Transactions'
 import { getExplorerLink } from 'app/functions/explorer'
 import { formatNumber, shortenAddress } from 'app/functions/format'
 import useCopyClipboard from 'app/hooks/useCopyClipboard'
-import { useNativePrice, useOneDayBlock, usePairDayData, useSushiPairs, useTwoDayBlock } from 'app/services/graph'
+import { useNativePrice, useOneDayBlock, usePairDayData, useSymmPairs, useTwoDayBlock } from 'app/services/graph'
 import { times } from 'lodash'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -50,13 +50,13 @@ export default function Pair() {
   const block1d = useOneDayBlock({ chainId, shouldFetch: !!chainId })
   const block2d = useTwoDayBlock({ chainId, shouldFetch: !!chainId })
 
-  const pair = useSushiPairs({ chainId, variables: { where: { id } }, shouldFetch: !!chainId })?.[0]
-  const pair1d = useSushiPairs({
+  const pair = useSymmPairs({ chainId, variables: { where: { id } }, shouldFetch: !!chainId })?.[0]
+  const pair1d = useSymmPairs({
     chainId,
     variables: { block: block1d, where: { id } },
     shouldFetch: !!chainId && !!block1d,
   })?.[0]
-  const pair2d = useSushiPairs({
+  const pair2d = useSymmPairs({
     chainId,
     variables: { block: block2d, where: { id } },
     shouldFetch: !!chainId && !!block2d,

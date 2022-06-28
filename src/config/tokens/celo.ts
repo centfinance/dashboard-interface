@@ -18,6 +18,7 @@ export const WBTC = new Token(ChainId.CELO, '0xBAAB46E28388d2779e6E31Fd00cF0e5Ad
 export const USDC = new Token(ChainId.CELO, '0xef4229c8c3250C675F21BCefa42f58EfbfF6002a', 6, 'USDC', 'USD Coin')
 export const MOO = new Token(ChainId.CELO, '0x17700282592D6917F6A73D0bF8AcCf4D578c131e', 18, 'MOO', 'Moola Token')
 export const ARI = new Token(ChainId.CELO, '0x20677d4f3d0F08e735aB512393524A3CfCEb250C', 18, 'ARI', 'ARI Token')
+export const SYMM = new Token(ChainId.CELO, '0x8427bD503dd3169cCC9aFF7326c15258Bc305478', 18, 'SYMMv2', 'SYMM')
 
 export const celoTokens = [
   '0x64dEFa3544c695db8c535D289d843a189aa26b98',

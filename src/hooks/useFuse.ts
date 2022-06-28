@@ -23,6 +23,8 @@ function useFuse<T = any>({ data, options }: UseFusePayload<T>) {
   const reset = useCallback(() => setTerm(''), [])
 
   return useMemo(() => {
+    console.log('FUSE:')
+    console.log(data)
     const fuse = new Fuse<T>(data || [], options)
     const result = fuzzySearch<T>({ fuse, data, term })
 

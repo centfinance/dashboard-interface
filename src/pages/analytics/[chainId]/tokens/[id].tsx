@@ -49,7 +49,7 @@ const chartTimespans = [
 export default function TokenPage() {
   const router = useRouter()
   const chainId = Number(router.query.chainId)
-  const id = (router.query.id as string)?.toLowerCase()
+  const address = (router.query.id as string)?.toLowerCase()
 
   const [isCopied, setCopied] = useCopyClipboard()
 
@@ -61,29 +61,29 @@ export default function TokenPage() {
   const nativePrice = useNativePrice({ chainId })
   const nativePrice1d = useNativePrice({ chainId, variables: { block: block1d }, shouldFetch: !!block1d })
 
-  const token = useTokens({ chainId, variables: { where: { id } }, shouldFetch: !!id })?.[0]
+  const token = useTokens({ chainId, variables: { where: { address } }, shouldFetch: !!address })?.[0]
   const token1d = useTokens({
     chainId,
-    variables: { block: block1d, where: { id } },
-    shouldFetch: !!id && !!block1d,
+    variables: { block: block1d, where: { address } },
+    shouldFetch: !!address && !!block1d,
   })?.[0]
   const token2d = useTokens({
     chainId,
-    variables: { block: block2d, where: { id } },
-    shouldFetch: !!id && !!block2d,
+    variables: { block: block2d, where: { address } },
+    shouldFetch: !!address && !!block2d,
   })?.[0]
 
   // Token Pairs
-  const tokenPairs = useTokenPairs({ chainId, variables: { id } })
+  const tokenPairs = useTokenPairs({ chainId, variables: { address } })
   const tokenPairs1d = useTokenPairs({
     chainId,
-    variables: { id, block: block1d },
-    shouldFetch: !!id && !!block1d,
+    variables: { address, block: block1d },
+    shouldFetch: !!address && !!block1d,
   })
   const tokenPairs1w = useTokenPairs({
     chainId,
-    variables: { id, block: block1w },
-    shouldFetch: !!id && !!block1w,
+    variables: { address, block: block1w },
+    shouldFetch: !!address && !!block1w,
   })
 
   const tokenPairsFormatted = useMemo(
@@ -124,8 +124,8 @@ export default function TokenPage() {
   // The Chart
   const tokenDayData = useTokenDayData({
     chainId,
-    variables: { where: { token: id.toLowerCase() } },
-    shouldFetch: !!id && !!chainId,
+    variables: { where: { token: address.toLowerCase() } },
+    shouldFetch: !!address && !!chainId,
   })
 
   const chartData = useMemo(
@@ -146,7 +146,7 @@ export default function TokenPage() {
   )
 
   const currency = token
-    ? new Token(chainId, getAddress(id), Number(token?.decimals) || 18, token?.symbol, token?.name)
+    ? new Token(chainId, getAddress(address), Number(token?.decimals) || 18, token?.symbol, token?.name)
     : undefined
 
   const totalSupply = useTotalSupply(currency)
@@ -181,8 +181,8 @@ export default function TokenPage() {
                 <div className="text-lg font-bold text-high-emphesis">{token?.name}</div>
               </div>
               <div className="rounded-3xl text-sm bg-[#414a6c] py-px px-2 flex items-center space-x-1">
-                <div>{shortenAddress(id)}</div>
-                <div className="cursor-pointer" onClick={() => setCopied(id)}>
+                <div>{shortenAddress(address)}</div>
+                <div className="cursor-pointer" onClick={() => setCopied(address)}>
                   {isCopied ? <CheckIcon height={16} /> : <DuplicateIcon height={16} className="scale-x-[-1]" />}
                 </div>
               </div>
@@ -251,12 +251,14 @@ export default function TokenPage() {
                 <td>{token?.name}</td>
                 <td>{token?.symbol}</td>
                 <td>
-                  <div className="w-11/12 overflow-hidden cursor-pointer overflow-ellipsis whitespace-nowrap">{id}</div>
+                  <div className="w-11/12 overflow-hidden cursor-pointer overflow-ellipsis whitespace-nowrap">
+                    {address}
+                  </div>
                 </td>
                 <td>
                   <a
                     className="flex flex-row items-center justify-end space-x-1 text-purple"
-                    href={getExplorerLink(chainId, id, 'token')}
+                    href={getExplorerLink(chainId, address, 'token')}
                     target="_blank"
                     rel="noreferrer"
                   >

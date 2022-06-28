@@ -1,4 +1,4 @@
-import { SwitchVerticalIcon } from '@heroicons/react/outline'
+import { SwitchVerticalIcon, TrendingUpIcon } from '@heroicons/react/outline'
 import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
 import { Feature } from 'app/enums'
@@ -58,6 +58,34 @@ const useMenu: UseMenu = () => {
       }
       menu.push(farmItems)
     }
+    let analyticsMenu: MenuItem = {
+      key: 'analytics',
+      title: i18n._(t`Analytics`),
+      icon: <TrendingUpIcon width={20} />,
+      items: [
+        {
+          key: 'dashboard',
+          title: 'Dashboard',
+          link: `/analytics/${chainId}/dashboard`,
+        },
+        {
+          key: 'symm',
+          title: 'SYMM',
+          link: '/analytics/symm',
+        },
+        {
+          key: 'tokens',
+          title: 'Tokens',
+          link: `/analytics/${chainId}/tokens`,
+        },
+        {
+          key: 'pairs',
+          title: 'Pairs',
+          link: `/analytics/${chainId}/pairs`,
+        },
+      ],
+    }
+    menu.push(analyticsMenu)
 
     return menu.filter((el) => Object.keys(el).length > 0)
   }, [chainId, i18n])

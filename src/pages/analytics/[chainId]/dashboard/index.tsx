@@ -16,7 +16,7 @@ import {
   useNativePrice,
   useOneDayBlock,
   useOneWeekBlock,
-  useSushiPairs,
+  useSymmPairs,
   useTokens,
   useTwoDayBlock,
 } from 'app/services/graph'
@@ -57,37 +57,45 @@ export default function Dashboard(): JSX.Element {
 
   // For the charts
   const exchange = useFactory({ chainId })
+  console.log('EXCHANGE')
+  console.log(exchange)
   const exchange1d = useFactory({ chainId, variables: { block: block1d } })
+  console.log(exchange1d)
   const exchange2d = useFactory({ chainId, variables: { block: block2d } })
+  console.log(exchange2d)
 
   const dayData = useDayData({ chainId })
-
+  console.log('DAY DATA ________')
+  console.log(dayData)
   const chartData = useMemo(
     () => ({
-      liquidity: exchange?.liquidityUSD,
-      liquidityChange: (exchange1d?.liquidityUSD / exchange2d?.liquidityUSD) * 100 - 100,
-      liquidityChart: dayData
-        // @ts-ignore TYPE NEEDS FIXING
-        ?.sort((a, b) => a.date - b.date)
-        // @ts-ignore TYPE NEEDS FIXING
-        .map((day) => ({ x: new Date(day.date * 1000), y: Number(day.liquidityUSD) })),
+      liquidity: exchange?.totalLiquidity,
+      liquidityChange: (exchange1d?.totalLiquidity / exchange2d?.totalLiquidity) * 100 - 100,
+      liquidityChart: dayData,
+      // @ts-ignore TYPE NEEDS FIXING
+      //  ?.sort((a, b) => a.date - b.date)
+      // @ts-ignore TYPE NEEDS FIXING
+      // .map((day) => ({ x: new Date(day.date * 1000), y: Number(day.totalLiquidity) })),
 
-      volume1d: exchange?.volumeUSD - exchange1d?.volumeUSD,
+      volume1d: exchange?.totalSwapVolume - exchange1d?.totalSwapVolume,
       volume1dChange:
-        ((exchange?.volumeUSD - exchange1d?.volumeUSD) / (exchange1d?.volumeUSD - exchange2d?.volumeUSD)) * 100 - 100,
-      volumeChart: dayData
-        // @ts-ignore TYPE NEEDS FIXING
-        ?.sort((a, b) => a.date - b.date)
-        // @ts-ignore TYPE NEEDS FIXING
-        .map((day) => ({ x: new Date(day.date * 1000), y: Number(day.volumeUSD) })),
+        ((exchange?.totalSwapVolume - exchange1d?.totalSwapVolume) /
+          (exchange1d?.totalSwapVolume - exchange2d?.totalSwapVolume)) *
+          100 -
+        100,
+      volumeChart: dayData,
+      // @ts-ignore TYPE NEEDS FIXING
+      // ?.sort((a, b) => a.date - b.date)
+      // @ts-ignore TYPE NEEDS FIXING
+      //.map((day) => ({ x: new Date(day.date * 1000), y: Number(day.totalSwapVolume) })),
     }),
     [exchange, exchange1d, exchange2d, dayData]
   )
 
   // For Top Pairs
-  const pairs = useSushiPairs({ chainId })
-  const pairs1d = useSushiPairs({ chainId, variables: { block: block1d }, shouldFetch: !!block1d })
-  const pairs1w = useSushiPairs({ chainId, variables: { block: block1w }, shouldFetch: !!block1w })
+  const pairs = useSymmPairs({ chainId })
+  const pairs1d = useSymmPairs({ chainId, variables: { block: block1d }, shouldFetch: !!block1d })
+  const pairs1w = useSymmPairs({ chainId, variables: { block: block1w }, shouldFetch: !!block1w })
 
   const pairsFormatted = useMemo(
     () =>
@@ -100,13 +108,13 @@ export default function Dashboard(): JSX.Element {
 
         return {
           pair: {
-            token0: pair.token0,
-            token1: pair.token1,
+            token0: pair.tokens[0],
+            token1: pair.tokens[1],
             id: pair.id,
           },
-          liquidity: pair.reserveUSD,
-          volume1d: pair.volumeUSD - pair1d?.volumeUSD,
-          volume1w: pair.volumeUSD - pair1w?.volumeUSD,
+          liquidity: pair.totalLiquidity,
+          volume1d: pair.totalSwapVolume - pair1d?.totalSwapVolume,
+          volume1w: pair.totalSwapVolume - pair1w?.totalSwapVolume,
         }
       }),
     [pairs, pairs1d, pairs1w]
@@ -114,17 +122,18 @@ export default function Dashboard(): JSX.Element {
 
   // For Top Farms
   const farms = useFarmRewards({ chainId })
+  console.log(farms)
   const nativePrice = useNativePrice({ chainId })
   const farmsFormatted = useMemo(
     () =>
       farms
         ?.map((farm) => ({
           pair: {
-            token0: farm.pair.token0,
-            token1: farm.pair.token1,
+            token0: farm.pair.tokens[0].address,
+            token1: farm.pair.tokens[1].address,
             id: farm.pair.id,
             name: farm.pair.symbol ?? `${farm.pair.token0.symbol}-${farm.pair.token1.symbol}`,
-            type: farm.pair.symbol ? 'Kashi Farm' : 'Sushi Farm',
+            type: farm.pair.symbol ? 'Symmetric Farm' : '-- Farm',
           },
           rewards: farm.rewards,
           liquidity: farm.tvl,
@@ -161,6 +170,7 @@ export default function Dashboard(): JSX.Element {
                 id: token.id,
                 symbol: token.symbol,
                 name: token.name,
+                address: token.address,
               },
               liquidity: token.liquidity * token.derivedETH * nativePrice,
               volume1d: token.volumeUSD - token1d.volumeUSD,
@@ -168,11 +178,11 @@ export default function Dashboard(): JSX.Element {
               price: token.derivedETH * nativePrice,
               change1d: ((token.derivedETH * nativePrice) / (token1d.derivedETH * nativePrice1d)) * 100 - 100,
               change1w: ((token.derivedETH * nativePrice) / (token1w.derivedETH * nativePrice1w)) * 100 - 100,
-              graph: token.dayData
-                .slice(0)
-                .reverse()
-                // @ts-ignore TYPE NEEDS FIXING
-                .map((day, i) => ({ x: i, y: Number(day.priceUSD) })),
+              // graph: token.dayData
+              //   .slice(0)
+              //   .reverse()
+              //   // @ts-ignore TYPE NEEDS FIXING
+              //   .map((day, i) => ({ x: i, y: Number(day.priceUSD) })),
             }
           })
         : [],
@@ -185,10 +195,10 @@ export default function Dashboard(): JSX.Element {
         return {
           options: {
             keys: [
-              'pair.token0.id',
+              'pair.token0',
               'pair.token0.symbol',
               'pair.token0.name',
-              'pair.token1.id',
+              'pair.token1',
               'pair.token1.symbol',
               'pair.token1.name',
             ],
@@ -201,10 +211,10 @@ export default function Dashboard(): JSX.Element {
         return {
           options: {
             keys: [
-              'pair.token0.id',
+              'pair.token0',
               'pair.token0.symbol',
               'pair.token0.name',
-              'pair.token1.id',
+              'pair.token1',
               'pair.token1.symbol',
               'pair.token1.name',
             ],
@@ -216,7 +226,7 @@ export default function Dashboard(): JSX.Element {
       case 'tokens':
         return {
           options: {
-            keys: ['token.id', 'token.symbol', 'token.name'],
+            keys: ['token.id', 'token.address', 'token.symbol', 'token.name'],
             threshold: 0.4,
           },
           data: tokensFormatted,
@@ -238,36 +248,36 @@ export default function Dashboard(): JSX.Element {
       <Background background="dashboard">
         <div className="grid items-center justify-between grid-cols-1 gap-x-4 gap-y-4 md:grid-cols-2">
           <div>
-            <div className="text-3xl font-bold text-high-emphesis">Sushi Analytics</div>
+            <div className="text-3xl font-bold text-high-emphesis">Symmetric Analytics</div>
             <div className="">
-              Dive deeper in the analytics of sushi bar,
+              Dive deeper in the analytics of SYMM-Verse,
               <br /> pools, pairs and tokens.
             </div>
           </div>
-          <Search term={term} search={search} />
+          {/* <Search term={term} search={search} /> */}
         </div>
       </Background>
       <div className="px-4 py-6 space-y-4 lg:px-14">
         <div className="text-2xl font-bold text-high-emphesis">Overview</div>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <ChartCard
+          {/* <ChartCard
             header="TVL"
-            subheader="SUSHI AMM"
+            subheader="SYMM AMM"
             figure={chartData.liquidity}
             change={chartData.liquidityChange}
             chart={chartData.liquidityChart}
             defaultTimespan="1M"
             timespans={chartTimespans}
-          />
-          <ChartCard
+          /> */}
+          {/* <ChartCard
             header="Volume"
-            subheader="SUSHI AMM"
+            subheader="SYMM AMM"
             figure={chartData.volume1d}
             change={chartData.volume1dChange}
             chart={chartData.volumeChart}
             defaultTimespan="1M"
             timespans={chartTimespans}
-          />
+          /> */}
         </div>
       </div>
       <DashboardTabs currentType={type} setType={setType} />

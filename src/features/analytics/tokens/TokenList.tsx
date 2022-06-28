@@ -14,6 +14,7 @@ type TokenListColumnType = 'name' | 'price' | 'liquidity' | 'priceChange' | 'vol
 interface Token {
   token: {
     id: string
+    address: string
     symbol: string
   }
   liquidity: number
@@ -32,6 +33,7 @@ interface TokenListProps {
 interface TokenListNameProps {
   token: {
     id: string
+    address: string
     symbol: string
     decimals: number
     name: string
@@ -41,7 +43,9 @@ interface TokenListNameProps {
 function TokenListName({ token }: TokenListNameProps): JSX.Element {
   const router = useRouter()
   const chainId = Number(router.query.chainId)
-  const currency = new CoreToken(chainId, getAddress(token?.id), token?.decimals || 18, token?.symbol, token?.name)
+  console.log('TOKENS:')
+  console.log(token)
+  const currency = new CoreToken(chainId, getAddress(token?.address), token?.decimals || 18, token?.symbol, token?.name)
   return (
     <>
       <div className="flex items-center">
@@ -67,7 +71,7 @@ export default function TokenList({
           columns={columns}
           data={tokens}
           defaultSortBy={{ id: 'liquidity', desc: true }}
-          link={{ href: `/analytics/${chainId}/tokens/`, id: 'token.id' }}
+          link={{ href: `/analytics/${chainId}/tokens/`, id: 'token.address' }}
         />
       )}
     </>

@@ -31,7 +31,7 @@ export const EXCHANGE = {
   [ChainId.BSC]: 'sushiswap/bsc-exchange',
   [ChainId.HARMONY]: 'sushiswap/harmony-exchange',
   [ChainId.AVALANCHE]: 'sushiswap/avalanche-exchange',
-  [ChainId.CELO]: 'jiro-ono/sushitestsubgraph',
+  // [ChainId.CELO]: 'jiro-ono/sushitestsubgraph',
   [ChainId.CELO]: 'centfinance/symmetric-v2-celo',
   [ChainId.ARBITRUM]: 'sushiswap/arbitrum-exchange',
   [ChainId.MOONRIVER]: 'sushiswap/moonriver-exchange',
@@ -162,9 +162,10 @@ export const getTokenSubset = async (chainId = ChainId.ETHEREUM, variables) => {
 
 // @ts-ignore TYPE NEEDS FIXING
 export const getTokens = async (chainId = ChainId.ETHEREUM, variables) => {
-  console.log('getTokens')
-  const { tokens } = await exchange(chainId, tokensQuery, variables)
-  return tokens
+  console.log('VARIABLES')
+  console.log(variables)
+  const { poolTokens } = await exchange(chainId, tokensQuery, variables)
+  return poolTokens
 }
 
 // @ts-ignore TYPE NEEDS FIXING
@@ -396,14 +397,14 @@ export const getLiquidityPositions = async (chainId = ChainId.ETHEREUM, variable
   return liquidityPositions
 }
 
-export const getDayData = async (chainId = ChainId.ETHEREUM, variables = undefined) => {
-  const { dayDatas } = await exchange(chainId, dayDatasQuery, variables)
-  return dayDatas
+export const getDayData = async (chainId = ChainId.XDAI, variables = undefined) => {
+  const { balancers } = await exchange(chainId, dayDatasQuery, variables)
+  return balancers[0]
 }
 
 export const getFactory = async (chainId = ChainId.ETHEREUM, variables = undefined) => {
-  const { factories } = await exchange(chainId, factoryQuery, variables)
-  return factories[0]
+  const { balancers } = await exchange(chainId, factoryQuery, variables)
+  return balancers[0]
 }
 
 export const getTransactions = async (chainId = ChainId.ETHEREUM, variables = undefined) => {

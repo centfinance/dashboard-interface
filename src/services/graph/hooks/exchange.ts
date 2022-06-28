@@ -67,7 +67,7 @@ export function useNativePrice({
   const { data } = useSWR(
     shouldFetch ? ['nativePrice', chainId, stringify(variables)] : null,
     // @ts-ignore TYPE NEEDS FIXING
-    () => getNativePrice(chainId, variables),
+    () => (chainId === ChainId.CELO ? getSymmPriceCelo() : getSymmPriceXdai()),
     swrConfig
   )
 
@@ -308,7 +308,6 @@ export function useSymmPairs({
     (_, chainId) => getSymmPairs(chainId),
     swrConfig
   )
-
   return data
 }
 
@@ -354,6 +353,8 @@ export function useTokenDayData(
 }
 
 export function useDayData({ chainId, variables, shouldFetch = true, swrConfig = undefined }: GraphProps) {
+  console.log('Using day data')
+  console.log(chainId)
   const { data } = useSWR(
     shouldFetch && !!chainId ? ['dayData', chainId, stringify(variables)] : null,
     // @ts-ignore TYPE NEEDS FIXING

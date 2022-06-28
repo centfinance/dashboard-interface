@@ -2,10 +2,10 @@ import gql from 'graphql-tag'
 
 export const factoryQuery = gql`
   query factoryQuery($block: Block_height) {
-    factories(first: 1, block: $block) {
+    balancers(first: 1, block: $block) {
       id
-      volumeUSD
-      liquidityUSD
+      totalSwapVolume
+      totalLiquidity
     }
   }
 `
@@ -105,12 +105,13 @@ export const dayDataFieldsQuery = gql`
 
 // Dashboard...
 export const dayDatasQuery = gql`
-  query dayDatasQuery($first: Int! = 1000, $date: Int! = 0, $where: DayData_filter) {
-    dayDatas(first: $first, orderBy: date, orderDirection: desc, where: $where) {
-      ...dayDataFields
+  query dayDatasQuery($first: Int! = 1000, $date: Int! = 0) {
+    balancers(first: 1, block: $block) {
+      id
+      totalSwapVolume
+      totalLiquidity
     }
   }
-  ${dayDataFieldsQuery}
 `
 
 // Pairs...
@@ -280,24 +281,23 @@ export const pairsTimeTravelQuery = gql`
 
 // Tokens...
 export const tokenFieldsQuery = gql`
-  fragment tokenFields on Token {
+  fragment tokenFields on PoolToken {
     id
     symbol
     name
     decimals
-    totalSupply
-    volume
-    volumeUSD
-    untrackedVolumeUSD
-    txCount
-    liquidity
-    derivedETH
+    poolId
+    balance
+    address
+    priceRate
+    invested
+    investments
   }
 `
 
 export const tokenQuery = gql`
   query tokenQuery($id: String!, $block: Block_height) {
-    token(id: $id, block: $block) {
+    poolTokens(id: $id, block: $block) {
       ...tokenFields
     }
   }
@@ -356,13 +356,8 @@ export const tokenPairsQuery = gql`
 
 export const tokensQuery = gql`
   query tokensQuery($first: Int! = 1000, $skip: Int, $block: Block_height, $where: Token_filter) {
-    tokens(first: $first, skip: $skip, orderBy: volumeUSD, orderDirection: desc, block: $block, where: $where) {
+    poolTokens(first: $first, skip: $skip, block: $block, where: $where) {
       ...tokenFields
-      dayData(first: 7, orderBy: date, orderDirection: desc) {
-        id
-        priceUSD
-        date
-      }
     }
   }
   ${tokenFieldsQuery}
@@ -377,7 +372,7 @@ export const tokenSubsetQuery = gql`
     $orderDirection: String! = "desc"
     $block: Block_height
   ) {
-    tokens(
+    poolTokens(
       first: $first
       skip: $skip
       orderBy: $orderBy

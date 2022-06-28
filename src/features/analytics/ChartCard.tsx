@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 
-import LineGraph from '../../components/LineGraph'
+// import LineGraph from '../../components/LineGraph'
 import { classNames, formatDate, formatNumber } from '../../functions'
 import ColoredNumber from './ColoredNumber'
 
@@ -33,8 +33,6 @@ export default function ChartCard({
 
   const chartFiltered = useMemo(() => {
     const currentDate = Math.round(Date.now() / 1000)
-    console.log(chart)
-    console.log('xxxxxxxxxx')
     return chart
     // return chart?.reduce((acc, cur) => {
     //   const x = cur.x.getTime()
@@ -50,7 +48,7 @@ export default function ChartCard({
 
     //   return acc
     // }, [])
-  }, [chart, timespan?.length])
+  }, [chart])
 
   const [selectedIndex, setSelectedIndex] = useState(chartFiltered?.length - 1)
   // @ts-ignore TYPE NEEDS FIXING
@@ -78,13 +76,13 @@ export default function ChartCard({
         </div>
       </div>
       <div className="py-4 h-36">
-        {chartFiltered && (
+        {/* {chartFiltered && (
           <LineGraph
             data={chartFiltered}
             stroke={{ gradient: { from: '#27B0E6', to: '#FA52A0' } }}
             setSelectedIndex={setSelectedIndex}
           />
-        )}
+        )} */}
       </div>
       <div className="flex flex-row justify-end space-x-4">
         {timespans.map((t, i) => (

@@ -40,9 +40,8 @@ export const getCurrencyLogoUrls = (currency: Currency): string[] => {
     }
 
     if (currency?.symbol === 'HAUS') {
-      console.log(currency)
       urls.push(
-        'https://raw.githubusercontent.com/centfinance/assets/master/blockchains/xdai/assets/0xb0C5f3100A4d9d9532a4CfD68c55F1AE8da987Eb/logo.png' // HAUS
+        'https://daohaus.club/assets/images/haus__icon-6118bcab86e48444aea4e77a2acef0af.png' // HAUS
       )
 
       return urls

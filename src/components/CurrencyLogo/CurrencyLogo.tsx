@@ -47,6 +47,12 @@ export const getCurrencyLogoUrls = (currency: Currency): string[] => {
       return urls
     }
 
+    if (currency?.symbol === 'mCREAL') {
+      urls.push('https://raw.githubusercontent.com/ubeswap/default-token-list/master/assets/asset_mcREAL.png')
+
+      return urls
+    }
+
     let address = currency.wrapped.address
     if (currency?.symbol === 'AGVE') {
       address = address.toLowerCase()

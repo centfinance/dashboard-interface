@@ -59,12 +59,15 @@ export default function XSushi() {
 
   const xSushi = useTokens({
     chainId: chainId === ChainId.CELO ? ChainId.CELO : ChainId.XDAI,
-    variables: { where: { id: XDAI_TOKENS.SYMM.address.toLowerCase() } },
+    variables: { where: { id: chainId === ChainId.CELO ? CELO_TOKENS : XDAI_TOKENS.SYMM.address.toLowerCase() } },
   })?.[0]
 
   const xSushi1d = useTokens({
     chainId: chainId === ChainId.CELO ? ChainId.CELO : ChainId.XDAI,
-    variables: { block: block1d, where: { id: XDAI_TOKENS.SYMM.address.toLowerCase() } },
+    variables: {
+      block: block1d,
+      where: { id: chainId === ChainId.CELO ? CELO_TOKENS : XDAI_TOKENS.SYMM.address.toLowerCase() },
+    },
   })?.[0]
 
   const sushiDayData = useTokenDayData({

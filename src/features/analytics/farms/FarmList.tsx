@@ -22,12 +22,14 @@ type FarmListNameProps = {
   pair: {
     token0: {
       id: string
+      address: string
       decimals: number
       symbol: string
       name: string
     }
     token1: {
       id: string
+      address: string
       decimals: number
       symbol: string
       name: string
@@ -50,14 +52,14 @@ function FarmListName({ pair }: FarmListNameProps): JSX.Element {
   const chainId = Number(router.query.chainId)
   const token0 = new Token(
     chainId,
-    getAddress(pair?.token0),
+    getAddress(pair?.token0.address),
     Number(pair?.token0?.decimals) || 18,
     pair?.token0?.symbol,
     pair?.token0?.name
   )
   const token1 = new Token(
     chainId,
-    getAddress(pair?.token1),
+    getAddress(pair?.token1.address),
     Number(pair?.token1?.decimals) || 18,
     pair?.token1?.symbol,
     pair?.token1?.name
@@ -189,7 +191,7 @@ export default function FarmList({ pools }: FarmListProps): JSX.Element {
           columns={columns}
           data={pools}
           defaultSortBy={defaultSortBy}
-          // link={{ href: '/analytics/pools/', id: 'pair.address' }}
+          link={{ href: '/analytics/pools/', id: 'pair.id' }}
         />
       )}
     </>

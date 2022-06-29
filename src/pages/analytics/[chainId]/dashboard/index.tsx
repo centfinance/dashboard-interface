@@ -1,8 +1,8 @@
-import Search from 'app/components/Search'
+// import Search from 'app/components/Search'
 import { Feature } from 'app/enums'
 import AnalyticsContainer from 'app/features/analytics/AnalyticsContainer'
 import Background from 'app/features/analytics/Background'
-import ChartCard from 'app/features/analytics/ChartCard'
+// import ChartCard from 'app/features/analytics/ChartCard'
 import DashboardTabs from 'app/features/analytics/dashboard/DashboardTabs'
 import PoolList from 'app/features/analytics/farms/FarmList'
 import PairList from 'app/features/analytics/pairs/PairList'
@@ -122,18 +122,17 @@ export default function Dashboard(): JSX.Element {
 
   // For Top Farms
   const farms = useFarmRewards({ chainId })
-  console.log(farms)
   const nativePrice = useNativePrice({ chainId })
   const farmsFormatted = useMemo(
     () =>
       farms
         ?.map((farm) => ({
           pair: {
-            token0: farm.pair.tokens[0].address,
-            token1: farm.pair.tokens[1].address,
+            token0: farm.pair.tokens[0],
+            token1: farm.pair.tokens[1],
             id: farm.pair.id,
-            name: farm.pair.symbol ?? `${farm.pair.token0.symbol}-${farm.pair.token1.symbol}`,
-            type: farm.pair.symbol ? 'Symmetric Farm' : '-- Farm',
+            name: farm.pair.symbol ?? `${farm.pair.token0.symbol}<->${farm.pair.token1.symbol}`,
+            type: farm.pair.symbol ? 'Symmetric Farms' : '-- Farm',
           },
           rewards: farm.rewards,
           liquidity: farm.tvl,
@@ -195,12 +194,12 @@ export default function Dashboard(): JSX.Element {
         return {
           options: {
             keys: [
-              'pair.token0',
-              'pair.token0.symbol',
-              'pair.token0.name',
-              'pair.token1',
-              'pair.token1.symbol',
-              'pair.token1.name',
+              'data.pair.token0',
+              'data.pair.token0.symbol',
+              'data.pair.token0.name',
+              'data.pair.token1',
+              'data.pair.token1.symbol',
+              'data.pair.token1.name',
             ],
             threshold: 0.4,
           },
@@ -211,12 +210,12 @@ export default function Dashboard(): JSX.Element {
         return {
           options: {
             keys: [
-              'pair.token0',
-              'pair.token0.symbol',
-              'pair.token0.name',
-              'pair.token1',
-              'pair.token1.symbol',
-              'pair.token1.name',
+              'data.pair.token0',
+              'data.pair.token0.symbol',
+              'data.pair.token0.name',
+              'data.pair.token1',
+              'data.pair.token1.symbol',
+              'data.pair.token1.name',
             ],
             threshold: 0.4,
           },

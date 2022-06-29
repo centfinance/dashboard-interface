@@ -13,10 +13,12 @@ interface PairListProps {
     pair: {
       token0: {
         id: string
+        address: string
         symbol: string
       }
       token1: {
         id: string
+        address: string
         symbol: string
       }
       id: string
@@ -32,12 +34,14 @@ interface PairListNameProps {
   pair: {
     token0: {
       id: string
+      address: string
       symbol: string
       decimals: number
       name: string
     }
     token1: {
       id: string
+      address: string
       symbol: string
       decimals: number
       name: string
@@ -52,14 +56,14 @@ function PairListName({ pair }: PairListNameProps): JSX.Element {
   const chainId = Number(router.query.chainId)
   const token0 = new Token(
     chainId,
-    getAddress(pair?.token0),
+    getAddress(pair?.token0.address),
     pair?.token0?.decimals || 18,
     pair?.token0?.symbol,
     pair?.token0?.name
   )
   const token1 = new Token(
     chainId,
-    getAddress(pair?.token1),
+    getAddress(pair?.token1.address),
     pair?.token1?.decimals || 18,
     pair?.token1?.symbol,
     pair?.token1?.name

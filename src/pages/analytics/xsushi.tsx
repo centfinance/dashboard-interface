@@ -1,6 +1,6 @@
 import { ChainId, SUSHI_ADDRESS } from '@sushiswap/core-sdk'
 import TimespanGraph from 'app/components/TimespanGraph'
-import { CELO_TOKENS, XDAI_TOKENS } from 'app/config/tokens'
+import { XDAI_TOKENS } from 'app/config/tokens'
 import AnalyticsContainer from 'app/features/analytics/AnalyticsContainer'
 import Background from 'app/features/analytics/Background'
 import InfoCard from 'app/features/analytics/bar/InfoCard'

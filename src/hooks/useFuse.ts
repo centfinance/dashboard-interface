@@ -25,6 +25,7 @@ function useFuse<T = any>({ data, options }: UseFusePayload<T>) {
   return useMemo(() => {
     console.log('FUSE:')
     console.log(data)
+    console.log('<><><><>>')
     const fuse = new Fuse<T>(data || [], options)
     const result = fuzzySearch<T>({ fuse, data, term })
 

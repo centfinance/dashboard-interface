@@ -119,14 +119,14 @@ export default function Pair() {
 
   const currency0 = new Token(
     chainId,
-    getAddress(pair?.token0?.id),
+    getAddress(pair?.token0?.address),
     pair?.token0?.decimals || 18,
     pair?.token0?.symbol,
     pair?.token0?.name
   )
   const currency1 = new Token(
     chainId,
-    getAddress(pair?.token1?.id),
+    getAddress(pair?.token1?.address),
     pair?.token1?.decimals || 18,
     pair?.token1?.symbol,
     pair?.token1?.name

@@ -25,7 +25,7 @@ export default function Farm(): JSX.Element {
 
   const FILTER = {
     // @ts-ignore TYPE NEEDS FIXING
-    all: (farm) => farm.allocPoint !== '0' && farm.chef !== Chef.OLD_FARMS,
+    all: (farm) => farm.slpBalance !== '0' && farm.chef !== Chef.OLD_FARMS,
     // @ts-ignore TYPE NEEDS FIXING
     portfolio: (farm) => farm?.amount && !farm.amount.isZero(),
     // @ts-ignore TYPE NEEDS FIXING
@@ -65,10 +65,10 @@ export default function Farm(): JSX.Element {
           </div>
           <FarmList farms={result} term={term} />
         </div>
-        <div>Retired Farms ({retired.length})</div>
+        {/* <div>Retired Farms ({retired.length})</div>
         <div>
           <FarmList farms={retired} term={term} />
-        </div>
+        </div> */}
       </TridentBody>
     </>
   )

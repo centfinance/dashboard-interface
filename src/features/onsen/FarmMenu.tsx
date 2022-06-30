@@ -46,6 +46,7 @@ const MenuLink: FC<{ href?: string; label: string; onClick?(): void }> = ({ href
 enum FarmFilter {
   All = 'All Farms',
   Portfolio = 'Your Farms',
+  Retired = 'Retired Farms',
 }
 
 const filters: Record<string, FarmFilter> = {
@@ -69,6 +70,7 @@ const OnsenFilter = () => {
       ) : (
         <MenuLink onClick={toggleWalletModal} label={i18n._(t`Your Farms`)} />
       ),
+      [FarmFilter.Retired]: <MenuLink href={'/farm?filter=retired'} label={i18n._(t`Retired Farms`)} />,
     }
 
     return Object.entries(map).reduce<Record<string, ReactNode>>((acc, [k, v]) => {

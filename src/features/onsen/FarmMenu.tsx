@@ -2,7 +2,7 @@ import { Menu, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/solid'
 import { t } from '@lingui/macro'
 import { useLingui } from '@lingui/react'
-import { ChainId } from '@sushiswap/core-sdk'
+// import { ChainId } from '@sushiswap/core-sdk'
 import Typography from 'app/components/Typography'
 import { useActiveWeb3React } from 'app/services/web3'
 import { useWalletModalToggle } from 'app/state/application/hooks'
@@ -46,17 +46,12 @@ const MenuLink: FC<{ href?: string; label: string; onClick?(): void }> = ({ href
 enum FarmFilter {
   All = 'All Farms',
   Portfolio = 'Your Farms',
-  Kashi = 'Kashi Farms',
-  Sushi = 'Sushi Farms',
-  Old = 'Old Farms',
+  Retired = 'Retired Farms',
 }
 
 const filters: Record<string, FarmFilter> = {
   portfolio: FarmFilter.Portfolio,
   farm: FarmFilter.All,
-  kashi: FarmFilter.Kashi,
-  old: FarmFilter.Old,
-  sushi: FarmFilter.Sushi,
 }
 
 const OnsenFilter = () => {
@@ -75,18 +70,7 @@ const OnsenFilter = () => {
       ) : (
         <MenuLink onClick={toggleWalletModal} label={i18n._(t`Your Farms`)} />
       ),
-      [FarmFilter.Kashi]:
-        chainId === ChainId.ETHEREUM ? (
-          <MenuLink href={'/farm?filter=kashi'} label={i18n._(t`Kashi Farms`)} />
-        ) : undefined,
-      [FarmFilter.Sushi]:
-        chainId === ChainId.ETHEREUM ? (
-          <MenuLink href={'/farm?filter=sushi'} label={i18n._(t`SushiSwap Farms`)} />
-        ) : undefined,
-      // @ts-ignore TYPE NEEDS FIXING
-      [FarmFilter.Old]: [ChainId.CELO].includes(chainId) ? (
-        <MenuLink href={'/farm?filter=old'} label={i18n._(t`Old Farms`)} />
-      ) : undefined,
+      [FarmFilter.Retired]: <MenuLink href={'/farm?filter=retired'} label={i18n._(t`Retired Farms`)} />,
     }
 
     return Object.entries(map).reduce<Record<string, ReactNode>>((acc, [k, v]) => {

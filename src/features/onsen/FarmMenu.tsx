@@ -46,9 +46,6 @@ const MenuLink: FC<{ href?: string; label: string; onClick?(): void }> = ({ href
 enum FarmFilter {
   All = 'All Farms',
   Portfolio = 'Your Farms',
-  Kashi = 'Kashi Farms',
-  Sushi = 'Sushi Farms',
-  Old = 'Old Farms',
 }
 
 const filters: Record<string, FarmFilter> = {
@@ -83,10 +80,10 @@ const OnsenFilter = () => {
         chainId === ChainId.ETHEREUM ? (
           <MenuLink href={'/farm?filter=sushi'} label={i18n._(t`SushiSwap Farms`)} />
         ) : undefined,
-      // @ts-ignore TYPE NEEDS FIXING
-      [FarmFilter.Old]: [ChainId.CELO].includes(chainId) ? (
-        <MenuLink href={'/farm?filter=old'} label={i18n._(t`Old Farms`)} />
-      ) : undefined,
+      // // @ts-ignore TYPE NEEDS FIXING
+      // [FarmFilter.Old]: [ChainId.CELO].includes(chainId) ? (
+      //   <MenuLink href={'/farm?filter=old'} label={i18n._(t`Old Farms`)} />
+      // ) : undefined,
     }
 
     return Object.entries(map).reduce<Record<string, ReactNode>>((acc, [k, v]) => {

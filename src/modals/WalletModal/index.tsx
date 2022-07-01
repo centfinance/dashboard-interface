@@ -13,12 +13,16 @@ import { OVERLAY_READY } from 'app/entities/connectors/FortmaticConnector'
 import usePrevious from 'app/hooks/usePrevious'
 import { useModalOpen, useWalletModalToggle } from 'app/state/application/hooks'
 import { ApplicationModal } from 'app/state/application/reducer'
+import Image from 'next/image'
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import ReactGA from 'react-ga'
 
 import Option from './Option'
 import PendingView from './PendingView'
+
+const xDaiLogo = 'https://raw.githubusercontent.com/sushiswap/logos/main/token/xdai.jpg'
+const CeloLogo = 'https://raw.githubusercontent.com/sushiswap/logos/main/token/celo.jpg'
 
 enum WALLET_VIEWS {
   OPTIONS,
@@ -212,9 +216,19 @@ const WalletModal: FC<WalletModal> = ({ pendingTransactions, confirmedTransactio
           />
           <HeadlessUiModal.BorderedContent>
             <Typography variant="xs" weight={700}>
-              {error instanceof UnsupportedChainIdError
-                ? i18n._(t`Please connect to the appropriate Ethereum network.`)
-                : i18n._(t`Error connecting. Try refreshing the page.`)}
+              {error instanceof UnsupportedChainIdError ? (
+                <>
+                  <div className="flex items-center">
+                    <div className="mr-1">Please switch to CELO</div>
+                    <Image src={CeloLogo} width="12" height="12" alt="celo" className="rounded-full" />
+                    <div className="mx-1">or GNOSIS</div>
+                    <Image src={xDaiLogo} width="12" height="12" alt="xdai" className="rounded-full" />.
+                  </div>
+                  Current chain is not supported yet.
+                </>
+              ) : (
+                i18n._(t`Error connecting. Try refreshing the page.`)
+              )}
             </Typography>
           </HeadlessUiModal.BorderedContent>
           <Button color="red" onClick={handleDeactivate}>

@@ -31,14 +31,38 @@ export const getCurrencyLogoUrls = (currency: Currency): string[] => {
   const urls: string[] = []
 
   if (currency.chainId in BLOCKCHAIN) {
+    if (currency?.symbol === 'SYMM') {
+      urls.push(
+        'https://raw.githubusercontent.com/centfinance/assets/master/blockchains/ethereum/assets/0x57dB3FfCa78dBbE0eFa0EC745D55f62aa0Cbd345/logo.png' // SYMM
+      )
+
+      return urls
+    }
+
+    if (currency?.symbol === 'HAUS') {
+      urls.push(
+        'https://daohaus.club/assets/images/haus__icon-6118bcab86e48444aea4e77a2acef0af.png' // HAUS
+      )
+
+      return urls
+    }
+
+    if (currency?.symbol === 'mCREAL') {
+      urls.push('https://raw.githubusercontent.com/ubeswap/default-token-list/master/assets/asset_mcREAL.png')
+
+      return urls
+    }
+
+    let address = currency.wrapped.address
+    if (currency?.symbol === 'AGVE') {
+      address = address.toLowerCase()
+    }
     urls.push(
       // @ts-ignore TYPE NEEDS FIXING
-      `https://raw.githubusercontent.com/centfinance/assets/master/blockchains/${BLOCKCHAIN[currency.chainId]}/assets/${
-        currency.wrapped.address
-      }/logo.png`
-    )
-    urls.push(
-      'https://raw.githubusercontent.com/centfinance/assets/master/blockchains/ethereum/assets/0x57dB3FfCa78dBbE0eFa0EC745D55f62aa0Cbd345/logo.png'
+      `https://raw.githubusercontent.com/centfinance/assets/master/blockchains/${
+        // @ts-ignore TYPE NEEDS FIXING
+        BLOCKCHAIN[currency.chainId]
+      }/assets/${address}/logo.png`
     )
   }
   return urls

@@ -62,7 +62,7 @@ export const getCurrencyLogoUrls = (currency: Currency): string[] => {
       `https://raw.githubusercontent.com/centfinance/assets/master/blockchains/${
         // @ts-ignore TYPE NEEDS FIXING
         BLOCKCHAIN[currency.chainId]
-      }/assets/${address}/logo.png`
+      }/assets/${address.toLowerCase()}/logo.png`
     )
   }
   return urls
@@ -135,18 +135,23 @@ const CurrencyLogo: FunctionComponent<CurrencyLogoProps> = ({ currency, size = '
       // @ts-ignore TYPE NEEDS FIXING
       return [LOGO[currency.chainId], UNKNOWN_ICON]
     }
-
+    console.log('LOGOOOOOOOOOOOOOO')
+    console.log(currency)
     if (currency?.isToken) {
       const defaultUrls = [...getCurrencyLogoUrls(currency)]
 
       if (currency instanceof WrappedTokenInfo) {
-        return [...uriLocations, ...defaultUrls, UNKNOWN_ICON]
+        return [...defaultUrls, UNKNOWN_ICON]
+      }
+      if (currency.symbol === 'ETHIX') {
+        console.log(currency.symbol)
+        console.log(defaultUrls)
       }
       return defaultUrls
     }
 
     return [UNKNOWN_ICON]
-  }, [currency, uriLocations])
+  }, [currency])
   return <Logo srcs={srcs} width={size} height={size} alt={currency?.symbol} className={className} style={style} />
 }
 

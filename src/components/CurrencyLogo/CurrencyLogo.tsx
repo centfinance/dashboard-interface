@@ -135,17 +135,11 @@ const CurrencyLogo: FunctionComponent<CurrencyLogoProps> = ({ currency, size = '
       // @ts-ignore TYPE NEEDS FIXING
       return [LOGO[currency.chainId], UNKNOWN_ICON]
     }
-    console.log('LOGOOOOOOOOOOOOOO')
-    console.log(currency)
     if (currency?.isToken) {
       const defaultUrls = [...getCurrencyLogoUrls(currency)]
 
       if (currency instanceof WrappedTokenInfo) {
         return [...defaultUrls, UNKNOWN_ICON]
-      }
-      if (currency.symbol === 'ETHIX') {
-        console.log(currency.symbol)
-        console.log(defaultUrls)
       }
       return defaultUrls
     }

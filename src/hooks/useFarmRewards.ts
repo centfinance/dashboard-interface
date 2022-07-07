@@ -6,7 +6,6 @@ import {
   useARIPrice,
   useAverageBlockTime,
   useCeloPrice,
-  useEthPrice,
   useFarms,
   useGnoPrice,
   useMooPrice,
@@ -47,7 +46,6 @@ export default function useFarmRewards({ chainId = ChainId.CELO }) {
   }
 
   const [gnoPrice, celoPrice, symmPriceCelo, symmPriceXdai, mooPrice, ariPrice] = [
-    useEthPrice(),
     useGnoPrice(),
     useCeloPrice(),
     useSymmPriceCelo(),
@@ -86,16 +84,18 @@ export default function useFarmRewards({ chainId = ChainId.CELO }) {
           return CELO_TOKENS.CELO
       }
     }
-    function getTokenPriceCelo(address: any) {
+    function getTokenPriceCelo(address: any): any {
       switch (address) {
         case '0x17700282592D6917F6A73D0bF8AcCf4D578c131e'.toLocaleLowerCase():
           return mooPrice
         case '0x20677d4f3d0F08e735aB512393524A3CfCEb250C'.toLocaleLowerCase():
           return ariPrice
         case '0x9995cc8F20Db5896943Afc8eE0ba463259c931ed'.toLocaleLowerCase():
-          return
+          return 0.1928 // Need to fetch price from exchange
         case '0x471EcE3750Da237f93B8E339c536989b8978a438'.toLocaleLowerCase():
           return celoPrice
+        default:
+          return 0.00001
       }
     }
 
@@ -195,7 +195,10 @@ export default function useFarmRewards({ chainId = ChainId.CELO }) {
     const rewardAprPerMonth = rewardAprPerDay * 30
     const rewardAprPerYear =
       ((chainId === ChainId.CELO ? symmPriceCelo : symmPriceXdai) * rewards[0].rewardPerDay * 365) / tvl
-    const tokenRewardAprPerYear = (rewards[1]?.rewardPrice * rewards[1]?.rewardPerDay * 365) / tvl || 0
+    const tokenRewardAprPerYear =
+      rewards[1]?.rewardPrice && rewards[1]?.rewardPerDay
+        ? (rewards[1]?.rewardPrice * rewards[1]?.rewardPerDay * 365) / tvl
+        : 0
 
     const roiPerHour = rewardAprPerHour + feeApyPerHour
     const roiPerMonth = rewardAprPerMonth + feeApyPerMonth

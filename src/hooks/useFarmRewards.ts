@@ -64,7 +64,7 @@ export default function useFarmRewards({ chainId = ChainId.CELO }) {
     pool.owner = pool?.symmChef || pool?.owner || pool?.masterChef || pool?.miniChef
     pool.balance = pool?.balance || pool?.slpBalance
     // @ts-ignore TYPE NEEDS FIXING
-    const swapSymmPair = symmPairs?.find((pair) => pair.address === pool.pair)
+    const swapSymmPair = symmPairs?.find((pair) => pair.address.toLowerCase() === pool.pair.toLowerCase())
 
     const pair = swapSymmPair
 
@@ -219,7 +219,7 @@ export default function useFarmRewards({ chainId = ChainId.CELO }) {
     .filter((farm) => {
       return (
         // @ts-ignore TYPE NEEDS FIXING
-        symmPairs && symmPairs.find((pair) => pair.address === farm.pair)
+        symmPairs && symmPairs.find((pair) => pair.address.toLowerCase() === farm.pair.toLowerCase())
       )
     })
     .map(map)

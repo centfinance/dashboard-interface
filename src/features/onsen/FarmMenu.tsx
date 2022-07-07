@@ -44,8 +44,8 @@ const MenuLink: FC<{ href?: string; label: string; onClick?(): void }> = ({ href
 }
 
 enum FarmFilter {
-  All = 'All Farms',
-  Portfolio = 'Your Farms',
+  All = 'Active Farms',
+  Portfolio = 'My Farms',
   Retired = 'Retired Farms',
 }
 
@@ -64,11 +64,11 @@ const OnsenFilter = () => {
 
   const items = useMemo(() => {
     const map: Record<string, ReactNode> = {
-      [FarmFilter.All]: <MenuLink href={'/farm'} label={i18n._(t`All Farms`)} />,
+      [FarmFilter.All]: <MenuLink href={'/farm'} label={i18n._(t`Active Farms`)} />,
       [FarmFilter.Portfolio]: account ? (
-        <MenuLink href={'/farm?filter=portfolio'} label={i18n._(t`Your Farms`)} />
+        <MenuLink href={'/farm?filter=portfolio'} label={i18n._(t`My Farms`)} />
       ) : (
-        <MenuLink onClick={toggleWalletModal} label={i18n._(t`Your Farms`)} />
+        <MenuLink onClick={toggleWalletModal} label={i18n._(t`My Farms`)} />
       ),
       [FarmFilter.Retired]: <MenuLink href={'/farm?filter=retired'} label={i18n._(t`Retired Farms`)} />,
     }

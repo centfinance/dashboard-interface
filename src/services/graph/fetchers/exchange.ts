@@ -13,7 +13,7 @@ import {
   tokenDayDatasQuery,
   tokenPairsQuery,
   tokenPriceQuery,
-  tokenPriceQuery2,
+  tokenPriceQuery3,
   tokenQuery,
   tokensQuery,
   tokenSubsetQuery,
@@ -67,6 +67,17 @@ export const exchangeTokenPrice = async (chainId = ChainId.ETHEREUM, query, vari
     variables
   )
 
+// @ts-ignore TYPE NEEDS FIXING
+export const exchangeTokenPriceV2 = async (chainId = ChainId.ETHEREUM, query, variables) =>
+  pager(
+    // @ts-ignore TYPE NEEDS FIXING
+    `${GRAPH_HOST[chainId]}/subgraphs/name/centfinance/${
+      chainId === ChainId.CELO ? 'symmetric-v2-celo' : 'symmetric-v2-gnosis'
+    }`,
+    query,
+    variables
+  )
+
 export const getPairs = async (chainId = ChainId.ETHEREUM, variables = undefined, query = pairsQuery) => {
   const { pairs } = await exchange(chainId, query, variables)
   return pairs
@@ -79,7 +90,7 @@ const tokenPrices = async (chainId = ChainId.CELO) => {
     tokens.map(async (token) => {
       let price = 0
       try {
-        price = await getTokenPriceFromSymmV1(chainId, tokenPriceQuery2, { id: token.toLowerCase() })
+        price = await getTokenPriceFromSymmV2(chainId, tokenPriceQuery3, { id: token.toLowerCase() })
         // price = await getTokenPrice(ChainId.CELO, tokenPriceQuery, { id: token.toLowerCase() }) // use sushi
       } catch (e) {
         // console.log(e)
@@ -212,6 +223,13 @@ export const getTokenPriceFromSymmV1 = async (chainId = ChainId.ETHEREUM, query,
   return tokenPrices[0]?.price
 }
 
+// @ts-ignore TYPE NEEDS FIXING // fetching from V2, need to change when coingecko
+export const getTokenPriceFromSymmV2 = async (chainId = ChainId.ETHEREUM, query, variables) => {
+  const data = await exchangeTokenPriceV2(chainId, query, variables)
+  // console.log('getSYMMPrice', data?.tokens[0]?.latestPrice?.price)
+  return data?.tokens[0]?.latestPrice?.price
+}
+
 export const getNativePrice = async (chainId = ChainId.ETHEREUM, variables = undefined) => {
   // console.log('getEthPrice')
   const data = await getBundle(chainId, undefined, variables)
@@ -296,13 +314,13 @@ export const getSushiPrice = async (variables = {}) => {
 }
 
 export const getGnoPrice = async () => {
-  return await getTokenPriceFromSymmV1(ChainId.XDAI, tokenPriceQuery2, {
+  return await getTokenPriceFromSymmV2(ChainId.XDAI, tokenPriceQuery3, {
     id: '0x9c58bacc331c9aa871afd802db6379a98e80cedb'.toLowerCase(),
   })
 }
 
 export const getSymmPriceXdai = async () => {
-  return await getTokenPriceFromSymmV1(ChainId.XDAI, tokenPriceQuery2, {
+  return await getTokenPriceFromSymmV2(ChainId.XDAI, tokenPriceQuery3, {
     id: '0xC45b3C1c24d5F54E7a2cF288ac668c74Dd507a84'.toLowerCase(),
   })
 }
@@ -326,13 +344,13 @@ export const getCeloPrice = async () => {
 }
 
 export const getMooPrice = async () => {
-  return getTokenPriceFromSymmV1(ChainId.CELO, tokenPriceQuery2, {
+  return getTokenPriceFromSymmV2(ChainId.CELO, tokenPriceQuery3, {
     id: '0x17700282592D6917F6A73D0bF8AcCf4D578c131e'.toLowerCase(),
   })
 }
 
 export const getAriPrice = async () => {
-  return getTokenPriceFromSymmV1(ChainId.CELO, tokenPriceQuery2, {
+  return getTokenPriceFromSymmV2(ChainId.CELO, tokenPriceQuery3, {
     id: '0x20677d4f3d0F08e735aB512393524A3CfCEb250C'.toLowerCase(),
   })
 }

@@ -46,7 +46,7 @@ export default function useFarmRewards({ chainId = ChainId.CELO }) {
     [ChainId.CELO]: new Token(ChainId.CELO, symmAddressCELO, 18, 'SYMM', 'SymmToken'),
   }
 
-  const [ethPrice, gnoPrice, celoPrice, symmPriceCelo, symmPriceXdai, mooPrice, ariPrice] = [
+  const [gnoPrice, celoPrice, symmPriceCelo, symmPriceXdai, mooPrice, ariPrice] = [
     useEthPrice(),
     useGnoPrice(),
     useCeloPrice(),
@@ -71,6 +71,33 @@ export default function useFarmRewards({ chainId = ChainId.CELO }) {
     const type = swapSymmPair ? PairType.SWAP : PairType.KASHI
 
     const blocksPerHour = 3600 / averageBlockTime
+
+    function getToken(address: any): Token {
+      switch (address) {
+        case '0x17700282592D6917F6A73D0bF8AcCf4D578c131e'.toLocaleLowerCase():
+          return CELO_TOKENS.MOO
+        case '0x20677d4f3d0F08e735aB512393524A3CfCEb250C'.toLocaleLowerCase():
+          return CELO_TOKENS.ARI
+        case '0x9995cc8F20Db5896943Afc8eE0ba463259c931ed'.toLocaleLowerCase():
+          return CELO_TOKENS.ETHIX
+        case '0x471EcE3750Da237f93B8E339c536989b8978a438'.toLocaleLowerCase():
+          return CELO_TOKENS.CELO
+        default:
+          return CELO_TOKENS.CELO
+      }
+    }
+    function getTokenPriceCelo(address: any) {
+      switch (address) {
+        case '0x17700282592D6917F6A73D0bF8AcCf4D578c131e'.toLocaleLowerCase():
+          return mooPrice
+        case '0x20677d4f3d0F08e735aB512393524A3CfCEb250C'.toLocaleLowerCase():
+          return ariPrice
+        case '0x9995cc8F20Db5896943Afc8eE0ba463259c931ed'.toLocaleLowerCase():
+          return
+        case '0x471EcE3750Da237f93B8E339c536989b8978a438'.toLocaleLowerCase():
+          return celoPrice
+      }
+    }
 
     function getRewards() {
       const symmPerBlock = (pool?.owner?.symmPerSecond / 1e18) * averageBlockTime
@@ -111,18 +138,10 @@ export default function useFarmRewards({ chainId = ChainId.CELO }) {
           const rPerDay = rPerBlock * blocksPerDay
           if (chainId === ChainId.CELO) {
             const reward = {
-              currency:
-                pool.rewarder.rewardToken.toLocaleLowerCase() ===
-                '0x17700282592D6917F6A73D0bF8AcCf4D578c131e'.toLocaleLowerCase()
-                  ? CELO_TOKENS.MOO
-                  : CELO_TOKENS.ARI,
+              currency: getToken(pool.rewarder.rewardToken.toLocaleLowerCase()),
               rewardPerBlock: rPerBlock,
               rewardPerDay: rPerDay,
-              rewardPrice:
-                (pool.rewarder.rewardToken.toLocaleLowerCase() ===
-                '0x17700282592D6917F6A73D0bF8AcCf4D578c131e'.toLocaleLowerCase()
-                  ? mooPrice
-                  : ariPrice) || 0.00001,
+              rewardPrice: getTokenPriceCelo(pool.rewarder.rewardToken.toLocaleLowerCase()),
             }
             rewards[1] = reward
           } else {

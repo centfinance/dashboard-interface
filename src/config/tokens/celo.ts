@@ -18,6 +18,14 @@ export const WBTC = new Token(ChainId.CELO, '0xBAAB46E28388d2779e6E31Fd00cF0e5Ad
 export const USDC = new Token(ChainId.CELO, '0xef4229c8c3250C675F21BCefa42f58EfbfF6002a', 6, 'USDC', 'USD Coin')
 export const MOO = new Token(ChainId.CELO, '0x17700282592D6917F6A73D0bF8AcCf4D578c131e', 18, 'MOO', 'Moola Token')
 export const ARI = new Token(ChainId.CELO, '0x20677d4f3d0F08e735aB512393524A3CfCEb250C', 18, 'ARI', 'ARI Token')
+export const ETHIX = new Token(
+  ChainId.CELO,
+  '0x9995cc8F20Db5896943Afc8eE0ba463259c931ed',
+  18,
+  'Ethix (Wormhole)',
+  'ETHIX'
+)
+export const CELO = new Token(ChainId.CELO, '0x471EcE3750Da237f93B8E339c536989b8978a438', 18, 'CELO', 'CELO')
 
 export const celoTokens = [
   '0x64dEFa3544c695db8c535D289d843a189aa26b98',
@@ -32,6 +40,7 @@ export const celoTokens = [
   '0xef4229c8c3250C675F21BCefa42f58EfbfF6002a',
   '0x17700282592D6917F6A73D0bF8AcCf4D578c131e',
   '0x20677d4f3d0F08e735aB512393524A3CfCEb250C',
+  '0x471EcE3750Da237f93B8E339c536989b8978a438',
   '0x9802d866fdE4563d088a6619F7CeF82C0B991A55', // mCREAL
   '0x918146359264C492BD6934071c6Bd31C854EDBc3', // mCUSD
 ]

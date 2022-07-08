@@ -69,7 +69,7 @@ const FarmListItem: FC<FarmListItem> = ({ farm, onClick }) => {
             ? farm?.roiPerYear > 10000
               ? '>10,000%'
               : formatPercent(farm?.roiPerYear * 100)
-            : 'Infinite'}
+            : '-'}
           {!!farm?.feeApyPerYear && (
             <QuestionHelper
               text={
@@ -80,7 +80,7 @@ const FarmListItem: FC<FarmListItem> = ({ farm, onClick }) => {
                       ? farm?.rewardAprPerYear > 10000
                         ? '>10,000%'
                         : formatPercent(farm?.rewardAprPerYear * 100)
-                      : 'Infinite'}
+                      : '-'}
                   </div>
                   <div>
                     Fee APR: {farm?.feeApyPerYear < 10000 ? formatPercent(farm?.feeApyPerYear * 100) : '>10,000%'}

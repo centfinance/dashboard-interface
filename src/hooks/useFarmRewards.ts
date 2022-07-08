@@ -132,8 +132,12 @@ export default function useFarmRewards({ chainId = ChainId.CELO }) {
         }
 
         if (pool.rewarder != null) {
+          // Pool Id 11 on CELO got messed up in the contract so small patch to fix it.
           const rPerSecond =
-            ((pool.rewarderAllocPoint / pool.rewarder.totalAllocPoint) * pool.rewarder.rewardPerSecond) / 1e18
+            pool.rewarder.id === '0xed803f7035749de7ae59b4e70af54111ec61d256'
+              ? (((pool.rewarderAllocPoint - 100) / pool.rewarder.totalAllocPoint) * pool.rewarder.rewardPerSecond) /
+                1e18
+              : ((pool.rewarderAllocPoint / pool.rewarder.totalAllocPoint) * pool.rewarder.rewardPerSecond) / 1e18
           const rPerBlock = rPerSecond * averageBlockTime
           const rPerDay = rPerBlock * blocksPerDay
           if (chainId === ChainId.CELO) {

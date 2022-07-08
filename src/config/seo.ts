@@ -4,12 +4,12 @@ const SEO = {
   description: 'Swap, yield, lend, borrow, leverage, limit, launch all on one community driven ecosystem',
   openGraph: {
     type: 'website',
-    url: 'https://app.sushi.com/',
-    site_name: 'Sushi',
+    url: 'https://farms.symm.fi/',
+    site_name: 'Symmetric',
   },
   twitter: {
-    handle: '@SushiSwap',
-    site: '@SushiSwap',
+    handle: '@0xSymmetric',
+    site: '@Symmetric',
     cardType: 'summary_large_image',
   },
 }

@@ -6,9 +6,9 @@ export default function Dashboard() {
     <Container id="dashboard-page" className="py-4 md:py-8 lg:py-12" maxWidth="2xl">
       <Head>
         <title>Dashboard | Symmetric</title>
-        <meta name="description" content="Sushi" />
-        <meta key="twitter:description" name="twitter:description" content="Sushi" />
-        <meta key="og:description" property="og:description" content="Sushi" />
+        <meta name="description" content="Symmetric" />
+        <meta key="twitter:description" name="twitter:description" content="Symmetric" />
+        <meta key="og:description" property="og:description" content="Symmetric" />
       </Head>
     </Container>
   )

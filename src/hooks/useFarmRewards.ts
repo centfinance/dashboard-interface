@@ -171,8 +171,9 @@ export default function useFarmRewards({ chainId = ChainId.CELO }) {
     // const balance = swapPair ? Number(pool.balance / 1e18) : pool.balance / 10 ** kashiPair.token0.decimals
     const balance = swapSymmPair ? Number(pool.balance / 1e18) : pool.balance / 10
 
+    const sharePrice = swapSymmPair.totalLiquidity / swapSymmPair.totalShares
+    const tvl = sharePrice * pool.slpBalance * 0.000000000000000001
     // const tvl = swapSymmPair.totalLiquidity
-    const tvl = (swapSymmPair.totalLiquidity / swapSymmPair.totalShares) * pool.slpBalance * 0.000000000000000001
 
     // const feeApyPerYear =
     //   swapPair && swapPair1d
@@ -238,6 +239,7 @@ export default function useFarmRewards({ chainId = ChainId.CELO }) {
       roiPerYear,
       tokenRoiPerYear,
       rewards,
+      sharePrice,
       tvl,
     }
   }

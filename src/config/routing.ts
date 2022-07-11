@@ -453,6 +453,8 @@ export const COMMON_BASES: ChainTokenList = {
     XDAI.USDT,
     // @ts-ignore TYPE NEEDS FIXING
     XDAI.GNO,
+    // @ts-ignore TYPE NEEDS FIXING
+    XDAI.AGVE,
   ],
   [ChainId.AVALANCHE]: [
     // @ts-ignore TYPE NEEDS FIXING

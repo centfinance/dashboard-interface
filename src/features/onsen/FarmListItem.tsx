@@ -47,6 +47,8 @@ const FarmListItem: FC<FarmListItem> = ({ farm, onClick }) => {
             {farm?.pair?.tokens[0]?.symbol}
             <span className="text-low-emphesis">/</span>
             {farm?.pair?.tokens[1]?.symbol}
+            <span className="text-low-emphesis">/</span>
+            {farm?.pair?.tokens[2]?.symbol}
           </Typography>
           {farm?.pair?.type === PairType.SWAP && (
             <Typography variant="xs" className="text-low-emphesis">

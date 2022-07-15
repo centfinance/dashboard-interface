@@ -11,7 +11,7 @@ interface CurrencyLogosProps extends Omit<CurrencyLogoProps, 'currency' | 'size'
   size?: number
 }
 
-const CurrencyLogoArray: FC<CurrencyLogosProps> = ({ currencies, dense = false, maxLogos = 3, size = 24, ...rest }) => {
+const CurrencyLogoArray: FC<CurrencyLogosProps> = ({ currencies, dense = false, maxLogos = 5, size = 24, ...rest }) => {
   const logos =
     currencies.length <= maxLogos
       ? currencies

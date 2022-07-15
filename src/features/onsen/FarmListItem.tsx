@@ -23,6 +23,7 @@ const FarmListItem: FC<FarmListItem> = ({ farm, onClick }) => {
   const { i18n } = useLingui()
   const token0 = useCurrency(farm.pair.tokens[0].address) ?? undefined
   const token1 = useCurrency(farm.pair.tokens[1].address) ?? undefined
+  const token2 = useCurrency(farm.pair.tokens[2]?.address) ?? undefined
   const { chainId } = useActiveWeb3React()
 
   const liquidityToken = new Token(
@@ -38,7 +39,9 @@ const FarmListItem: FC<FarmListItem> = ({ farm, onClick }) => {
   return (
     <div className={classNames(TABLE_TBODY_TR_CLASSNAME, 'grid grid-cols-5')} onClick={onClick}>
       <div className={classNames('flex gap-2', TABLE_TBODY_TD_CLASSNAME(0, 5))}>
-        {token0 && token1 && <CurrencyLogoArray currencies={[token0, token1]} dense size={32} />}
+        {token2 !== undefined
+          ? token0 && token1 && token2 && <CurrencyLogoArray currencies={[token0, token1, token2]} dense size={32} />
+          : token0 && token1 && <CurrencyLogoArray currencies={[token0, token1]} dense size={32} />}
         <div className="flex flex-col items-start">
           <Typography weight={700} className="flex gap-1 text-high-emphesis">
             {farm?.pair?.tokens[0]?.symbol}

@@ -53,6 +53,15 @@ export const getCurrencyLogoUrls = (currency: Currency): string[] => {
       return urls
     }
 
+    // need to fix this with Cloudinary
+    if (currency?.symbol === 'MAI') {
+      urls.push(
+        'https://raw.githubusercontent.com/centfinance/assets/master/blockchains/xdai/assets/0x3F56e0c36d275367b8C502090EDF38289b3dEa0d/logo.png'
+      )
+
+      return urls
+    }
+
     let address = currency.wrapped.address
     if (currency?.symbol === 'AGVE') {
       address = address.toLowerCase()

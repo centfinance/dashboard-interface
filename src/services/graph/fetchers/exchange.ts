@@ -140,7 +140,7 @@ const getLiquidity = (pool: any, prices: any) => {
 }
 
 export const getSymmPairs = async (chainId = ChainId.ETHEREUM, variables = undefined, query = pairsSymmQuery) => {
-  const { pools } = await exchange(chainId, pairsSymmQuery)
+  const { pools } = await exchange(chainId, pairsSymmQuery, variables)
 
   // calc totalLiquidity
   const prices = await tokenPrices(chainId)
@@ -338,7 +338,7 @@ export const getAvaxPrice = async (variables = undefined) => {
 }
 
 export const getCeloPrice = async () => {
-  return getTokenPrice(ChainId.CELO, tokenPriceQuery, {
+  return getTokenPriceFromSymmV2(ChainId.CELO, tokenPriceQuery3, {
     id: '0x471ece3750da237f93b8e339c536989b8978a438',
   })
 }
@@ -352,6 +352,12 @@ export const getMooPrice = async () => {
 export const getAriPrice = async () => {
   return getTokenPriceFromSymmV2(ChainId.CELO, tokenPriceQuery3, {
     id: '0x20677d4f3d0F08e735aB512393524A3CfCEb250C'.toLowerCase(),
+  })
+}
+
+export const getETHIXPrice = async () => {
+  return getTokenPriceFromSymmV2(ChainId.CELO, tokenPriceQuery3, {
+    id: '0x9995cc8F20Db5896943Afc8eE0ba463259c931ed'.toLowerCase(),
   })
 }
 

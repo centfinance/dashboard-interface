@@ -223,8 +223,8 @@ export const liquidityPositionsQuery = gql`
 `
 // To fetch SYMM pools from V2
 export const pairsSymmQuery = gql`
-  query {
-    pools(where: { holdersCount_gt: 0 }, orderBy: "totalLiquidity", orderDirection: "desc") {
+  query pools($block: Block_height, $where: Pool_filter) {
+    pools(block: $block, where: $where, orderBy: "totalLiquidity", orderDirection: "desc") {
       id
       swapFee
       address

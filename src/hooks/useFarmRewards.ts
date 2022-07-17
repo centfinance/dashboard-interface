@@ -4,6 +4,7 @@ import { Chef, PairType } from 'app/features/onsen/enum'
 import { usePositions } from 'app/features/onsen/hooks'
 import {
   useARIPrice,
+  useETHIXPrice,
   useAverageBlockTime,
   useCeloPrice,
   useFarms,
@@ -26,14 +27,25 @@ export default function useFarmRewards({ chainId = ChainId.CELO }) {
   // @ts-ignore TYPE NEEDS FIXING
   const farms = useFarms({ chainId })
   const farmAddresses = useMemo(() => farms.map((farm) => farm.pair), [farms])
-  const symmPairs = useSymmPairs({
+  const symmPools = useSymmPairs({
     chainId,
     variables: {
       where: {
-        id_in: farmAddresses.map(toLower),
+        address_in: farmAddresses.map(toLower),
       },
     },
-    shouldFetch: true,
+    shouldFetch: !!farmAddresses,
+  })
+
+  const symmPools1d = useSymmPairs({
+    chainId,
+    variables: {
+      block: block1d,
+      where: {
+        address_in: farmAddresses.map(toLower),
+      },
+    },
+    shouldFetch: !!block1d && !!farmAddresses,
   })
 
   const averageBlockTime = useAverageBlockTime({ chainId })
@@ -45,13 +57,14 @@ export default function useFarmRewards({ chainId = ChainId.CELO }) {
     [ChainId.CELO]: new Token(ChainId.CELO, symmAddressCELO, 18, 'SYMM', 'SymmToken'),
   }
 
-  const [gnoPrice, celoPrice, symmPriceCelo, symmPriceXdai, mooPrice, ariPrice] = [
+  const [gnoPrice, celoPrice, symmPriceCelo, symmPriceXdai, mooPrice, ariPrice, ethixPrice] = [
     useGnoPrice(),
     useCeloPrice(),
     useSymmPriceCelo(),
     useSymmPriceXdai(),
     useMooPrice(),
     useARIPrice(),
+    useETHIXPrice(),
   ]
 
   const blocksPerDay = 86400 / Number(averageBlockTime)
@@ -62,12 +75,12 @@ export default function useFarmRewards({ chainId = ChainId.CELO }) {
     pool.owner = pool?.symmChef || pool?.owner || pool?.masterChef || pool?.miniChef
     pool.balance = pool?.balance || pool?.slpBalance
     // @ts-ignore TYPE NEEDS FIXING
-    const swapSymmPair = symmPairs?.find((pair) => pair.address.toLowerCase() === pool.pair.toLowerCase())
-
-    const pair = swapSymmPair
-
-    const type = swapSymmPair ? PairType.SWAP : PairType.KASHI
-
+    const symmPool = symmPools?.find((pair) => pair.address.toLowerCase() === pool.pair.toLowerCase())
+    const poolLast24Hours = symmPools1d?.find(
+      (pair: { address: string }) => pair.address.toLowerCase() === pool.pair.toLowerCase()
+    )
+    const pair = symmPool
+    const type = symmPool ? PairType.SWAP : PairType.KASHI
     const blocksPerHour = 3600 / averageBlockTime
 
     function getToken(address: any): Token {
@@ -91,7 +104,7 @@ export default function useFarmRewards({ chainId = ChainId.CELO }) {
         case '0x20677d4f3d0F08e735aB512393524A3CfCEb250C'.toLocaleLowerCase():
           return ariPrice
         case '0x9995cc8F20Db5896943Afc8eE0ba463259c931ed'.toLocaleLowerCase():
-          return 0.1928 // Need to fetch price from exchange
+          return ethixPrice
         case '0x471EcE3750Da237f93B8E339c536989b8978a438'.toLocaleLowerCase():
           return celoPrice
         default:
@@ -167,25 +180,12 @@ export default function useFarmRewards({ chainId = ChainId.CELO }) {
     }
 
     const rewards = getRewards()
+    const balance = symmPool ? Number(pool.balance / 1e18) : pool.balance / 10
 
-    // const balance = swapPair ? Number(pool.balance / 1e18) : pool.balance / 10 ** kashiPair.token0.decimals
-    const balance = swapSymmPair ? Number(pool.balance / 1e18) : pool.balance / 10
-
-    const sharePrice = swapSymmPair.totalLiquidity / swapSymmPair.totalShares
+    const sharePrice = symmPool.totalLiquidity / symmPool.totalShares
     const tvl = sharePrice * pool.slpBalance * 0.000000000000000001
-    // const tvl = swapSymmPair.totalLiquidity
-
-    // const feeApyPerYear =
-    //   swapPair && swapPair1d
-    //     ? aprToApy((((pair?.volumeUSD - swapPair1d?.volumeUSD) * 0.0025 * 365) / pair?.reserveUSD) * 100, 3650) / 100
-    //     : 0
-    // const feeApyPerYear = swapSymmPair.totalSwapVolume
-
-    const poolTotalSwapVolume = swapSymmPair.totalSwapVolume ? parseFloat(swapSymmPair.totalSwapVolume) : 0
-    const lastSwapVolume = parseFloat(swapSymmPair.totalSwapVolume) - poolTotalSwapVolume
-    const feesCollected = lastSwapVolume * swapSymmPair.swapFee
-
-    const feeApyPerYear = (100 / swapSymmPair.totalLiquidity) * ((feesCollected * 365) / 100)
+    const feesCollected24H = parseFloat(symmPool.totalSwapFee) - parseFloat(poolLast24Hours?.totalSwapFee)
+    const feeApyPerYear = (feesCollected24H / symmPool.totalLiquidity) * 365
 
     const feeApyPerMonth = feeApyPerYear / 12
     const feeApyPerDay = feeApyPerMonth / 30
@@ -248,7 +248,7 @@ export default function useFarmRewards({ chainId = ChainId.CELO }) {
     .filter((farm) => {
       return (
         // @ts-ignore TYPE NEEDS FIXING
-        symmPairs && symmPairs.find((pair) => pair.address.toLowerCase() === farm.pair.toLowerCase())
+        symmPools && symmPools.find((pair) => pair.address.toLowerCase() === farm.pair.toLowerCase())
       )
     })
     .map(map)

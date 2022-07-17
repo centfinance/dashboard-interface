@@ -5,6 +5,7 @@ import useSWR, { SWRConfiguration } from 'swr'
 
 import {
   getAlcxPrice,
+  getETHIXPrice,
   getAriPrice,
   getAvaxPrice,
   getBundle,
@@ -143,6 +144,14 @@ export function useARIPrice(swrConfig: SWRConfiguration = undefined) {
   const { chainId } = useActiveWeb3React()
   const shouldFetch = chainId && chainId === ChainId.CELO
   const { data } = useSWR(shouldFetch ? 'ariPrice' : null, () => getAriPrice(), swrConfig)
+  return data
+}
+
+// @ts-ignore TYPE NEEDS FIXING
+export function useETHIXPrice(swrConfig: SWRConfiguration = undefined) {
+  const { chainId } = useActiveWeb3React()
+  const shouldFetch = chainId && chainId === ChainId.CELO
+  const { data } = useSWR(shouldFetch ? 'ethixPrice' : null, () => getETHIXPrice(), swrConfig)
   return data
 }
 
@@ -305,7 +314,7 @@ export function useSymmPairs({
   const { data } = useSWR(
     shouldFetch ? ['symmPairs', chainId, stringify(variables)] : null,
     // @ts-ignore TYPE NEEDS FIXING
-    (_, chainId) => getSymmPairs(chainId),
+    (_, chainId) => getSymmPairs(chainId, variables),
     swrConfig
   )
 

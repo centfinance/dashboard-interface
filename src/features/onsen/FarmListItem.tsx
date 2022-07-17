@@ -85,7 +85,7 @@ const FarmListItem: FC<FarmListItem> = ({ farm, onClick }) => {
       <div className={classNames('flex', TABLE_TBODY_TD_CLASSNAME(3, 5))}>
         <Typography weight={700} className="flex gap-0.5 items-center text-high-emphesis">
           {farm?.tvl !== 0 ? (farm?.roiPerYear > 10000 ? '>10,000%' : formatPercent(farm?.roiPerYear * 100)) : '-'}
-          {!!farm?.feeApyPerYear && (
+          {!!farm?.tvl && (
             <QuestionHelper
               text={
                 <div className="flex flex-col">
@@ -94,7 +94,7 @@ const FarmListItem: FC<FarmListItem> = ({ farm, onClick }) => {
                     {farm?.tvl !== 0
                       ? farm?.rewardAprPerYear > 10000
                         ? '>10,000%'
-                        : formatPercent(farm?.rewardAprPerYear * 100)
+                        : formatPercent((farm?.rewardAprPerYear + farm?.tokenRewardAprPerYear) * 100)
                       : '-'}
                   </div>
                   <div>

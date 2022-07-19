@@ -12,6 +12,7 @@ import {
 } from '@symmetric-v2/farming-core-sdk'
 import AssetInput from 'app/components/AssetInput'
 import Button from 'app/components/Button'
+import Image from 'app/components/Image'
 import { HeadlessUiModal } from 'app/components/Modal'
 import Switch from 'app/components/Switch'
 import Typography from 'app/components/Typography'
@@ -49,8 +50,15 @@ const APPROVAL_ADDRESSES = {
   },
 }
 
+const LINKTOPOOL: any = {
+  [ChainId.CELO]: 'https://celo.symm.fi/#/pool/',
+  [ChainId.XDAI]: 'https://gnosis.symm.fi/#/pool/',
+}
+
 // @ts-ignore TYPE NEEDS FIXING
 const ManageBar = ({ farm }) => {
+  console.log('ADD LIQUIDITY')
+  console.log(farm)
   const dispatch = useAppDispatch()
   const { account, chainId } = useActiveWeb3React()
   const { setContent } = useFarmListItemDetailsModal()
@@ -91,9 +99,33 @@ const ManageBar = ({ farm }) => {
     <>
       <HeadlessUiModal.BorderedContent className="flex flex-col gap-4 bg-dark-1000/40">
         <div className="flex flex-col gap-2">
+          {chainId && chainId in ChainId && (
+            <div>
+              <a className="external" target="_blank" href={LINKTOPOOL[chainId] + farm.pair.id} rel="noreferrer">
+                <div className="flex justify-start">
+                  <Typography variant="lg" weight={700} className="text-orange">
+                    {i18n._(t`Add liquidity`)}&nbsp;
+                  </Typography>
+                  <Typography variant="sm" className="text-secondary">
+                    ({farm.pair.symbol}) &nbsp;
+                  </Typography>
+                  <Image
+                    src="https://s.w.org/images/core/emoji/14.0.0/svg/2197.svg"
+                    alt="Opens in new tab"
+                    width={15}
+                    height={17}
+                  />
+                </div>
+              </a>
+              <Typography variant="sm" className="text-secondary">
+                {i18n._(t`Add liquidity to pool`)}
+              </Typography>
+            </div>
+          )}
+
           <div className="flex justify-between">
-            <Typography variant="lg" weight={700} className="text-high-emphesis">
-              {toggle ? i18n._(t`Stake liquidity`) : i18n._(t`Unstake liquidity`)}
+            <Typography variant="lg" weight={700} className="text-orange">
+              {toggle ? i18n._(t`Stake in Farm`) : i18n._(t`Unstake liquidity`)}
             </Typography>
             <Switch
               size="sm"

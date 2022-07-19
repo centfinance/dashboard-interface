@@ -4,9 +4,9 @@ import { Chef, PairType } from 'app/features/onsen/enum'
 import { usePositions } from 'app/features/onsen/hooks'
 import {
   useARIPrice,
-  useETHIXPrice,
   useAverageBlockTime,
   useCeloPrice,
+  useETHIXPrice,
   useFarms,
   useGnoPrice,
   useMooPrice,
